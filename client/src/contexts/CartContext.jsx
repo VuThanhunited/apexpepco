@@ -2,17 +2,28 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext(null);
 
+export const resolveImageUrl = (img) => {
+  if (!img) return '';
+  if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('//')) return img;
+  if (img.startsWith('/uploads/')) return img;
+  if (img.startsWith('/')) return img;
+  return `/uploads/${img}`;
+};
+
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState(() => {
     try { return JSON.parse(localStorage.getItem('cart')) || []; } catch { return []; }
   });
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
   const addItem = (product, variant, quantity = 1) => {
-    const key = `${product._id}-${variant?.name || 'default'}`;
+    const key = `${product._id || product.id || product.slug}-${variant?.name || 'default'}`;
+    const imagePath = product.imageUrl || product.image || '';
+
     setItems(prev => {
       const existing = prev.find(i => i.key === key);
       if (existing) {
@@ -20,15 +31,17 @@ export const CartProvider = ({ children }) => {
       }
       return [...prev, {
         key,
-        productId: product._id,
+        productId: product._id || product.id,
         productName: product.name,
         productSlug: product.slug,
-        productImage: product.image,
+        productImage: imagePath,
         variant: variant || null,
-        price: variant?.price || product.basePrice,
+        price: variant?.price || product.basePrice || 0,
         quantity,
       }];
     });
+
+    setIsCartOpen(true);
   };
 
   const removeItem = (key) => setItems(prev => prev.filter(i => i.key !== key));
@@ -42,9 +55,22 @@ export const CartProvider = ({ children }) => {
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
+  const totalItems = itemCount;
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, subtotal, itemCount }}>
+    <CartContext.Provider value={{
+      items,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+      subtotal,
+      itemCount,
+      totalItems,
+      isCartOpen,
+      setIsCartOpen,
+      resolveImageUrl
+    }}>
       {children}
     </CartContext.Provider>
   );
