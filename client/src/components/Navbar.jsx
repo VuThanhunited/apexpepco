@@ -27,13 +27,6 @@ const Navbar = () => {
   return (
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        {/* Top announcement bar - transparent dark background with cyan blue text matching astroresearch.health */}
-        {annBar?.isVisible !== false && (
-          <div className="announcement-strip">
-            <span>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</span>
-          </div>
-        )}
-
         <div className="nav-container">
           {/* Logo */}
           <Link to="/" className="nav-logo">
@@ -116,6 +109,13 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+
+        {/* Announcement text strip positioned BELOW navigation bar */}
+        {annBar?.isVisible !== false && (
+          <div className="announcement-substrip">
+            <span>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</span>
+          </div>
+        )}
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
