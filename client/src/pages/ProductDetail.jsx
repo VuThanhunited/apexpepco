@@ -68,7 +68,7 @@ const ProductDetail = () => {
                     key={i}
                     className={`variant-btn ${selectedVariant?.name === v.name ? 'active' : ''}`}
                     onClick={() => setSelectedVariant(v)}
-                    id={`variant-${v.name.replace(/\s+/g,'-')}`}
+                    id={`variant-${v.name.replace(/\s+/g, '-')}`}
                     disabled={v.stock === 0}
                   >{v.name}{v.stock === 0 ? ' (OOS)' : ''}</button>
                 ))}

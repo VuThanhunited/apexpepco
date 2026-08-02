@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../contexts/CartContext';
+import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
 import api from '../utils/api';
 import './Checkout.css';
@@ -14,17 +14,28 @@ const Checkout = () => {
   const shipping = subtotal >= threshold ? 0 : shippingCost;
   const total = subtotal + shipping;
 
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', address: '', city: '', state: '', zipCode: '', country: 'US' });
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: 'US'
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(null);
+  const [successOrder, setSuccessOrder] = useState(null);
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (items.length === 0) return;
-    setLoading(true); setError('');
+    setLoading(true);
+    setError('');
     try {
       const orderItems = items.map(i => ({
         product: i.productId,
@@ -34,32 +45,42 @@ const Checkout = () => {
         quantity: i.quantity,
         price: i.price,
       }));
+
       const { data } = await api.post('/orders', {
         items: orderItems,
         shippingAddress: form,
         guestEmail: form.email,
+        paymentMethod: 'credit_card',
       });
+
       clearCart();
-      setSuccess(data.orderNumber);
+      setSuccessOrder(data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to place order');
-    } finally { setLoading(false); }
+      setError(err.response?.data?.message || 'Failed to place order. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (success) return (
+  if (successOrder) return (
     <div className="checkout-success">
       <div className="success-icon">✓</div>
-      <h1>Order Placed!</h1>
-      <p>Order number: <strong>{success}</strong></p>
-      <p className="success-sub">Thank you for your order. We'll dispatch it within 24 hours.</p>
-      <Link to="/shop" className="btn-continue">Continue Shopping</Link>
+      <h1>Order Placed Successfully!</h1>
+      <p className="order-num-text">Order Number: <strong>{successOrder.orderNumber || successOrder._id}</strong></p>
+      <p className="success-sub">Thank you for your order. A confirmation email has been sent to <strong>{form.email}</strong>. We will dispatch your order within 24 hours.</p>
+      <div className="success-actions">
+        <Link to="/shop" className="btn-continue">Continue Shopping</Link>
+        <Link to="/account" className="btn-view-order">View Order Details</Link>
+      </div>
     </div>
   );
 
   if (items.length === 0) return (
     <div className="checkout-empty">
+      <div className="empty-cart-icon">🛒</div>
       <h2>Your cart is empty</h2>
-      <Link to="/shop" className="btn-continue">Browse Products</Link>
+      <p>Add items to your cart before proceeding to checkout.</p>
+      <Link to="/shop" className="btn-continue">Browse Catalog</Link>
     </div>
   );
 
@@ -74,46 +95,47 @@ const Checkout = () => {
               <h2>Contact Information</h2>
               <div className="form-row">
                 <div className="form-group">
-                  <label>First Name</label>
+                  <label>First Name *</label>
                   <input required placeholder="John" value={form.firstName} onChange={set('firstName')} id="checkout-firstname" />
                 </div>
                 <div className="form-group">
-                  <label>Last Name</label>
+                  <label>Last Name *</label>
                   <input required placeholder="Doe" value={form.lastName} onChange={set('lastName')} id="checkout-lastname" />
                 </div>
               </div>
               <div className="form-group">
-                <label>Email</label>
+                <label>Email Address *</label>
                 <input required type="email" placeholder="email@example.com" value={form.email} onChange={set('email')} id="checkout-email" />
               </div>
               <div className="form-group">
-                <label>Phone</label>
-                <input type="tel" placeholder="+1 555 000 0000" value={form.phone} onChange={set('phone')} id="checkout-phone" />
+                <label>Phone Number</label>
+                <input type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={set('phone')} id="checkout-phone" />
               </div>
             </div>
+
             <div className="checkout-section">
               <h2>Shipping Address</h2>
               <div className="form-group">
-                <label>Street Address</label>
-                <input required placeholder="123 Main St" value={form.address} onChange={set('address')} id="checkout-address" />
+                <label>Street Address *</label>
+                <input required placeholder="123 Main Street, Suite 100" value={form.address} onChange={set('address')} id="checkout-address" />
               </div>
               <div className="form-row">
                 <div className="form-group">
-                  <label>City</label>
+                  <label>City *</label>
                   <input required placeholder="New York" value={form.city} onChange={set('city')} id="checkout-city" />
                 </div>
                 <div className="form-group">
-                  <label>State</label>
+                  <label>State / Province *</label>
                   <input required placeholder="NY" value={form.state} onChange={set('state')} id="checkout-state" />
                 </div>
               </div>
               <div className="form-row">
                 <div className="form-group">
-                  <label>ZIP Code</label>
+                  <label>ZIP / Postal Code *</label>
                   <input required placeholder="10001" value={form.zipCode} onChange={set('zipCode')} id="checkout-zip" />
                 </div>
                 <div className="form-group">
-                  <label>Country</label>
+                  <label>Country *</label>
                   <select value={form.country} onChange={set('country')} id="checkout-country">
                     <option value="US">United States</option>
                     <option value="CA">Canada</option>
@@ -123,33 +145,40 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
+
             <div className="checkout-disclaimer">
-              <p>⚠️ By placing this order, you confirm that you are a qualified researcher and these products are for laboratory research use only. Not for human or animal consumption.</p>
+              <p>⚠️ By placing this order, you confirm that you are a qualified researcher aged 21+ and these compounds are strictly for laboratory research use only. Not for human or animal consumption.</p>
             </div>
+
             <button type="submit" className="btn-place-order" id="place-order-btn" disabled={loading}>
-              {loading ? 'Processing...' : `Place Order · $${total.toFixed(2)}`}
+              {loading ? 'Processing Order...' : `Place Order · $${total.toFixed(2)}`}
             </button>
           </form>
         </div>
+
         <div className="checkout-summary-col">
           <div className="order-summary">
             <h2>Order Summary</h2>
             <div className="summary-items">
-              {items.map(item => (
-                <div key={item.key} className="summary-item">
-                  <div className="summary-item-img">
-                    {item.productImage
-                      ? <img src={`/uploads/${item.productImage}`} alt={item.productName} />
-                      : <span>🔬</span>}
+              {items.map(item => {
+                const imgUrl = resolveImageUrl(item.productImage);
+                return (
+                  <div key={item.key} className="summary-item">
+                    <div className="summary-item-img">
+                      {imgUrl
+                        ? <img src={imgUrl} alt={item.productName} />
+                        : <span>🔬</span>
+                      }
+                    </div>
+                    <div className="summary-item-info">
+                      <p>{item.productName}</p>
+                      {item.variant && <small>{item.variant.name}</small>}
+                      <small>Qty: {item.quantity}</small>
+                    </div>
+                    <span className="summary-item-price">${(item.price * item.quantity).toFixed(2)}</span>
                   </div>
-                  <div className="summary-item-info">
-                    <p>{item.productName}</p>
-                    {item.variant && <small>{item.variant.name}</small>}
-                    <small>Qty: {item.quantity}</small>
-                  </div>
-                  <span className="summary-item-price">${(item.price * item.quantity).toFixed(2)}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="summary-totals">
               <div className="summary-row"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
