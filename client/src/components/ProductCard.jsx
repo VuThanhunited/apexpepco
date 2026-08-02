@@ -25,14 +25,25 @@ const ProductCard = ({ product }) => {
   return (
     <Link to={`/product/${product.slug}`} className="product-card" id={`product-${product.slug}`}>
       <div className="product-img-wrapper">
+        {/* Exact Cosmic Starfield Backdrop matching astroresearch.health */}
+        <div className="product-cosmic-bg" aria-hidden="true">
+          <div className="space-base"></div>
+          <div className="space-blob-1"></div>
+          <div className="space-blob-2"></div>
+          <div className="space-blob-3"></div>
+          <div className="space-stars"></div>
+        </div>
+
         {imgUrl
-          ? <img src={imgUrl} alt={product.name} loading="lazy" />
+          ? <img src={imgUrl} alt={product.name} loading="lazy" className="product-vial-img" />
           : <div className="product-img-placeholder"><span>🔬</span></div>
         }
+
         <div className="product-badges">
           <span className="badge featured-cyan-badge">FEATURED</span>
           {!product.inStock && <span className="badge oos-badge">Out of Stock</span>}
         </div>
+
         <div className="product-card-overlay">
           <button
             className="btn-quick-add"
@@ -47,6 +58,7 @@ const ProductCard = ({ product }) => {
           </span>
         </div>
       </div>
+
       <div className="product-info">
         {product.category?.name && (
           <span className="product-category">{product.category.name}</span>

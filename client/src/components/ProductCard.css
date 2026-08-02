@@ -1,7 +1,7 @@
 .product-card {
   display: block;
   text-decoration: none;
-  background: #0b0b0c;
+  background: #000810;
   border: 1px solid #1a1a1e;
   border-radius: 0.75rem;
   overflow: hidden;
@@ -12,40 +12,91 @@
 .product-card:hover {
   transform: translateY(-5px);
   border-color: #38bdf8;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 30px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 30px rgba(56, 189, 248, 0.25);
 }
 
 .product-img-wrapper {
   position: relative;
-  aspect-ratio: 1.05;
+  aspect-ratio: 1;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 45%, #08344e 0%, #031521 70%, #0b0b0c 100%);
+  background: #000810;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.product-img-wrapper img {
+/* Cosmic Starfield Backdrop matching astroresearch.health */
+.product-cosmic-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.space-base {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0, 8, 16) 0%, rgb(0, 5, 18) 55%, rgb(0, 10, 24) 100%);
+}
+
+.space-blob-1 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 70% at 50% 0%, rgba(8, 198, 240, 0.72) 0%, transparent 70%);
+}
+
+.space-blob-2 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(75% 65% at 18% 80%, rgba(14, 140, 200, 0.55) 0%, transparent 68%);
+}
+
+.space-blob-3 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(65% 75% at 86% 50%, rgba(30, 80, 200, 0.45) 0%, transparent 65%);
+}
+
+.space-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: radial-gradient(1.2px 1.2px at 8% 12%, rgba(255, 255, 255, 0.9) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 18% 72%, rgba(255, 255, 255, 0.75) 0%, transparent 100%),
+                    radial-gradient(1.5px 1.5px at 28% 7%, rgba(255, 255, 255, 0.85) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 38% 55%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+                    radial-gradient(1.2px 1.2px at 50% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 62% 82%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+                    radial-gradient(1.5px 1.5px at 72% 18%, rgba(255, 255, 255, 0.9) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 82% 65%, rgba(255, 255, 255, 0.65) 0%, transparent 100%),
+                    radial-gradient(1.2px 1.2px at 91% 9%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                    radial-gradient(2px 2px at 95% 45%, rgba(255, 255, 255, 0.5) 0%, transparent 100%);
+  background-size: 100% 100%;
+}
+
+.product-vial-img {
+  position: relative;
+  z-index: 2;
   width: 100%; height: 100%;
   object-fit: contain;
   padding: 1.25rem;
   transition: transform 0.5s ease;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.85));
 }
 
-.product-card:hover .product-img-wrapper img { transform: scale(1.08); }
+.product-card:hover .product-vial-img { transform: scale(1.08); }
 
 .product-img-placeholder {
+  position: relative; z-index: 2;
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at 50% 45%, #08344e 0%, #031521 70%, #0b0b0c 100%);
 }
 .product-img-placeholder span { font-size: 3.5rem; opacity: 0.3; }
 
 .product-badges {
   position: absolute; top: 0.85rem; left: 0.85rem;
   display: flex; flex-direction: column; gap: 0.35rem;
-  z-index: 2;
+  z-index: 3;
 }
 .badge {
   font-size: 0.65rem; font-weight: 800; padding: 0.2rem 0.55rem;
@@ -62,7 +113,7 @@
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.85rem;
   opacity: 0; transition: opacity 0.3s;
   padding: 1.5rem;
-  z-index: 3;
+  z-index: 4;
 }
 .product-card:hover .product-card-overlay { opacity: 1; }
 

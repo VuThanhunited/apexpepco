@@ -28,13 +28,45 @@ const Home = () => {
     </div>
   );
 
-  const features = settings?.features || [
-    { icon: '📄', title: 'COA Included', description: 'With every order' },
-    { icon: '⚡', title: 'Fast Dispatch', description: 'Ships within 24 hrs' },
-    { icon: '📦', title: 'Discreet Packing', description: 'Plain packaging' },
-    { icon: '🧪', title: 'Lab Tested', description: 'Every batch' },
-    { icon: '🛡️', title: '99%+ Purity', description: 'Third-party verified' },
-    { icon: '🚚', title: 'Free Shipping', description: 'Orders over $250' }
+  const renderMarqueeIcon = (type) => {
+    switch (type) {
+      case 'file-check':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-icon text-sky-400">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+            <path d="m9 15 2 2 4-4"></path>
+          </svg>
+        );
+      case 'truck':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-icon text-sky-400">
+            <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+            <path d="M15 18H9"></path>
+            <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+            <circle cx="17" cy="18" r="2"></circle>
+            <circle cx="7" cy="18" r="2"></circle>
+          </svg>
+        );
+      case 'flask':
+      default:
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-icon text-sky-400">
+            <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path>
+            <path d="M6.453 15h11.094"></path>
+            <path d="M8.5 2h7"></path>
+          </svg>
+        );
+    }
+  };
+
+  const features = [
+    { iconType: 'file-check', title: 'COA Included', description: 'With every order' },
+    { iconType: 'flask', title: 'Fast Dispatch', description: 'Ships within 24 hrs' },
+    { iconType: 'truck', title: 'Discreet Packing', description: 'Plain packaging' },
+    { iconType: 'file-check', title: 'Lab Tested', description: 'Every batch' },
+    { iconType: 'flask', title: '99%+ Purity', description: 'Third-party verified' },
+    { iconType: 'truck', title: 'Free Shipping', description: 'Orders over $250' }
   ];
 
   return (
@@ -92,7 +124,7 @@ const Home = () => {
           <div className="marquee-inner">
             {[...features, ...features, ...features].map((f, i) => (
               <div key={i} className="marquee-item">
-                <span className="marquee-icon cyan-icon">{f.icon}</span>
+                <span className="marquee-icon cyan-icon">{renderMarqueeIcon(f.iconType)}</span>
                 <div className="marquee-text">
                   <strong className="marquee-title-text">{f.title}</strong>
                   {f.description && <span className="marquee-sub-text">{f.description}</span>}
