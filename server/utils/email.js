@@ -84,7 +84,9 @@ const sendOrderEmails = async (order) => {
     const customerHtml = `
       <div style="background-color: #0b0b0c; color: #ededed; font-family: sans-serif; padding: 30px; max-width: 650px; margin: 0 auto; border-radius: 10px; border: 1px solid #2a2a2c;">
         <div style="text-align: center; border-bottom: 2px solid #c4222f; padding-bottom: 20px; margin-bottom: 25px;">
-          <h1 style="color: #c4222f; margin: 0; font-size: 26px; text-transform: uppercase; letter-spacing: 2px;">▲ APEX PEP CO</h1>
+          <a href="${process.env.CLIENT_URL || 'https://apexpepco.vercel.app'}" style="text-decoration: none;">
+            <h1 style="color: #c4222f; margin: 0; font-size: 26px; text-transform: uppercase; letter-spacing: 2px;">▲ APEX PEP CO</h1>
+          </a>
           <p style="color: #8c8c8f; margin-top: 5px; font-size: 13px;">RESEARCH GRADE COMPOUNDS</p>
         </div>
 
