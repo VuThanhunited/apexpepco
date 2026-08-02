@@ -5,9 +5,11 @@ const CartContext = createContext(null);
 export const resolveImageUrl = (img) => {
   if (!img) return '';
   if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('//')) return img;
-  if (img.startsWith('/uploads/')) return img;
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://apexpepco.onrender.com';
+  const cleanBase = baseUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+  if (img.startsWith('/uploads/')) return `${cleanBase}${img}`;
   if (img.startsWith('/')) return img;
-  return `/uploads/${img}`;
+  return `${cleanBase}/uploads/${img}`;
 };
 
 export const CartProvider = ({ children }) => {
