@@ -26,19 +26,14 @@ const Navbar = () => {
 
   return (
     <>
-      {annBar?.isVisible !== false && (
-        <div
-          className="announcement-bar"
-          style={{
-            backgroundColor: annBar?.bgColor || '#c4222f',
-            color: annBar?.textColor || '#ffffff'
-          }}
-        >
-          <p>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</p>
-        </div>
-      )}
-
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        {/* Top announcement bar - transparent dark background with cyan blue text matching astroresearch.health */}
+        {annBar?.isVisible !== false && (
+          <div className="announcement-strip">
+            <span>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</span>
+          </div>
+        )}
+
         <div className="nav-container">
           {/* Logo */}
           <Link to="/" className="nav-logo">
