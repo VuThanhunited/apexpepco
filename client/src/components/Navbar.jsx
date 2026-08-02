@@ -46,17 +46,17 @@ const Navbar = () => {
 
           {/* Actions */}
           <div className="nav-actions">
-            {/* Cart Icon */}
+            {/* Cart Icon - Exact Lucide Shopping Cart matching astroresearch.health */}
             <button
               className="cart-btn"
               onClick={() => setIsCartOpen(true)}
               aria-label="Shopping Cart"
               id="nav-cart-btn"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
-                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 01-8 0" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-cart-icon">
+                <circle cx="8" cy="21" r="1"></circle>
+                <circle cx="19" cy="21" r="1"></circle>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
               </svg>
               {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
             </button>
