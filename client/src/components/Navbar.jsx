@@ -24,6 +24,12 @@ const Navbar = () => {
 
   const annBar = settings?.announcementBar;
 
+  const handleCartClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsCartOpen(prev => !prev);
+  };
+
   return (
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -49,9 +55,10 @@ const Navbar = () => {
             {/* Cart Icon - Exact Lucide Shopping Cart matching astroresearch.health */}
             <button
               className="cart-btn"
-              onClick={() => setIsCartOpen(true)}
+              onClick={handleCartClick}
               aria-label="Shopping Cart"
               id="nav-cart-btn"
+              type="button"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-cart-icon">
                 <circle cx="8" cy="21" r="1"></circle>
