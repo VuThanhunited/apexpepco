@@ -1,76 +1,197 @@
 .auth-page {
   min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 2rem 1.5rem;
   position: relative;
 }
 
-.auth-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.auth-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .auth-glow {
-  position: absolute; width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(196,34,47,0.15) 0%, transparent 70%);
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(196, 34, 47, 0.15) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .auth-card {
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
   background: #121214;
   border: 1px solid #2a2a2c;
   border-radius: 1rem;
   padding: 2.5rem;
-  width: 100%; max-width: 440px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 
-.auth-header { text-align: center; margin-bottom: 2rem; }
-.auth-icon { font-size: 2.5rem; margin-bottom: 1rem; filter: drop-shadow(0 0 20px rgba(196,34,47,0.6)); }
-.auth-header h1 { font-size: 1.6rem; font-weight: 800; color: #ededed; margin: 0 0 0.5rem; text-transform: uppercase; }
-.auth-header p { color: #8c8c8f; font-size: 0.9rem; margin: 0; }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 20px rgba(196, 34, 47, 0.6));
+}
+
+.auth-header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ededed;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.auth-header p {
+  color: #8c8c8f;
+  font-size: 0.9rem;
+  margin: 0;
+}
 
 .auth-error {
-  background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3);
-  color: #f87171; padding: 0.75rem 1rem; border-radius: 0.5rem;
-  font-size: 0.875rem; margin-bottom: 1.25rem; text-align: center;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
 }
 
-.auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
 
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
 
-.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-.form-group label { font-size: 0.8rem; font-weight: 600; color: #8c8c8f; text-transform: uppercase; letter-spacing: 0.05em; }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #8c8c8f;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .form-group input {
-  background: #0b0b0c; border: 1px solid #2a2a2c;
-  color: #ededed; padding: 0.75rem 1rem; border-radius: 0.5rem;
-  font-size: 0.9rem; outline: none;
+  background: #0b0b0c;
+  border: 1px solid #2a2a2c;
+  color: #ededed;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
   transition: border-color 0.2s;
   font-family: inherit;
+  width: 100%;
 }
-.form-group input:focus { border-color: #c4222f; background: rgba(196,34,47,0.03); }
-.form-group input::placeholder { color: #8c8c8f; }
+
+.form-group input:focus {
+  border-color: #c4222f;
+  background: rgba(196, 34, 47, 0.03);
+}
+
+.form-group input::placeholder {
+  color: #8c8c8f;
+}
 
 .btn-auth {
   background: #c4222f;
-  color: #ffffff; border: 1px solid #c4222f;
-  padding: 0.875rem; border-radius: 0.5rem;
-  font-weight: 700; font-size: 0.95rem; cursor: pointer;
-  transition: all 0.2s; margin-top: 0.5rem;
-  display: flex; align-items: center; justify-content: center;
+  color: #ffffff;
+  border: 1px solid #c4222f;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.btn-auth:hover:not(:disabled) { background: #dc2626; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(196,34,47,0.5); }
-.btn-auth:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-auth:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(196, 34, 47, 0.5);
+}
+
+.btn-auth:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 .btn-spinner {
-  width: 18px; height: 18px;
-  border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
-  border-radius: 50%; animation: spin 0.7s linear infinite;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
 
-.auth-footer { text-align: center; margin-top: 1.5rem; }
-.auth-footer p { font-size: 0.875rem; color: #8c8c8f; margin: 0; }
-.auth-footer a { color: #c4222f; text-decoration: none; font-weight: 600; }
-.auth-footer a:hover { color: #ef4444; }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-footer p {
+  font-size: 0.875rem;
+  color: #8c8c8f;
+  margin: 0;
+}
+
+.auth-footer a {
+  color: #c4222f;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer a:hover {
+  color: #ef4444;
+}
