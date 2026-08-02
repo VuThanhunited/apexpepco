@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useCart } from '../contexts/CartContext';
+import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
@@ -14,19 +14,23 @@ const ProductCard = ({ product }) => {
 
   const handleQuickAdd = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     const firstVariant = product.variants?.[0] || null;
     addItem(product, firstVariant, 1);
   };
 
+  const imgPath = product.imageUrl || product.image;
+  const imgUrl = resolveImageUrl(imgPath);
+
   return (
     <Link to={`/product/${product.slug}`} className="product-card" id={`product-${product.slug}`}>
       <div className="product-img-wrapper">
-        {product.image
-          ? <img src={product.image.startsWith('/') ? product.image : `/uploads/${product.image}`} alt={product.name} loading="lazy" />
+        {imgUrl
+          ? <img src={imgUrl} alt={product.name} loading="lazy" />
           : <div className="product-img-placeholder"><span>🔬</span></div>
         }
         <div className="product-badges">
-          {product.purity && <span className="badge purity-badge">{product.purity}</span>}
+          <span className="badge featured-cyan-badge">FEATURED</span>
           {!product.inStock && <span className="badge oos-badge">Out of Stock</span>}
         </div>
         <div className="product-card-overlay">

@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 import { SiteProvider } from './contexts/SiteContext';
 import Navbar from './components/Navbar';
+import CartDrawer from './components/CartDrawer';
 import Footer from './components/Footer';
 import AgeGate from './components/AgeGate';
 import PromoModal from './components/PromoModal';
@@ -24,6 +25,7 @@ const App = () => {
           <CartProvider>
             <AgeGate />
             <PromoModal />
+            <CartDrawer />
             <div className="app-layout">
               <Navbar />
               <main className="app-main">

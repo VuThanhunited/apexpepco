@@ -29,12 +29,12 @@ const Home = () => {
   );
 
   const features = settings?.features || [
-    { icon: '🔬', title: 'Lab Tested', description: 'Every batch' },
-    { icon: '✅', title: '99%+ Purity', description: 'Third-party verified' },
-    { icon: '🚚', title: 'Free Shipping', description: 'Orders over $250' },
-    { icon: '📋', title: 'COA Included', description: 'With every order' },
+    { icon: '📄', title: 'COA Included', description: 'With every order' },
     { icon: '⚡', title: 'Fast Dispatch', description: 'Ships within 24 hrs' },
-    { icon: '📦', title: 'Discreet Packing', description: 'Plain packaging' }
+    { icon: '📦', title: 'Discreet Packing', description: 'Plain packaging' },
+    { icon: '🧪', title: 'Lab Tested', description: 'Every batch' },
+    { icon: '🛡️', title: '99%+ Purity', description: 'Third-party verified' },
+    { icon: '🚚', title: 'Free Shipping', description: 'Orders over $250' }
   ];
 
   return (
@@ -92,10 +92,10 @@ const Home = () => {
           <div className="marquee-inner">
             {[...features, ...features, ...features].map((f, i) => (
               <div key={i} className="marquee-item">
-                <span className="marquee-icon">{f.icon}</span>
+                <span className="marquee-icon cyan-icon">{f.icon}</span>
                 <div className="marquee-text">
-                  <strong>{f.title}</strong>
-                  {f.description && <span>{f.description}</span>}
+                  <strong className="marquee-title-text">{f.title}</strong>
+                  {f.description && <span className="marquee-sub-text">{f.description}</span>}
                 </div>
                 <span className="marquee-divider">·</span>
               </div>
@@ -107,11 +107,16 @@ const Home = () => {
       {/* ── FEATURED PRODUCTS ───────────────────────────── */}
       <section className="featured-section" id="featured-products">
         <div className="section-container">
-          <div className="section-header">
-            <div className="section-tag">TOP SELLERS</div>
-            <h2>FEATURED COMPOUNDS</h2>
-            <p>Our most popular research compounds</p>
+          <div className="featured-header-row">
+            <div className="featured-header-left">
+              <h2 className="featured-main-title">Featured Compounds</h2>
+              <p className="featured-main-subtitle">Curated items of exceptional purity.</p>
+            </div>
+            <Link to="/shop" className="view-all-cyan-link" id="view-all-products-btn">
+              View All →
+            </Link>
           </div>
+
           {featuredProducts.length > 0 ? (
             <div className="products-grid">
               {featuredProducts.map(p => <ProductCard key={p._id} product={p} />)}
@@ -121,12 +126,6 @@ const Home = () => {
               <p>Products coming soon. <Link to="/shop">Browse all products →</Link></p>
             </div>
           )}
-          <div className="section-footer">
-            <Link to="/shop" className="btn-view-all" id="view-all-products-btn">
-              View All Products
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </Link>
-          </div>
         </div>
       </section>
 
