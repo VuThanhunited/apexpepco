@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
-import CartDrawer from './CartDrawer';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -34,31 +33,32 @@ const Navbar = () => {
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
-          {/* Logo */}
+          {/* Logo - Red Triangle Symbol + APEX PEP CO */}
           <Link to="/" className="nav-logo">
-            <img src="https://astroresearch.health/logo.png" alt="Astro Research Logo" className="logo-triangle-img" />
-            <span className="logo-brand-text">ASTRO RESEARCH</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#c4222f" xmlns="http://www.w3.org/2000/svg" className="apex-triangle-logo">
+              <path d="M12 3L22 20H2L12 3Z" />
+            </svg>
+            <span className="logo-brand-text">APEX PEP CO</span>
           </Link>
 
           {/* Desktop Nav Links */}
           <nav className="nav-links-desktop">
-            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
-            <Link to="/shop" className={`nav-link ${location.pathname.startsWith('/shop') ? 'active' : ''}`}>Shop</Link>
-            <Link to="/account" className="nav-link">Portal</Link>
-            <Link to="/coas" className="nav-link">COAs</Link>
-            <Link to="/login" className="nav-link highlight-red">Affiliate</Link>
-            <Link to="/wholesale" className="nav-link highlight-red">Business</Link>
+            <Link to="/shop" className={`nav-link ${location.pathname.startsWith('/shop') ? 'active' : ''}`}>SHOP</Link>
+            <Link to="/shop" className="nav-link">PRODUCTS</Link>
+            <Link to="/coas" className="nav-link">COA LIBRARY</Link>
+            <Link to="/policies" className="nav-link">SHIPPING</Link>
+            <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>ABOUT</Link>
+            <Link to="/wholesale" className="nav-link">FAQ</Link>
           </nav>
 
           {/* Actions */}
           <div className="nav-actions">
             {/* Cart Icon - Exact Lucide Shopping Cart matching astroresearch.health */}
-            <button
+            <Link
+              to="/cart"
               className="cart-btn"
-              onClick={handleCartClick}
               aria-label="Shopping Cart"
               id="nav-cart-btn"
-              type="button"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-cart-icon">
                 <circle cx="8" cy="21" r="1"></circle>
@@ -66,7 +66,7 @@ const Navbar = () => {
                 <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
               </svg>
               {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
-            </button>
+            </Link>
 
             {/* Auth Button or User Menu */}
             {user ? (
@@ -136,8 +136,6 @@ const Navbar = () => {
           </div>
         )}
       </header>
-
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 };

@@ -14,9 +14,14 @@ const Home = () => {
     const fetchFeatured = async () => {
       try {
         const { data } = await api.get('/products?featured=true&limit=8');
-        setFeaturedProducts(data.products || []);
+        let prods = data.products || (Array.isArray(data) ? data : []);
+        if (prods.length === 0) {
+          const fallbackRes = await api.get('/products?limit=8');
+          prods = fallbackRes.data.products || (Array.isArray(fallbackRes.data) ? fallbackRes.data : []);
+        }
+        setFeaturedProducts(prods);
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching products:', err);
       }
     };
     fetchFeatured();
@@ -81,38 +86,23 @@ const Home = () => {
 
         <div className="hero-container-left">
           <div className="hero-content-left">
-            <h1 className="hero-title-split">
-              <span className="hero-title-solid">ASTRO</span>
-              <span className="hero-title-hollow">RESEARCH</span>
+            <span className="hero-eyebrow-red">RESEARCH USE ONLY</span>
+
+            <h1 className="hero-title-apex">
+              Research-grade peptides, documented to the batch.
             </h1>
 
             <p className="hero-subtitle-left">
-              Where precision meets excellence. Laboratory-grade research compounds with 99%+ purity, trusted by researchers worldwide.
+              High-purity compounds supplied to qualified laboratories, with independent COA verification on every lot. Built for researchers who need consistency they can cite.
             </p>
 
             <div className="hero-buttons-row">
-              <Link to="/shop" className="btn-shop-pill" id="hero-shop-now-btn">
-                <span>SHOP NOW</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <Link to="/shop" className="btn-browse-catalog-red" id="hero-shop-now-btn">
+                <span>BROWSE CATALOG</span>
               </Link>
-              <a href="#featured-products" className="btn-learn-text" id="hero-learn-more-btn">
-                LEARN MORE
-              </a>
-            </div>
-
-            <div className="hero-badges-boxes">
-              <div className="badge-box">
-                <div className="badge-box-val">99%+</div>
-                <div className="badge-box-sub">PURITY</div>
-              </div>
-              <div className="badge-box">
-                <div className="badge-box-val">$250+</div>
-                <div className="badge-box-sub">FREE SHIP</div>
-              </div>
-              <div className="badge-box">
-                <div className="badge-box-val">COA</div>
-                <div className="badge-box-sub">INCLUDED</div>
-              </div>
+              <Link to="/coas" className="btn-view-coa-outline" id="hero-coa-btn">
+                VIEW COA LIBRARY
+              </Link>
             </div>
           </div>
         </div>
@@ -166,7 +156,7 @@ const Home = () => {
         <div className="section-container">
           <div className="why-grid">
             <div className="why-content">
-              <div className="section-tag">WHY ASTRO RESEARCH</div>
+              <div className="section-tag">WHY APEX PEP CO</div>
               <h2>PRECISION. PURITY. PERFORMANCE.</h2>
               <p>Every compound we offer undergoes rigorous third-party testing to ensure 99%+ purity. Our research-grade compounds are trusted by laboratories worldwide.</p>
               <div className="why-stats">

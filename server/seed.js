@@ -177,13 +177,8 @@ const seed = async () => {
     ];
 
     for (const prod of productData) {
-      const existing = await Product.findOne({ slug: prod.slug });
-      if (!existing) {
-        await Product.create(prod);
-        console.log(`✅ Product: ${prod.name}`);
-      } else {
-        console.log(`ℹ️  Product exists: ${prod.name}`);
-      }
+      await Product.findOneAndUpdate({ slug: prod.slug }, prod, { upsert: true, new: true });
+      console.log(`✅ Product updated: ${prod.name}`);
     }
 
     // ── Site Settings (force update to Red/Black theme) ──

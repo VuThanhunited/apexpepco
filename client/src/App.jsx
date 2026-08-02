@@ -14,7 +14,9 @@ import ProductDetail from './pages/ProductDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Checkout from './pages/Checkout';
+import Cart from './pages/Cart';
 import Account from './pages/Account';
+import About from './pages/About';
 import './App.css';
 
 const App = () => {
@@ -25,7 +27,6 @@ const App = () => {
           <CartProvider>
             <AgeGate />
             <PromoModal />
-            <CartDrawer />
             <div className="app-layout">
               <Navbar />
               <main className="app-main">
@@ -33,11 +34,12 @@ const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/home" element={<Home />} />
                   <Route path="/shop" element={<Shop />} />
+                  <Route path="/about" element={<About />} />
                   <Route path="/product/:slug" element={<ProductDetail />} />
                   <Route path="/shop/:id" element={<ProductDetail />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-                  <Route path="/cart" element={<Checkout />} />
+                  <Route path="/cart" element={<Cart />} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/account" element={<Account />} />
                   <Route path="/account/orders" element={<Account />} />
@@ -54,7 +56,7 @@ const App = () => {
                   <Route path="/wholesale" element={
                     <div className="wholesale-page" style={{ padding: '4rem 1.5rem', maxWidth: 800, margin: '0 auto' }}>
                       <h1 style={{ fontSize: '2rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem', textAlign: 'center' }}>Wholesale & Business Applications</h1>
-                      <p style={{ color: '#8c8c8f', textAlign: 'center', marginBottom: '2.5rem' }}>Partner with Astro Research for bulk compound orders and specialized lab supply.</p>
+                      <p style={{ color: '#8c8c8f', textAlign: 'center', marginBottom: '2.5rem' }}>Partner with Apex PepCo for bulk compound orders and specialized lab supply.</p>
                       <form style={{ background: '#0b0b0c', border: '1px solid #2a2a2c', borderRadius: '0.75rem', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }} onSubmit={e => { e.preventDefault(); alert('Application submitted successfully!'); }}>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                           <div><label style={{ display: 'block', fontSize: '0.8rem', color: '#8c8c8f', marginBottom: '0.4rem' }}>Business Name</label><input required style={{ width: '100%', background: '#121214', border: '1px solid #2a2a2c', color: '#fff', padding: '0.7rem', borderRadius: '0.5rem' }} /></div>

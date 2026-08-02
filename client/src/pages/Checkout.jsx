@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
 import api from '../utils/api';
@@ -8,11 +8,11 @@ import './Checkout.css';
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
   const { settings } = useSite();
-  const navigate = useNavigate();
+
   const threshold = settings?.freeShippingThreshold || 250;
-  const shippingCost = settings?.shippingCost || 15;
-  const shipping = subtotal >= threshold ? 0 : shippingCost;
-  const total = subtotal + shipping;
+  const shippingCost = subtotal >= threshold ? 0 : 12.99;
+  const estimatedTax = Number((subtotal * 0.06).toFixed(2));
+  const total = subtotal + shippingCost + estimatedTax;
 
   const [form, setForm] = useState({
     firstName: '',
@@ -23,19 +23,43 @@ const Checkout = () => {
     city: '',
     state: '',
     zipCode: '',
-    country: 'US'
+    country: 'US',
+    paymentMethod: 'cash_app', // Default matching sample
+    cardNumber: '',
+    cardExp: '',
+    cardCvc: '',
+    couponCode: '',
   });
+
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponError, setCouponError] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successOrder, setSuccessOrder] = useState(null);
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
+  const isFormValid = Boolean(
+    form.firstName && form.lastName && form.email && form.address && form.city && form.state && form.zipCode
+  );
+
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+    if (!form.couponCode.trim()) return;
+    if (form.couponCode.trim().toUpperCase() === 'ASTRO10') {
+      setAppliedCoupon({ code: 'ASTRO10', discount: subtotal * 0.1 });
+      setCouponError('');
+    } else {
+      setCouponError('Invalid coupon code');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (items.length === 0) return;
     setLoading(true);
     setError('');
+
     try {
       const orderItems = items.map(i => ({
         product: i.productId,
@@ -48,91 +72,193 @@ const Checkout = () => {
 
       const { data } = await api.post('/orders', {
         items: orderItems,
-        shippingAddress: form,
+        shippingAddress: {
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          address: form.address,
+          city: form.city,
+          state: form.state,
+          zipCode: form.zipCode,
+          country: form.country,
+        },
         guestEmail: form.email,
-        paymentMethod: 'credit_card',
+        paymentMethod: form.paymentMethod,
+        totalAmount: total,
       });
 
       clearCart();
       setSuccessOrder(data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to place order. Please try again.');
+      setError(err.response?.data?.message || 'Failed to place order. Please verify your info.');
     } finally {
       setLoading(false);
     }
   };
 
-  if (successOrder) return (
-    <div className="checkout-success">
-      <div className="success-icon">✓</div>
-      <h1>Order Placed Successfully!</h1>
-      <p className="order-num-text">Order Number: <strong>{successOrder.orderNumber || successOrder._id}</strong></p>
-      <p className="success-sub">Thank you for your order. A confirmation email has been sent to <strong>{form.email}</strong>. We will dispatch your order within 24 hours.</p>
-      <div className="success-actions">
-        <Link to="/shop" className="btn-continue">Continue Shopping</Link>
-        <Link to="/account" className="btn-view-order">View Order Details</Link>
-      </div>
-    </div>
-  );
+  if (successOrder) {
+    return (
+      <div className="checkout-success">
+        <div className="success-card">
+          <div className="success-icon">✓</div>
+          <h1>Order Confirmed!</h1>
+          <p className="order-number">
+            Order Reference: <strong>#{successOrder.orderNumber || successOrder._id?.slice(-8).toUpperCase()}</strong>
+          </p>
+          <p className="success-msg">
+            Thank you for your order, <strong>{form.firstName}</strong>. A confirmation email has been sent to <strong>{form.email}</strong>.
+          </p>
+          
+          <div className="order-receipt-summary">
+            <h3>Receipt Summary</h3>
+            <div className="receipt-row">
+              <span>Subtotal:</span>
+              <span>${subtotal.toFixed(2)}</span>
+            </div>
+            <div className="receipt-row">
+              <span>Shipping (2-day):</span>
+              <span>{shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}</span>
+            </div>
+            <div className="receipt-row">
+              <span>Estimated Tax:</span>
+              <span>${estimatedTax.toFixed(2)}</span>
+            </div>
+            <div className="receipt-row total">
+              <span>Total Paid:</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
+          </div>
 
-  if (items.length === 0) return (
-    <div className="checkout-empty">
-      <div className="empty-cart-icon">🛒</div>
-      <h2>Your cart is empty</h2>
-      <p>Add items to your cart before proceeding to checkout.</p>
-      <Link to="/shop" className="btn-continue">Browse Catalog</Link>
-    </div>
-  );
+          <div className="success-actions">
+            <Link to="/shop" className="btn-success-shop">
+              Continue Shopping
+            </Link>
+            <Link to="/account" className="btn-success-account">
+              View Order Details
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="checkout-empty">
+        <div className="empty-cart-card">
+          <div className="empty-cart-icon">🛒</div>
+          <h2>Your Cart is Empty</h2>
+          <p>Add items to your requisition cart before proceeding to checkout.</p>
+          <Link to="/shop" className="btn-browse-catalog">Browse Catalog</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="checkout-page">
       <div className="checkout-container">
+        {/* Left Column: Form */}
         <div className="checkout-form-col">
-          <h1>Checkout</h1>
+          <h1 className="checkout-main-title">Checkout</h1>
           {error && <div className="checkout-error">{error}</div>}
+
           <form onSubmit={handleSubmit} id="checkout-form">
+            {/* Contact & Shipping */}
             <div className="checkout-section">
-              <h2>Contact Information</h2>
+              <h2>1. Contact & Shipping Information</h2>
               <div className="form-row">
                 <div className="form-group">
                   <label>First Name *</label>
-                  <input required placeholder="John" value={form.firstName} onChange={set('firstName')} id="checkout-firstname" />
+                  <input
+                    required
+                    placeholder="John"
+                    value={form.firstName}
+                    onChange={set('firstName')}
+                    id="checkout-firstname"
+                  />
                 </div>
                 <div className="form-group">
                   <label>Last Name *</label>
-                  <input required placeholder="Doe" value={form.lastName} onChange={set('lastName')} id="checkout-lastname" />
+                  <input
+                    required
+                    placeholder="Doe"
+                    value={form.lastName}
+                    onChange={set('lastName')}
+                    id="checkout-lastname"
+                  />
                 </div>
-              </div>
-              <div className="form-group">
-                <label>Email Address *</label>
-                <input required type="email" placeholder="email@example.com" value={form.email} onChange={set('email')} id="checkout-email" />
-              </div>
-              <div className="form-group">
-                <label>Phone Number</label>
-                <input type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={set('phone')} id="checkout-phone" />
-              </div>
-            </div>
-
-            <div className="checkout-section">
-              <h2>Shipping Address</h2>
-              <div className="form-group">
-                <label>Street Address *</label>
-                <input required placeholder="123 Main Street, Suite 100" value={form.address} onChange={set('address')} id="checkout-address" />
               </div>
               <div className="form-row">
                 <div className="form-group">
+                  <label>Email Address *</label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="johndoe@example.com"
+                    value={form.email}
+                    onChange={set('email')}
+                    id="checkout-email"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Phone Number *</label>
+                  <input
+                    required
+                    type="tel"
+                    placeholder="+1 (555) 000-0000"
+                    value={form.phone}
+                    onChange={set('phone')}
+                    id="checkout-phone"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group margin-top-sm">
+                <label>Street Address *</label>
+                <input
+                  required
+                  placeholder="123 Research Parkway, Suite 400"
+                  value={form.address}
+                  onChange={set('address')}
+                  id="checkout-address"
+                />
+              </div>
+
+              <div className="form-row margin-top-sm">
+                <div className="form-group">
                   <label>City *</label>
-                  <input required placeholder="New York" value={form.city} onChange={set('city')} id="checkout-city" />
+                  <input
+                    required
+                    placeholder="New York"
+                    value={form.city}
+                    onChange={set('city')}
+                    id="checkout-city"
+                  />
                 </div>
                 <div className="form-group">
                   <label>State / Province *</label>
-                  <input required placeholder="NY" value={form.state} onChange={set('state')} id="checkout-state" />
+                  <input
+                    required
+                    placeholder="NY"
+                    value={form.state}
+                    onChange={set('state')}
+                    id="checkout-state"
+                  />
                 </div>
               </div>
-              <div className="form-row">
+
+              <div className="form-row margin-top-sm">
                 <div className="form-group">
                   <label>ZIP / Postal Code *</label>
-                  <input required placeholder="10001" value={form.zipCode} onChange={set('zipCode')} id="checkout-zip" />
+                  <input
+                    required
+                    placeholder="10001"
+                    value={form.zipCode}
+                    onChange={set('zipCode')}
+                    id="checkout-zip"
+                  />
                 </div>
                 <div className="form-group">
                   <label>Country *</label>
@@ -146,44 +272,233 @@ const Checkout = () => {
               </div>
             </div>
 
-            <div className="checkout-disclaimer">
-              <p>⚠️ By placing this order, you confirm that you are a qualified researcher aged 21+ and these compounds are strictly for laboratory research use only. Not for human or animal consumption.</p>
+            {/* Payment Details Section */}
+            <div className="checkout-section">
+              <div className="payment-section-header">
+                <h2>Payment Details</h2>
+                <span className="lock-badge">🔒</span>
+              </div>
+
+              {!isFormValid && (
+                <div className="payment-unlock-banner">
+                  <div className="lock-icon">🔒</div>
+                  <div>
+                    <strong>Complete your details first</strong>
+                    <p>Fill in your contact and shipping information above to unlock payment.</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="payment-options-list">
+                {/* Option 1: Credit Card */}
+                <label className={`payment-option-row ${form.paymentMethod === 'credit_card' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="credit_card"
+                    checked={form.paymentMethod === 'credit_card'}
+                    onChange={set('paymentMethod')}
+                  />
+                  <div className="payment-option-body">
+                    <div className="option-title-line">
+                      <span className="method-name">Credit / Debit Card</span>
+                    </div>
+                    <span className="method-sub">Visa, Mastercard, Amex, Discover — secured by Authorize.net</span>
+                  </div>
+                  <span className="radio-circle"></span>
+                </label>
+
+                {/* Option 2: Cash App Pay */}
+                <label className={`payment-option-row ${form.paymentMethod === 'cash_app' ? 'selected green-glow' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash_app"
+                    checked={form.paymentMethod === 'cash_app'}
+                    onChange={set('paymentMethod')}
+                  />
+                  <div className="payment-option-body">
+                    <div className="option-title-line">
+                      <span className="cashapp-badge">$</span>
+                      <span className="method-name">Cash App Pay</span>
+                    </div>
+                    <span className="method-sub">Pay @Apexpepco from the Cash App</span>
+                  </div>
+                  <span className="radio-circle"></span>
+                </label>
+
+                {/* Option 3: Venmo */}
+                <label className={`payment-option-row ${form.paymentMethod === 'venmo' ? 'selected blue-glow' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="venmo"
+                    checked={form.paymentMethod === 'venmo'}
+                    onChange={set('paymentMethod')}
+                  />
+                  <div className="payment-option-body">
+                    <div className="option-title-line">
+                      <span className="venmo-badge">V</span>
+                      <span className="method-name">Venmo</span>
+                    </div>
+                    <span className="method-sub">Pay @Apexpepco on Venmo</span>
+                  </div>
+                  <span className="radio-circle"></span>
+                </label>
+              </div>
+
+              {/* Dynamic Payment Instruction Box */}
+              {form.paymentMethod === 'cash_app' && (
+                <div className="payment-instruction-box cash-app-box">
+                  <div className="instruction-header">
+                    <span className="icon-bolt">⚡</span>
+                    <h3>How Cash App Pay checkout works</h3>
+                  </div>
+                  <ol className="instruction-steps">
+                    <li>Click <strong>"Place Order — Pay with Cash App"</strong> below.</li>
+                    <li>Cash App opens to <strong>$Apexpepco</strong> with your total pre-filled (mobile) or shown (desktop).</li>
+                    <li>Send the payment from your Cash App account.</li>
+                    <li>Your order is held as <strong>Pending Payment</strong> — items ship once we confirm the deposit.</li>
+                  </ol>
+                </div>
+              )}
+
+              {form.paymentMethod === 'venmo' && (
+                <div className="payment-instruction-box venmo-box">
+                  <div className="instruction-header">
+                    <span className="icon-bolt">⚡</span>
+                    <h3>How Venmo checkout works</h3>
+                  </div>
+                  <ol className="instruction-steps">
+                    <li>Click <strong>"Place Order — Pay with Venmo"</strong> below.</li>
+                    <li>Send payment to <strong>@Apexpepco</strong> on Venmo.</li>
+                    <li>Include your Order Reference Number in the payment note.</li>
+                    <li>Your order is held as <strong>Pending Payment</strong> — items ship once we confirm deposit.</li>
+                  </ol>
+                </div>
+              )}
+
+              {form.paymentMethod === 'credit_card' && (
+                <div className="credit-card-inputs-box">
+                  <div className="form-group">
+                    <label>Card Number *</label>
+                    <input
+                      required={form.paymentMethod === 'credit_card'}
+                      placeholder="4532 •••• •••• 8892"
+                      value={form.cardNumber}
+                      onChange={set('cardNumber')}
+                    />
+                  </div>
+                  <div className="form-row margin-top-sm">
+                    <div className="form-group">
+                      <label>Expires (MM/YY) *</label>
+                      <input
+                        required={form.paymentMethod === 'credit_card'}
+                        placeholder="12/28"
+                        value={form.cardExp}
+                        onChange={set('cardExp')}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>CVC *</label>
+                      <input
+                        required={form.paymentMethod === 'credit_card'}
+                        placeholder="123"
+                        value={form.cardCvc}
+                        onChange={set('cardCvc')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <button type="submit" className="btn-place-order" id="place-order-btn" disabled={loading}>
-              {loading ? 'Processing Order...' : `Place Order · $${total.toFixed(2)}`}
+            {/* Place Order CTA Button */}
+            <button
+              type="submit"
+              className="btn-place-order-cyan"
+              id="place-order-btn"
+              disabled={loading}
+            >
+              {loading
+                ? 'PROCESSING ORDER...'
+                : form.paymentMethod === 'cash_app'
+                ? `PLACE ORDER — PAY WITH CASH APP · $${total.toFixed(2)}`
+                : form.paymentMethod === 'venmo'
+                ? `PLACE ORDER — PAY WITH VENMO · $${total.toFixed(2)}`
+                : `PLACE ORDER · $${total.toFixed(2)}`
+              }
             </button>
           </form>
         </div>
 
+        {/* Right Column: Sticky Order Summary */}
         <div className="checkout-summary-col">
-          <div className="order-summary">
-            <h2>Order Summary</h2>
-            <div className="summary-items">
+          <div className="sticky-order-summary-card">
+            <h2 className="summary-title">Order Summary</h2>
+
+            {/* Cart Items List */}
+            <div className="summary-items-list">
               {items.map(item => {
                 const imgUrl = resolveImageUrl(item.productImage);
                 return (
-                  <div key={item.key} className="summary-item">
-                    <div className="summary-item-img">
-                      {imgUrl
-                        ? <img src={imgUrl} alt={item.productName} />
-                        : <span>🔬</span>
-                      }
+                  <div key={item.key} className="summary-item-row">
+                    <div className="summary-item-thumb">
+                      {imgUrl ? (
+                        <img src={imgUrl} alt={item.productName} />
+                      ) : (
+                        <span>🔬</span>
+                      )}
                     </div>
-                    <div className="summary-item-info">
-                      <p>{item.productName}</p>
-                      {item.variant && <small>{item.variant.name}</small>}
-                      <small>Qty: {item.quantity}</small>
+                    <div className="summary-item-details">
+                      <p className="item-name">{item.productName} <span className="qty-tag">[x{item.quantity}]</span></p>
+                      {item.variant && <span className="item-variant">{item.variant.name}</span>}
                     </div>
-                    <span className="summary-item-price">${(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="item-price">${(item.price * item.quantity).toFixed(2)}</span>
                   </div>
                 );
               })}
             </div>
-            <div className="summary-totals">
-              <div className="summary-row"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-              <div className="summary-row"><span>Shipping</span><span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span></div>
-              <div className="summary-row total"><span>Total</span><span>${total.toFixed(2)}</span></div>
+
+            {/* Coupon Code Input */}
+            <form onSubmit={handleApplyCoupon} className="coupon-code-form">
+              <div className="coupon-input-group">
+                <input
+                  type="text"
+                  placeholder="Enter code..."
+                  value={form.couponCode}
+                  onChange={set('couponCode')}
+                />
+                <button type="submit" className="btn-apply-coupon">Apply</button>
+              </div>
+              {appliedCoupon && <span className="coupon-success">✓ 10% Discount Applied!</span>}
+              {couponError && <span className="coupon-error">{couponError}</span>}
+            </form>
+
+            {/* Breakdown lines */}
+            <div className="summary-breakdown">
+              <div className="breakdown-row">
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+              <div className="breakdown-row">
+                <span>Shipping (2-day shipping)</span>
+                <span>{shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}</span>
+              </div>
+              <div className="breakdown-row">
+                <span>Estimated Tax</span>
+                <span>${estimatedTax.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div className="summary-total-row">
+              <span>Total</span>
+              <span className="total-price">${total.toFixed(2)}</span>
+            </div>
+
+            {/* Reward Points Pill */}
+            <div className="rewards-points-badge">
+              <span>✦ You'll earn +{Math.round(total)} points with this order</span>
             </div>
           </div>
         </div>

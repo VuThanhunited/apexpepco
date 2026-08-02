@@ -3,6 +3,7 @@ const router = express.Router();
 const Order = require('../models/Order');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const { sendOrderEmails } = require('../utils/email');
 
 // POST /api/orders - create order (user or guest)
 router.post('/', async (req, res) => {
@@ -26,6 +27,10 @@ router.post('/', async (req, res) => {
     if (!orderData.user) orderData.guestEmail = guestEmail;
 
     const order = await Order.create(orderData);
+
+    // Send emails asynchronously (does not block response)
+    sendOrderEmails(order).catch(err => console.error('Order email error:', err.message));
+
     res.status(201).json(order);
   } catch (err) {
     res.status(400).json({ message: err.message });

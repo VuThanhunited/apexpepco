@@ -34,10 +34,16 @@ const ProductCard = ({ product }) => {
           <div className="space-stars"></div>
         </div>
 
-        {imgUrl
-          ? <img src={imgUrl} alt={product.name} loading="lazy" className="product-vial-img" />
-          : <div className="product-img-placeholder"><span>🔬</span></div>
-        }
+        <img
+          src={imgUrl || 'https://astroresearch.health/images/tirzepatide.png'}
+          alt={product.name}
+          loading="lazy"
+          className="product-vial-img"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+          }}
+        />
 
         <div className="product-badges">
           <span className="badge featured-cyan-badge">FEATURED</span>

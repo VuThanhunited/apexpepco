@@ -3,25 +3,29 @@ import { useCart } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
 import './CartDrawer.css';
 
-const CartDrawer = ({ open, onClose }) => {
-  const { items, removeItem, updateQuantity, subtotal, clearCart } = useCart();
+const CartDrawer = ({ open, isOpen, onClose }) => {
+  const { items, removeItem, updateQuantity, subtotal, clearCart, isCartOpen, setIsCartOpen } = useCart();
   const { settings } = useSite();
   const navigate = useNavigate();
+
+  const drawerOpen = open !== undefined ? open : (isOpen !== undefined ? isOpen : isCartOpen);
+  const handleClose = onClose || (() => setIsCartOpen(false));
+
   const threshold = settings?.freeShippingThreshold || 250;
   const shippingCost = settings?.shippingCost || 15;
   const remaining = Math.max(0, threshold - subtotal);
   const shipping = subtotal >= threshold ? 0 : shippingCost;
   const total = subtotal + shipping;
 
-  const handleCheckout = () => { onClose(); navigate('/checkout'); };
+  const handleCheckout = () => { handleClose(); navigate('/checkout'); };
 
   return (
     <>
-      {open && <div className="cart-overlay" onClick={onClose} />}
-      <div className={`cart-drawer ${open ? 'open' : ''}`}>
+      {drawerOpen && <div className="cart-overlay" onClick={handleClose} />}
+      <div className={`cart-drawer ${drawerOpen ? 'open' : ''}`}>
         <div className="cart-header">
           <h3>Your Cart <span className="cart-count">{items.length} items</span></h3>
-          <button className="cart-close" id="cart-close-btn" onClick={onClose}>✕</button>
+          <button className="cart-close" id="cart-close-btn" onClick={handleClose}>✕</button>
         </div>
 
         {remaining > 0 && (
@@ -43,7 +47,7 @@ const CartDrawer = ({ open, onClose }) => {
             <div className="cart-empty">
               <div className="cart-empty-icon">🛒</div>
               <p>Your cart is empty</p>
-              <Link to="/shop" className="btn-shop-now" onClick={onClose}>Browse Products</Link>
+              <Link to="/shop" className="btn-shop-now" onClick={handleClose}>Browse Products</Link>
             </div>
           ) : (
             items.map(item => (
