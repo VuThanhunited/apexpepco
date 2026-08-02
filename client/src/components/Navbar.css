@@ -1,18 +1,18 @@
 .announcement-substrip {
   width: 100%;
-  text-align: right;
-  padding: 0.1rem 3rem 0.45rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  text-align: center;
+  padding: 0.15rem 1rem 0.45rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
   background: transparent;
-  color: #38bdf8;
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
   text-transform: uppercase;
 }
 
 .announcement-substrip span {
   display: inline-block;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .navbar {
