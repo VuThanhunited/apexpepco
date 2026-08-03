@@ -12,6 +12,7 @@ const orderItemSchema = new mongoose.Schema({
 const shippingAddressSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
+  email: String,
   address: String,
   city: String,
   state: String,

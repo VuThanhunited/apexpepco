@@ -16,6 +16,7 @@ router.post('/', async (req, res) => {
     const total = subtotal + shippingCost;
 
     const orderData = { items, subtotal, shippingCost, total, shippingAddress, paymentMethod };
+    orderData.guestEmail = guestEmail || shippingAddress?.email;
     if (req.headers.authorization) {
       const jwt = require('jsonwebtoken');
       try {
@@ -24,7 +25,6 @@ router.post('/', async (req, res) => {
         orderData.user = decoded.id;
       } catch (_) {}
     }
-    if (!orderData.user) orderData.guestEmail = guestEmail;
 
     const order = await Order.create(orderData);
 
