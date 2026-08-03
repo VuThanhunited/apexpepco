@@ -43,12 +43,12 @@ const Navbar = () => {
 
           {/* Desktop Nav Links */}
           <nav className="nav-links-desktop">
-            <Link to="/shop" className={`nav-link ${location.pathname.startsWith('/shop') ? 'active' : ''}`}>SHOP</Link>
-            <Link to="/shop" className="nav-link">PRODUCTS</Link>
-            <Link to="/coas" className="nav-link">COA LIBRARY</Link>
-            <Link to="/policies" className="nav-link">SHIPPING</Link>
+            <Link to="/" className={`nav-link ${location.pathname === '/' || location.pathname === '/home' ? 'active' : ''}`}>SHOP</Link>
+            <Link to="/shop" className={`nav-link ${location.pathname.startsWith('/shop') || location.pathname.startsWith('/product') ? 'active' : ''}`}>PRODUCTS</Link>
+            <Link to="/coas" className={`nav-link ${location.pathname === '/coas' ? 'active' : ''}`}>COA LIBRARY</Link>
+            <Link to="/policies" className={`nav-link ${location.pathname === '/policies' ? 'active' : ''}`}>SHIPPING</Link>
             <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>ABOUT</Link>
-            <Link to="/wholesale" className="nav-link">FAQ</Link>
+            <Link to="/wholesale" className={`nav-link ${location.pathname === '/wholesale' ? 'active' : ''}`}>FAQ</Link>
           </nav>
 
           {/* Actions */}
@@ -127,12 +127,12 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="nav-mobile-menu">
-            <Link to="/" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-            <Link to="/shop" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Shop</Link>
-            <Link to="/account" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Portal</Link>
-            <Link to="/coas" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>COAs</Link>
-            <Link to="/login" className="mobile-link mobile-link-cta" onClick={() => setMobileMenuOpen(false)}>Affiliate</Link>
-            <Link to="/wholesale" className="mobile-link mobile-link-cta" onClick={() => setMobileMenuOpen(false)}>Business</Link>
+            <Link to="/" className={`mobile-link ${location.pathname === '/' || location.pathname === '/home' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>SHOP</Link>
+            <Link to="/shop" className={`mobile-link ${location.pathname.startsWith('/shop') || location.pathname.startsWith('/product') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>PRODUCTS</Link>
+            <Link to="/coas" className={`mobile-link ${location.pathname === '/coas' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>COA LIBRARY</Link>
+            <Link to="/policies" className={`mobile-link ${location.pathname === '/policies' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>SHIPPING</Link>
+            <Link to="/about" className={`mobile-link ${location.pathname === '/about' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>ABOUT</Link>
+            <Link to="/wholesale" className={`mobile-link ${location.pathname === '/wholesale' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
           </div>
         )}
       </header>
