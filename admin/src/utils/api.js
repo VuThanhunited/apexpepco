@@ -1,8 +1,20 @@
 import axios from 'axios';
 
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/$/, '')}/api`;
+  }
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    return '/api';
+  }
+  // Production fallback API URL
+  return 'https://apexpepco.onrender.com/api';
+};
+
 const api = axios.create({
-  baseURL: '/api',
-  timeout: 15000,
+  baseURL: getBaseUrl(),
+  timeout: 20000,
 });
 
 api.interceptors.request.use((config) => {
