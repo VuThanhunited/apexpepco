@@ -1,10 +1,12 @@
 const nodemailer = require('nodemailer');
 
 const ADMIN_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'vtu21102000@gmail.com';
+const EMAIL_USER = process.env.EMAIL_USER || 'vtu21102000@gmail.com';
+const EMAIL_PASS = (process.env.EMAIL_PASS || 'yfqwyyctowncryac').replace(/\s+/g, '');
 
-// Create Nodemailer Transporter
+// Create Nodemailer Transporter for Gmail SMTP
 const getTransporter = async () => {
-  // 1. Check custom SMTP credentials from environment
+  // 1. Custom SMTP if specified
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
     return nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -17,42 +19,21 @@ const getTransporter = async () => {
     });
   }
 
-  // 2. Check Gmail SMTP credentials
-  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-    const gmailTransporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-    try {
-      await gmailTransporter.verify();
-      console.log('✅ Gmail SMTP verified successfully for:', process.env.EMAIL_USER);
-      return gmailTransporter;
-    } catch (err) {
-      console.warn('⚠️ Gmail SMTP direct login notice:', err.message);
-      console.warn('💡 Ghi chú: Vì tài khoản Gmail đã bật Xác minh 2 bước, Google yêu cầu tạo "Mật khẩu ứng dụng" (App Password) tại: https://myaccount.google.com/apppasswords');
-      console.log('🔄 Đang tự động chuyển sang chế độ Mailer dự phòng (Ethereal Dev Mailer)...');
+  // 2. Direct Gmail Transporter using port 465 SSL with App Password
+  const gmailTransporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false
     }
-  }
+  });
 
-  // 3. Fallback: Ethereal auto-generated test SMTP for development
-  try {
-    const testAccount = await nodemailer.createTestAccount();
-    return nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-  } catch (err) {
-    console.warn('⚠️ Could not create Ethereal test mailer account:', err.message);
-    return null;
-  }
+  return gmailTransporter;
 };
 
 /**
@@ -61,16 +42,20 @@ const getTransporter = async () => {
 const sendOrderEmails = async (order) => {
   try {
     const transporter = await getTransporter();
+    if (!transporter) {
+      console.warn('⚠️ Mailer transporter not initialized');
+      return;
+    }
 
-    const orderIdShort = order._id.toString().slice(-6).toUpperCase();
+    const orderIdShort = order.orderNumber || (order._id ? order._id.toString().slice(-6).toUpperCase() : 'APEX-ORDER');
     const customerEmail = order.shippingAddress?.email || order.guestEmail || (order.user && order.user.email);
     const customerName = `${order.shippingAddress?.firstName || ''} ${order.shippingAddress?.lastName || ''}`.trim() || 'Valued Customer';
     const address = order.shippingAddress || {};
 
-    const itemsHtml = order.items.map(item => `
+    const itemsHtml = (order.items || []).map(item => `
       <tr style="border-bottom: 1px solid #2a2a2c;">
         <td style="padding: 12px; color: #ffffff;">
-          <strong>${item.name || item.title || 'Peptide Product'}</strong>
+          <strong>${item.productName || item.name || item.title || 'Peptide Product'}</strong>
           ${item.variant ? `<br/><span style="font-size: 12px; color: #8c8c8f;">Option: ${item.variant.name || item.variant}</span>` : ''}
         </td>
         <td style="padding: 12px; text-align: center; color: #ffffff;">${item.quantity}</td>
@@ -113,8 +98,8 @@ const sendOrderEmails = async (order) => {
 
           <div style="margin-top: 15px; border-top: 1px solid #3a3a3c; padding-top: 12px; text-align: right; font-size: 14px;">
             <p style="margin: 4px 0; color: #8c8c8f;">Subtotal: <strong style="color: #ffffff;">$${(order.subtotal || 0).toFixed(2)}</strong></p>
-            <p style="margin: 4px 0; color: #8c8c8f;">Shipping: <strong style="color: #ffffff;">${order.shippingCost === 0 ? 'FREE' : `$${order.shippingCost.toFixed(2)}`}</strong></p>
-            <p style="margin: 8px 0 0 0; font-size: 18px; color: #c4222f;">Total: <strong>$${(order.total || 0).toFixed(2)}</strong></p>
+            <p style="margin: 4px 0; color: #8c8c8f;">Shipping: <strong style="color: #ffffff;">${order.shippingCost === 0 ? 'FREE' : `$${(order.shippingCost || 0).toFixed(2)}`}</strong></p>
+            <p style="margin: 8px 0 0 0; font-size: 18px; color: #c4222f;">Total: <strong>$${(order.total || order.totalAmount || 0).toFixed(2)}</strong></p>
           </div>
         </div>
 
@@ -153,7 +138,7 @@ const sendOrderEmails = async (order) => {
         </div>
 
         <div style="margin: 20px 0; font-size: 15px;">
-          <p style="color: #ffffff;"><strong>Total Amount:</strong> <span style="color: #22c55e; font-size: 20px; font-weight: bold;">$${(order.total || 0).toFixed(2)}</span></p>
+          <p style="color: #ffffff;"><strong>Total Amount:</strong> <span style="color: #22c55e; font-size: 20px; font-weight: bold;">$${(order.total || order.totalAmount || 0).toFixed(2)}</span></p>
           <p style="color: #ffffff;"><strong>Payment Method:</strong> ${order.paymentMethod || 'Pending'}</p>
           <p style="color: #ffffff;"><strong>Customer Email:</strong> ${customerEmail}</p>
           <p style="color: #ffffff;"><strong>Customer Phone:</strong> ${address.phone || 'N/A'}</p>
@@ -186,37 +171,30 @@ const sendOrderEmails = async (order) => {
       </div>
     `;
 
-    // ─────────────────────────────────────────────────────────────
-    // SEND EMAILS
-    // ─────────────────────────────────────────────────────────────
-    const fromAddress = process.env.EMAIL_FROM || '"Apex PepCo Orders" <orders@apexpepco.com>';
+    const fromHeader = `"${process.env.EMAIL_FROM_NAME || 'Apex PepCo Orders'}" <${EMAIL_USER}>`;
 
-    if (transporter) {
-      // Send to Customer
-      if (customerEmail) {
-        const info1 = await transporter.sendMail({
-          from: fromAddress,
-          to: customerEmail,
-          subject: `[Apex PepCo] Order Confirmation - #${orderIdShort}`,
-          html: customerHtml,
-        });
-        console.log(`✉️ Customer confirmation email sent to ${customerEmail}:`, nodemailer.getTestMessageUrl(info1) || info1.messageId);
-      }
-
-      // Send to Admin (vtu21102000@gmail.com)
-      const info2 = await transporter.sendMail({
-        from: fromAddress,
-        to: ADMIN_EMAIL,
-        subject: `🚨 [NEW ORDER ALERT] #${orderIdShort} - $${(order.total || 0).toFixed(2)} (${customerName})`,
-        html: adminHtml,
+    // Send Customer Email
+    if (customerEmail) {
+      const res1 = await transporter.sendMail({
+        from: fromHeader,
+        to: customerEmail,
+        subject: `[Apex PepCo] Order Confirmation - #${orderIdShort}`,
+        html: customerHtml,
       });
-      console.log(`🔔 Admin notification email sent to ${ADMIN_EMAIL}:`, nodemailer.getTestMessageUrl(info2) || info2.messageId);
-    } else {
-      console.log(`ℹ️ Mailer transporter inactive. Order #${orderIdShort} logged for ${customerEmail} & ${ADMIN_EMAIL}`);
+      console.log(`✉️ Customer email delivered to ${customerEmail}:`, res1.messageId);
     }
 
+    // Send Admin Email
+    const res2 = await transporter.sendMail({
+      from: fromHeader,
+      to: ADMIN_EMAIL,
+      subject: `🚨 [NEW ORDER ALERT] #${orderIdShort} - $${(order.total || order.totalAmount || 0).toFixed(2)} (${customerName})`,
+      html: adminHtml,
+    });
+    console.log(`🔔 Admin notification email delivered to ${ADMIN_EMAIL}:`, res2.messageId);
+
   } catch (err) {
-    console.error('❌ Error sending order emails:', err.message);
+    console.error('❌ Error sending order emails via Gmail SMTP:', err);
   }
 };
 
