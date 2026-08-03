@@ -55,20 +55,30 @@ if (fs.existsSync(clientDistPath)) {
   app.use(express.static(clientDistPath));
 }
 
+// List of direct admin routes
+const adminRoutes = ['/site-settings', '/products', '/orders', '/users', '/account-settings', '/login'];
+
 // SPA Routing Fallback
 app.use((req, res, next) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ message: 'API route not found' });
   }
 
-  // Fallback for /admin routes
-  if (req.path.startsWith('/admin') && fs.existsSync(adminDistPath)) {
+  const isAdminPath = req.path.startsWith('/admin') || adminRoutes.some(r => req.path === r || req.path.startsWith(r + '/'));
+
+  // Fallback for admin routes
+  if (isAdminPath && fs.existsSync(adminDistPath)) {
     return res.sendFile(path.join(adminDistPath, 'index.html'));
   }
 
   // Fallback for client routes
   if (fs.existsSync(clientDistPath)) {
     return res.sendFile(path.join(clientDistPath, 'index.html'));
+  }
+
+  // Fallback for admin if client doesn't exist
+  if (fs.existsSync(adminDistPath)) {
+    return res.sendFile(path.join(adminDistPath, 'index.html'));
   }
 
   res.status(404).json({ message: 'Route not found' });
