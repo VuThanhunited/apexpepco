@@ -459,15 +459,18 @@ const Checkout = () => {
             {/* Cart Items List */}
             <div className="summary-items-list">
               {items.map(item => {
-                const imgUrl = resolveImageUrl(item.productImage);
+                const imgUrl = resolveImageUrl(item.productImage || item.imageUrl || item.image || item.product?.imageUrl || item.product?.image);
                 return (
                   <div key={item.key} className="summary-item-row">
                     <div className="summary-item-thumb">
-                      {imgUrl ? (
-                        <img src={imgUrl} alt={item.productName} />
-                      ) : (
-                        <span>🔬</span>
-                      )}
+                      <img
+                        src={imgUrl || 'https://astroresearch.health/images/tirzepatide.png'}
+                        alt={item.productName}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                        }}
+                      />
                     </div>
                     <div className="summary-item-details">
                       <p className="item-name">{item.productName} <span className="qty-tag">[x{item.quantity}]</span></p>

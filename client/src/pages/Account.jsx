@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { resolveImageUrl } from '../contexts/CartContext';
 import api from '../utils/api';
 import './Account.css';
 
@@ -67,9 +68,31 @@ const Account = () => {
                       </span>
                     </div>
                   <div className="order-items-preview">
-                    {order.items.map((item, i) => (
-                      <span key={i} className="order-item-tag">{item.productName} ×{item.quantity}</span>
-                    ))}
+                    {order.items.map((item, i) => {
+                      const itemImg = resolveImageUrl(item.productImage || item.imageUrl || item.image || item.product?.imageUrl || item.product?.image);
+                      return (
+                        <div key={i} className="account-order-item-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                          <div style={{ width: 44, height: 44, borderRadius: '0.4rem', background: '#0b0b0c', border: '1px solid #2a2a2c', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <img
+                              src={itemImg || 'https://astroresearch.health/images/tirzepatide.png'}
+                              alt={item.productName}
+                              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                              }}
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ color: '#ededed', fontSize: '0.88rem', fontWeight: 600 }}>{item.productName} <span style={{ color: '#8c8c8f', fontSize: '0.8rem' }}>×{item.quantity}</span></div>
+                            {item.variant && <div style={{ color: '#8c8c8f', fontSize: '0.75rem' }}>{item.variant.name || item.variant}</div>}
+                          </div>
+                          <div style={{ color: '#c4222f', fontWeight: 700, fontSize: '0.9rem' }}>
+                            ${((item.price || 0) * (item.quantity || 1)).toFixed(2)}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="order-card-footer">
                     <span className="order-total">Total: ${order.total?.toFixed(2)}</span>
