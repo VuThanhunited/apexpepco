@@ -28,12 +28,10 @@ router.post('/', async (req, res) => {
 
     const order = await Order.create(orderData);
 
-    // Send emails synchronously (awaited) to ensure email dispatch completes before HTTP response ends
-    try {
-      await sendOrderEmails(order);
-    } catch (emailErr) {
-      console.error('Order email dispatch error:', emailErr.message);
-    }
+    // Send emails asynchronously in background so HTTP response is instant (<50ms)
+    setImmediate(() => {
+      sendOrderEmails(order).catch(err => console.error('Background order email error:', err.message));
+    });
 
     res.status(201).json(order);
   } catch (err) {
