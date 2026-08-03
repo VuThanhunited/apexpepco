@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useAdminAuth } from '../contexts/AdminAuthContext';
 import api from '../utils/api';
 import './Dashboard.css';
 
 const Dashboard = () => {
+  const { user } = useAdminAuth();
   const [stats, setStats] = useState({ products: 0, orders: 0, users: 0, revenue: 0 });
   const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,14 +17,15 @@ const Dashboard = () => {
           api.get('/orders?limit=5'),
           api.get('/users?limit=1'),
         ]);
-        const revenue = orderRes.data.orders?.reduce((sum, o) => sum + (o.total || 0), 0) || 0;
+        const allOrders = orderRes.data.orders || [];
+        const revenue = allOrders.reduce((sum, o) => sum + (o.total || 0), 0);
         setStats({
           products: prodRes.data.total || 0,
           orders: orderRes.data.total || 0,
           users: userRes.data.total || 0,
           revenue,
         });
-        setRecentOrders(orderRes.data.orders || []);
+        setRecentOrders(allOrders);
       } catch (err) {
         console.error(err);
       } finally {
@@ -33,217 +36,108 @@ const Dashboard = () => {
   }, []);
 
   const statusMeta = {
-    pending: { label: 'Pending', color: '#f59e0b', bg: '#fef3c7' },
-    processing: { label: 'Processing', color: '#0284c7', bg: '#e0f2fe' },
-    shipped: { label: 'Shipped', color: '#7c3aed', bg: '#ede9fe' },
-    delivered: { label: 'Delivered', color: '#16a34a', bg: '#dcfce7' },
-    cancelled: { label: 'Cancelled', color: '#dc2626', bg: '#fee2e2' },
+    pending: { label: 'Pending', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.12)' },
+    processing: { label: 'Processing', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.12)' },
+    shipped: { label: 'Shipped', color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.12)' },
+    delivered: { label: 'Delivered', color: '#10b981', bg: 'rgba(16, 185, 129, 0.12)' },
+    cancelled: { label: 'Cancelled', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.12)' },
   };
 
+  const kpiCards = [
+    {
+      title: 'Total Revenue',
+      value: loading ? '...' : `$${stats.revenue.toLocaleString()}`,
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      ),
+      gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+      shadow: 'rgba(99, 102, 241, 0.3)',
+    },
+    {
+      title: 'Total Orders',
+      value: loading ? '...' : stats.orders.toLocaleString(),
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+      ),
+      gradient: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+      shadow: 'rgba(6, 182, 212, 0.3)',
+    },
+    {
+      title: 'Total Products',
+      value: loading ? '...' : stats.products.toLocaleString(),
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        </svg>
+      ),
+      gradient: 'linear-gradient(135deg, #10b981, #059669)',
+      shadow: 'rgba(16, 185, 129, 0.3)',
+    },
+    {
+      title: 'Total Users',
+      value: loading ? '...' : stats.users.toLocaleString(),
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      ),
+      gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
+      shadow: 'rgba(245, 158, 11, 0.3)',
+    },
+  ];
+
   return (
-    <div className="admindek-dashboard">
-      {/* Top Banner Card */}
-      <div className="page-header-banner">
-        <div className="banner-icon-box">
-          <span className="banner-icon">🏠</span>
+    <div className="dashboard-page">
+      {/* Welcome Banner */}
+      <div className="welcome-banner">
+        <div className="welcome-content">
+          <h1>Welcome back, {user?.firstName || 'Admin'} 👋</h1>
+          <p>Here's what's happening with your store today.</p>
         </div>
-        <div className="banner-text">
-          <h1>Dashboard</h1>
-          <p>lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-        </div>
-        <div className="banner-breadcrumb">
-          <span>🏠</span> / <strong>Dashboard</strong>
+        <div className="welcome-decoration">
+          <div className="welcome-orb orb-1"></div>
+          <div className="welcome-orb orb-2"></div>
         </div>
       </div>
 
-      {/* Main Analytics & Right Cards Row */}
-      <div className="analytics-section-grid">
-        {/* Left Chart Card */}
-        <div className="chart-card">
-          <div className="card-header">
-            <h3>Deals Analytics</h3>
-          </div>
-          
-          <div className="chart-wrapper">
-            {/* Top Slider Simulation Overlay */}
-            <div className="chart-top-slider">
-              <span className="month-label left">Aug</span>
-              <span className="month-label center">Sep</span>
-              <div className="slider-handle-bar">
-                <span className="handle-knob">||</span>
-                <div className="handle-fill"></div>
-                <span className="handle-knob">||</span>
-              </div>
-              <span className="month-label right">Dec</span>
-              <span className="year-label">2013</span>
+      {/* KPI Cards */}
+      <div className="kpi-grid">
+        {kpiCards.map((card, idx) => (
+          <div key={idx} className="kpi-card" style={{ animationDelay: `${idx * 0.08}s` }}>
+            <div className="kpi-icon-box" style={{ background: card.gradient, boxShadow: `0 4px 15px ${card.shadow}` }}>
+              {card.icon}
             </div>
-
-            {/* Interactive Area Line Chart SVG */}
-            <div className="svg-chart-container">
-              <svg viewBox="0 0 700 240" className="deals-analytics-svg">
-                <defs>
-                  <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
-                  </linearGradient>
-                </defs>
-
-                {/* Horizontal Grid lines */}
-                <line x1="40" y1="30" x2="680" y2="30" stroke="#f1f5f9" strokeDasharray="3 3" />
-                <text x="25" y="34" className="axis-text">90</text>
-
-                <line x1="40" y1="70" x2="680" y2="70" stroke="#f1f5f9" strokeDasharray="3 3" />
-                <text x="25" y="74" className="axis-text">85</text>
-
-                <line x1="40" y1="110" x2="680" y2="110" stroke="#f1f5f9" strokeDasharray="3 3" />
-                <text x="25" y="114" className="axis-text">80</text>
-
-                <line x1="40" y1="150" x2="680" y2="150" stroke="#f1f5f9" strokeDasharray="3 3" />
-                <text x="25" y="154" className="axis-text">75</text>
-
-                <line x1="40" y1="190" x2="680" y2="190" stroke="#f1f5f9" strokeDasharray="3 3" />
-                <text x="25" y="194" className="axis-text">70</text>
-
-                {/* Filled Area Gradient */}
-                <path
-                  d="M 50,170 Q 80,140 100,120 T 150,90 T 200,140 T 250,110 T 300,130 T 350,150 T 400,100 T 450,70 T 500,60 T 550,40 T 600,90 T 650,40 L 650,210 L 50,210 Z"
-                  fill="url(#chartGradient)"
-                />
-
-                {/* Spline Path Line */}
-                <path
-                  d="M 50,170 Q 80,140 100,120 T 150,90 T 200,140 T 250,110 T 300,130 T 350,150 T 400,100 T 450,70 T 500,60 T 550,40 T 600,90 T 650,40"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                />
-
-                {/* Node Points */}
-                {[
-                  [50,170], [100,120], [150,90], [200,140], [250,110],
-                  [300,130], [350,150], [400,100], [450,70], [500,60],
-                  [550,40], [600,90], [650,40]
-                ].map(([cx, cy], idx) => (
-                  <circle key={idx} cx={cx} cy={cy} r="4.5" fill="#ffffff" stroke="#3b82f6" strokeWidth="2.5" />
-                ))}
-
-                {/* Search Magnifier Pin at Peak */}
-                <g transform="translate(585, 30)">
-                  <circle cx="15" cy="15" r="12" fill="#ffffff" stroke="#334155" strokeWidth="2" />
-                  <text x="10" y="19" fontSize="11">🔍</text>
-                  <text x="28" y="10" fontSize="10" fill="#64748b" fontWeight="600">Show all</text>
-                </g>
-
-                {/* Timeline Bottom Axis Labels */}
-                <text x="100" y="230" className="axis-date">Oct 23</text>
-                <text x="200" y="230" className="axis-date">Oct 27</text>
-                <text x="300" y="230" className="axis-date">Oct 31</text>
-                <text x="400" y="230" className="axis-date bold">Nov</text>
-                <text x="500" y="230" className="axis-date">Nov 08</text>
-                <text x="580" y="230" className="axis-date">Nov 12</text>
-                <text x="640" y="230" className="axis-date">Nov 16</text>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Metric Cards Column */}
-        <div className="right-kpi-column">
-          {/* Card 1: Impressions / Orders */}
-          <div className="kpi-card">
             <div className="kpi-info">
-              <span className="kpi-title">Impressions</span>
-              <h2 className="kpi-number">{loading ? '...' : (stats.orders ? stats.orders.toLocaleString() : '1,563')}</h2>
-              <span className="kpi-date-range">May 23 - June 01 (2017)</span>
-            </div>
-            <div className="kpi-icon-box icon-blue">
-              <span>👁️</span>
+              <span className="kpi-label">{card.title}</span>
+              <h2 className="kpi-value">{card.value}</h2>
             </div>
           </div>
-
-          {/* Card 2: Goal / Revenue */}
-          <div className="kpi-card">
-            <div className="kpi-info">
-              <span className="kpi-title">Goal</span>
-              <h2 className="kpi-number">{loading ? '...' : `$${stats.revenue ? stats.revenue.toLocaleString() : '30,564'}`}</h2>
-              <span className="kpi-date-range">May 23 - June 01 (2017)</span>
-            </div>
-            <div className="kpi-icon-box icon-teal">
-              <span>🎯</span>
-            </div>
-          </div>
-
-          {/* Card 3: Impact / Products */}
-          <div className="kpi-card">
-            <div className="kpi-info">
-              <span className="kpi-title">Impact</span>
-              <h2 className="kpi-number">{loading ? '...' : (stats.products ? `${stats.products} Products` : '42.6%')}</h2>
-              <span className="kpi-date-range">May 23 - June 01 (2017)</span>
-            </div>
-            <div className="kpi-icon-box icon-amber">
-              <span>🖐️</span>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Bottom Progress Metrics Row */}
-      <div className="progress-metrics-row">
-        <div className="progress-metric-item">
-          <div className="metric-header">
-            <span>Published Project</span>
-            <strong>75%</strong>
-          </div>
-          <div className="progress-bar-bg">
-            <div className="progress-bar-fill fill-blue" style={{ width: '75%' }}></div>
-          </div>
-        </div>
-
-        <div className="progress-metric-item">
-          <div className="metric-header">
-            <span>Completed Task</span>
-            <strong>90%</strong>
-          </div>
-          <div className="progress-bar-bg">
-            <div className="progress-bar-fill fill-teal" style={{ width: '90%' }}></div>
-          </div>
-        </div>
-
-        <div className="progress-metric-item">
-          <div className="metric-header">
-            <span>Successfull Task</span>
-            <strong>60%</strong>
-          </div>
-          <div className="progress-bar-bg">
-            <div className="progress-bar-fill fill-green" style={{ width: '60%' }}></div>
-          </div>
-        </div>
-
-        <div className="progress-metric-item">
-          <div className="metric-header">
-            <span>Ongoing Project</span>
-            <strong>45%</strong>
-          </div>
-          <div className="progress-bar-bg">
-            <div className="progress-bar-fill fill-amber" style={{ width: '45%' }}></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Orders Section */}
-      <div className="dashboard-recent-card">
-        <div className="card-header">
+      {/* Recent Orders */}
+      <div className="dashboard-card">
+        <div className="dashboard-card-header">
           <h3>Recent Orders</h3>
+          <a href="/orders" className="card-view-all">View All →</a>
         </div>
 
         {loading ? (
-          <div className="loading-spinner">Loading store orders...</div>
+          <div className="admin-loading"><div className="admin-spinner"></div></div>
         ) : recentOrders.length === 0 ? (
-          <p className="no-data">No orders recorded yet.</p>
+          <div className="dashboard-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <p>No orders recorded yet.</p>
+          </div>
         ) : (
           <div className="table-responsive">
-            <table className="admindek-table">
+            <table className="admin-table">
               <thead>
                 <tr>
                   <th>ORDER ID</th>
@@ -255,10 +149,10 @@ const Dashboard = () => {
               </thead>
               <tbody>
                 {recentOrders.map(o => {
-                  const meta = statusMeta[o.status] || { label: o.status, color: '#64748b', bg: '#f1f5f9' };
+                  const meta = statusMeta[o.status] || { label: o.status, color: '#64748b', bg: 'rgba(100,116,139,0.12)' };
                   return (
                     <tr key={o._id}>
-                      <td className="font-semibold text-blue">#{o.orderNumber}</td>
+                      <td><span className="order-id-link">#{o.orderNumber}</span></td>
                       <td>{o.user ? `${o.user.firstName} ${o.user.lastName}` : o.guestEmail || 'Guest'}</td>
                       <td className="font-bold">${o.total?.toFixed(2)}</td>
                       <td>

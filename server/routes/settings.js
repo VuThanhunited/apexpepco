@@ -46,6 +46,7 @@ router.patch('/:section', auth, admin, async (req, res) => {
       'promoPopup', 'preFooterCta', 'footer', 'seo', 'theme',
       'navLinks', 'siteName', 'siteTagline', 'logo',
       'freeShippingThreshold', 'shippingCost',
+      'shopPage', 'aboutPage', 'productDetailPage', 'cartPage', 'checkoutPage',
     ];
 
     if (!allowedSections.includes(section)) {

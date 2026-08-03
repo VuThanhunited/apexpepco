@@ -162,6 +162,83 @@ const siteSettingsSchema = new mongoose.Schema({
     fontFamily: { type: String, default: 'Inter' },
   },
 
+  // ── Shop Page ──────────────────────────────────────────────
+  shopPage: {
+    title: { type: String, default: 'Research Compounds' },
+    subtitle: { type: String, default: 'Laboratory-grade compounds with 99%+ purity' },
+    emptyIcon: { type: String, default: '🔬' },
+    emptyTitle: { type: String, default: 'No products found' },
+    emptyText: { type: String, default: 'Try adjusting your filters or search terms.' },
+    productsPerPage: { type: Number, default: 12 },
+  },
+
+  // ── About Page ─────────────────────────────────────────────
+  aboutPage: {
+    eyebrow: { type: String, default: 'ABOUT APEX PEP CO' },
+    heroTitle: { type: String, default: 'Pioneering Research-Grade Compound Standards.' },
+    heroSubtitle: { type: String, default: 'Dedicated to supplying certified, high-purity peptides and analytical research compounds to academic, clinical, and industrial laboratories nationwide.' },
+    pillars: { type: [{
+      icon: { type: String, default: '🔬' },
+      title: { type: String },
+      description: { type: String },
+    }], default: [
+      { icon: '🔬', title: '99%+ Certified Purity', description: 'Every compound undergoes rigorous High-Performance Liquid Chromatography (HPLC) and Mass Spectrometry (MS) testing to guarantee verified purity.' },
+      { icon: '📜', title: 'Batch Traceability', description: 'Every single lot is shipped with an independent, downloadable Certificate of Analysis (COA) containing precise batch purity verification.' },
+      { icon: '⚡', title: 'Cold-Chain & Rapid Dispatch', description: 'Stored under strict temperature-controlled conditions and dispatched within 24 hours in discreet, protective packaging.' },
+      { icon: '🛡️', title: 'Strict Compliance', description: 'Formulated exclusively for qualified laboratory researchers, ensuring uncompromised consistency across all experimental protocols.' },
+    ]},
+    standardsTag: { type: String, default: 'ANALYTICAL RIGOR' },
+    standardsTitle: { type: String, default: 'Unmatched Consistency in Every Batch.' },
+    standardsText1: { type: String, default: 'In scientific research, consistency is paramount. Slight variations in peptide purity can alter experimental outcomes and compromise publication integrity.' },
+    standardsText2: { type: String, default: 'At Apex PepCo, we address this challenge directly by enforcing stringent quality control protocols at every stage of synthesis, purification, and packaging.' },
+    standardsList: { type: [String], default: [
+      '✓ Full 3rd-Party HPLC & Mass Spec Testing on all batches',
+      '✓ Lyophilized in sterile ISO 6 laboratory environments',
+      '✓ Sealed under inert nitrogen atmosphere to preserve stability',
+      '✓ Fully documented lot tracking from synthesis to delivery',
+    ]},
+    stats: { type: [{
+      value: { type: String },
+      label: { type: String },
+    }], default: [
+      { value: '99.4%', label: 'Average HPLC Purity Rating' },
+      { value: '100%', label: 'Independent COA Batch Verification' },
+      { value: '<24hr', label: 'Order Processing & Dispatch Time' },
+    ]},
+    missionTitle: { type: String, default: 'Our Mission' },
+    missionText: { type: String, default: '"To empower scientific discovery by providing researchers with uncompromised, batch-verified research compounds and transparent analytical documentation."' },
+    ctaTitle: { type: String, default: 'Ready to Expand Your Research?' },
+    ctaSubtitle: { type: String, default: 'Explore our catalog of certified 99%+ pure research peptides and compounds.' },
+    ctaPrimaryText: { type: String, default: 'BROWSE CATALOG' },
+    ctaPrimaryHref: { type: String, default: '/shop' },
+    ctaSecondaryText: { type: String, default: 'VIEW COA LIBRARY' },
+    ctaSecondaryHref: { type: String, default: '/coas' },
+  },
+
+  // ── Product Detail Page ────────────────────────────────────
+  productDetailPage: {
+    relatedTitle: { type: String, default: 'Related Compounds' },
+    relatedSubtitle: { type: String, default: 'You may also be interested in' },
+    addToCartText: { type: String, default: 'Add to Cart' },
+    outOfStockText: { type: String, default: 'Out of Stock' },
+  },
+
+  // ── Cart Page ──────────────────────────────────────────────
+  cartPage: {
+    title: { type: String, default: 'Your Cart' },
+    emptyTitle: { type: String, default: 'Your cart is empty' },
+    emptyText: { type: String, default: 'Looks like you haven\'t added any research compounds yet.' },
+    emptyButtonText: { type: String, default: 'Continue Shopping' },
+    checkoutButtonText: { type: String, default: 'Proceed to Checkout' },
+  },
+
+  // ── Checkout Page ──────────────────────────────────────────
+  checkoutPage: {
+    title: { type: String, default: 'Checkout' },
+    successTitle: { type: String, default: 'Order Confirmed!' },
+    successText: { type: String, default: 'Thank you for your order. You will receive a confirmation email shortly.' },
+  },
+
   // ── Free Shipping Threshold ───────────────────────────────
   freeShippingThreshold: { type: Number, default: 250 },
   shippingCost: { type: Number, default: 15 },

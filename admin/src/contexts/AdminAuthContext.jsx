@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 import api from '../utils/api';
 
 const AdminAuthContext = createContext(null);
@@ -29,8 +29,14 @@ export const AdminAuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updateProfile = (updatedUser) => {
+    const merged = { ...user, ...updatedUser };
+    localStorage.setItem('admin_user', JSON.stringify(merged));
+    setUser(merged);
+  };
+
   return (
-    <AdminAuthContext.Provider value={{ user, loading, login, logout }}>
+    <AdminAuthContext.Provider value={{ user, loading, login, logout, updateProfile }}>
       {children}
     </AdminAuthContext.Provider>
   );
