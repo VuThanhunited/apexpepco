@@ -1,65 +1,85 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useAdminAuth } from '../contexts/AdminAuthContext';
+import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
-const navItems = [
-  { label: 'Dashboard', href: '/', icon: '📊' },
-  { label: 'Site Settings', href: '/site-settings', icon: '🎨', highlight: true },
-  { label: 'Products', href: '/products', icon: '📦' },
-  { label: 'Orders', href: '/orders', icon: '🛒' },
-  { label: 'Categories', href: '/categories', icon: '🏷️' },
-  { label: 'Users', href: '/users', icon: '👥' },
-  { label: 'Wholesale', href: '/wholesale', icon: '🤝' },
+const navSections = [
+  {
+    title: 'Navigation',
+    items: [
+      { label: 'Dashboard', href: '/', icon: '🏠', badge: 'Default' },
+      { label: 'Products', href: '/products', icon: '📦' },
+      { label: 'Orders', href: '/orders', icon: '🛒' },
+      { label: 'Site Settings', href: '/site-settings', icon: '🎨', badge: 'CMS', badgeColor: 'orange' },
+    ]
+  },
+  {
+    title: 'Management',
+    items: [
+      { label: 'Categories', href: '/categories', icon: '🏷️' },
+      { label: 'Users', href: '/users', icon: '👥' },
+      { label: 'Wholesale Apps', href: '/wholesale', icon: '🤝', badge: 'new', badgeColor: 'cyan' },
+    ]
+  },
+  {
+    title: 'UI Element',
+    items: [
+      { label: 'Basic', href: '/#', icon: '💎' },
+      { label: 'Advance', href: '/#', icon: '🚀' },
+      { label: 'Extra', href: '/#', icon: '📦', badge: '100+', badgeColor: 'pink' },
+    ]
+  }
 ];
 
 const Sidebar = () => {
-  const { user, logout } = useAdminAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => { logout(); navigate('/login'); };
-
   return (
-    <aside className="sidebar">
-      <div className="sidebar-logo">
-        <span className="sidebar-logo-icon">🔬</span>
-        <div>
-          <span className="sidebar-logo-text">Apex Pepco</span>
-          <span className="sidebar-logo-sub">Admin Panel</span>
+    <aside className="admindek-sidebar">
+      {/* Top Logo Header */}
+      <div className="sidebar-brand">
+        <div className="brand-logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 19H22L12 2Z" fill="#3b82f6" />
+            <circle cx="12" cy="13" r="3" fill="#ffffff" />
+          </svg>
         </div>
+        <span className="brand-title">ADMINDEK</span>
+        <button className="sidebar-toggle-btn" title="Toggle Sidebar">
+          <span>🎯</span>
+        </button>
       </div>
 
-      <nav className="sidebar-nav">
-        {navItems.map(item => (
-          <NavLink
-            key={item.href}
-            to={item.href}
-            end={item.href === '/'}
-            className={({ isActive }) =>
-              `sidebar-link ${isActive ? 'active' : ''} ${item.highlight ? 'highlight' : ''}`
-            }
-            id={`sidebar-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
-          >
-            <span className="sidebar-icon">{item.icon}</span>
-            <span>{item.label}</span>
-            {item.highlight && <span className="sidebar-badge">CMS</span>}
-          </NavLink>
+      {/* Nav Menu Body */}
+      <nav className="sidebar-nav-body">
+        {navSections.map((sec, idx) => (
+          <div key={idx} className="nav-section">
+            <h4 className="section-heading">{sec.title}</h4>
+            <ul className="nav-list">
+              {sec.items.map((item) => (
+                <li key={item.label}>
+                  <NavLink
+                    to={item.href}
+                    end={item.href === '/'}
+                    className={({ isActive }) => `sidebar-menu-link ${isActive ? 'active' : ''}`}
+                  >
+                    <span className="menu-icon">{item.icon}</span>
+                    <span className="menu-text">{item.label}</span>
+                    {item.badge && (
+                      <span className={`menu-badge badge-${item.badgeColor || 'blue'}`}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
       </nav>
 
-      <div className="sidebar-footer">
-        <div className="sidebar-user">
-          <div className="sidebar-avatar">{user?.firstName?.[0]}{user?.lastName?.[0]}</div>
-          <div className="sidebar-user-info">
-            <span>{user?.firstName} {user?.lastName}</span>
-            <small>Administrator</small>
-          </div>
-        </div>
-        <button className="sidebar-logout" onClick={handleLogout} title="Logout">⏻</button>
+      {/* Quick External Store Preview */}
+      <div className="sidebar-bottom-action">
+        <a href="http://localhost:5173" target="_blank" rel="noreferrer" className="btn-sidebar-preview">
+          <span>🌐</span> View Storefront
+        </a>
       </div>
-
-      <a href="http://localhost:5173" target="_blank" rel="noreferrer" className="sidebar-preview-btn" id="preview-site-btn">
-        👁 Preview Site ↗
-      </a>
     </aside>
   );
 };

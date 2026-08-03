@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AdminAuthProvider, useAdminAuth } from './contexts/AdminAuthContext';
 import Sidebar from './components/Sidebar';
+import AdminHeader from './components/AdminHeader';
 import AdminLogin from './pages/AdminLogin';
 import Dashboard from './pages/Dashboard';
 import SiteSettings from './pages/SiteSettings';
@@ -14,7 +15,10 @@ const ProtectedLayout = ({ children }) => {
   return (
     <div className="admin-layout">
       <Sidebar />
-      <main className="admin-main">{children}</main>
+      <div className="admin-main-container">
+        <AdminHeader />
+        <main className="admin-main">{children}</main>
+      </div>
     </div>
   );
 };
