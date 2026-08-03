@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
+import { useAuth } from '../contexts/AuthContext';
 import api from '../utils/api';
 import './Checkout.css';
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
   const { settings } = useSite();
+  const { user } = useAuth();
 
   const threshold = settings?.freeShippingThreshold || 250;
   const shippingCost = subtotal >= threshold ? 0 : 12.99;
@@ -15,21 +17,38 @@ const Checkout = () => {
   const total = subtotal + shippingCost + estimatedTax;
 
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: 'US',
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    address: user?.address || '',
+    city: user?.city || '',
+    state: user?.state || '',
+    zipCode: user?.zipCode || '',
+    country: user?.country || 'US',
     paymentMethod: 'cash_app', // Default matching sample
     cardNumber: '',
     cardExp: '',
     cardCvc: '',
     couponCode: '',
   });
+
+  useEffect(() => {
+    if (user) {
+      setForm(prev => ({
+        ...prev,
+        firstName: prev.firstName || user.firstName || '',
+        lastName: prev.lastName || user.lastName || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || '',
+        address: prev.address || user.address || '',
+        city: prev.city || user.city || '',
+        state: prev.state || user.state || '',
+        zipCode: prev.zipCode || user.zipCode || '',
+        country: prev.country || user.country || 'US',
+      }));
+    }
+  }, [user]);
 
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponError, setCouponError] = useState('');

@@ -44,13 +44,12 @@ const orderSchema = new mongoose.Schema({
   trackingNumber: { type: String },
 }, { timestamps: true });
 
-orderSchema.pre('save', async function (next) {
+orderSchema.pre('save', function () {
   if (!this.orderNumber) {
     const timestamp = Date.now().toString().slice(-8);
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
     this.orderNumber = `AP-${timestamp}${random}`;
   }
-  next();
 });
 
 module.exports = mongoose.model('Order', orderSchema);
