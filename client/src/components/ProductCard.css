@@ -1,8 +1,8 @@
 .product-card {
   display: block;
   text-decoration: none;
-  background: #000810;
-  border: 1px solid #1a1a1e;
+  background: #0f0204;
+  border: 1px solid #2a1014;
   border-radius: 0.75rem;
   overflow: hidden;
   transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
@@ -11,21 +11,21 @@
 
 .product-card:hover {
   transform: translateY(-5px);
-  border-color: #38bdf8;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 30px rgba(56, 189, 248, 0.25);
+  border-color: #c4222f;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 30px rgba(196, 34, 47, 0.4);
 }
 
 .product-img-wrapper {
   position: relative;
   aspect-ratio: 1;
   overflow: hidden;
-  background: #000810;
+  background: #0f0204;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Cosmic Starfield Backdrop matching astroresearch.health */
+/* Cosmic Red Glow Backdrop */
 .product-cosmic-bg {
   position: absolute;
   inset: 0;
@@ -36,25 +36,25 @@
 .space-base {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgb(0, 8, 16) 0%, rgb(0, 5, 18) 55%, rgb(0, 10, 24) 100%);
+  background: linear-gradient(180deg, #180305 0%, #0e0204 55%, #060102 100%);
 }
 
 .space-blob-1 {
   position: absolute;
   inset: 0;
-  background: radial-gradient(90% 70% at 50% 0%, rgba(8, 198, 240, 0.72) 0%, transparent 70%);
+  background: radial-gradient(90% 70% at 50% 0%, rgba(196, 34, 47, 0.75) 0%, transparent 70%);
 }
 
 .space-blob-2 {
   position: absolute;
   inset: 0;
-  background: radial-gradient(75% 65% at 18% 80%, rgba(14, 140, 200, 0.55) 0%, transparent 68%);
+  background: radial-gradient(75% 65% at 18% 80%, rgba(160, 20, 32, 0.6) 0%, transparent 68%);
 }
 
 .space-blob-3 {
   position: absolute;
   inset: 0;
-  background: radial-gradient(65% 75% at 86% 50%, rgba(30, 80, 200, 0.45) 0%, transparent 65%);
+  background: radial-gradient(65% 75% at 86% 50%, rgba(220, 38, 38, 0.45) 0%, transparent 65%);
 }
 
 .space-stars {
