@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCart } from '../contexts/CartContext';
+import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import api from '../utils/api';
 import './ProductDetail.css';
 
@@ -39,15 +39,22 @@ const ProductDetail = () => {
   if (loading) return <div className="page-loader"><div className="loader-ring"></div></div>;
   if (!product) return null;
 
+  const mainImgUrl = resolveImageUrl(product.imageUrl || product.image);
+
   return (
     <div className="product-detail-page">
       <div className="product-detail-container">
         {/* Image */}
         <div className="product-detail-image">
-          {product.image
-            ? <img src={product.image.startsWith('/') ? product.image : `/uploads/${product.image}`} alt={product.name} />
-            : <div className="detail-img-placeholder"><span>🔬</span></div>
-          }
+          <img
+            src={mainImgUrl || 'https://astroresearch.health/images/tirzepatide.png'}
+            alt={product.name}
+            className="product-detail-vial-img"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+            }}
+          />
           {product.purity && <div className="detail-purity-badge">{product.purity} Purity</div>}
         </div>
 
