@@ -39,11 +39,14 @@ const Cart = () => {
                   {/* Product Info */}
                   <div className="cart-item-product">
                     <div className="cart-item-thumbnail">
-                      {item.productImage ? (
-                        <img src={resolveImageUrl(item.productImage)} alt={item.productName} />
-                      ) : (
-                        <span className="thumbnail-fallback">🔬</span>
-                      )}
+                      <img
+                        src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || 'https://astroresearch.health/images/tirzepatide.png'}
+                        alt={item.productName}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                        }}
+                      />
                     </div>
                     <div className="cart-item-meta">
                       <Link to={`/product/${item.productSlug}`} className="cart-item-title">

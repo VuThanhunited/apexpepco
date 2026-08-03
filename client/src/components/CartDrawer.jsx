@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../contexts/CartContext';
+import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
 import './CartDrawer.css';
 
@@ -53,9 +53,14 @@ const CartDrawer = ({ open, isOpen, onClose }) => {
             items.map(item => (
               <div key={item.key} className="cart-item">
                 <div className="cart-item-img">
-                  {item.productImage
-                    ? <img src={item.productImage.startsWith('/') ? item.productImage : `/uploads/${item.productImage}`} alt={item.productName} />
-                    : <div className="img-placeholder">🔬</div>}
+                  <img
+                    src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || 'https://astroresearch.health/images/tirzepatide.png'}
+                    alt={item.productName}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                    }}
+                  />
                 </div>
                 <div className="cart-item-info">
                   <p className="cart-item-name">{item.productName}</p>
