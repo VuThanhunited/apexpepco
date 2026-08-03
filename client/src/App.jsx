@@ -6,8 +6,6 @@ import Navbar from './components/Navbar';
 import CartDrawer from './components/CartDrawer';
 import Footer from './components/Footer';
 import AgeGate from './components/AgeGate';
-import PromoModal from './components/PromoModal';
-import FloatingAssistant from './components/FloatingAssistant';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
@@ -25,8 +23,6 @@ const App = () => {
       <SiteProvider>
         <AuthProvider>
           <CartProvider>
-            <AgeGate />
-            <PromoModal />
             <div className="app-layout">
               <Navbar />
               <main className="app-main">
@@ -96,7 +92,6 @@ const App = () => {
               </main>
               <Footer />
             </div>
-            <FloatingAssistant />
           </CartProvider>
         </AuthProvider>
       </SiteProvider>
