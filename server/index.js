@@ -41,23 +41,38 @@ app.use('/api/users', require('./routes/users'));
 // ── Health check ──────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
-// ── Serve Client Static Files in Production (if built) ───
+// ── Serve Client & Admin Static Files in Production (if built) ───
 const clientDistPath = path.join(__dirname, '../client/dist');
+const adminDistPath = path.join(__dirname, '../admin/dist');
+
+// Admin build static serving (under /admin prefix)
+if (fs.existsSync(adminDistPath)) {
+  app.use('/admin', express.static(adminDistPath));
+}
+
+// Client build static serving
 if (fs.existsSync(clientDistPath)) {
   app.use(express.static(clientDistPath));
-  app.use((req, res, next) => {
-    if (req.path.startsWith('/api')) return next();
-    res.sendFile(path.join(clientDistPath, 'index.html'));
-  });
-} else {
-  // ── 404 ───────────────────────────────────────────────────
-  app.use((req, res, next) => {
-    if (req.path.startsWith('/api')) {
-      return res.status(404).json({ message: 'API route not found' });
-    }
-    res.status(404).json({ message: 'Route not found' });
-  });
 }
+
+// SPA Routing Fallback
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ message: 'API route not found' });
+  }
+
+  // Fallback for /admin routes
+  if (req.path.startsWith('/admin') && fs.existsSync(adminDistPath)) {
+    return res.sendFile(path.join(adminDistPath, 'index.html'));
+  }
+
+  // Fallback for client routes
+  if (fs.existsSync(clientDistPath)) {
+    return res.sendFile(path.join(clientDistPath, 'index.html'));
+  }
+
+  res.status(404).json({ message: 'Route not found' });
+});
 
 // ── Error handler ─────────────────────────────────────────
 app.use((err, req, res, next) => {
