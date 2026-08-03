@@ -24,6 +24,8 @@ const App = () => {
         <AuthProvider>
           <CartProvider>
             <div className="app-layout">
+              <AgeGate />
+              <CartDrawer />
               <Navbar />
               <main className="app-main">
                 <Routes>
