@@ -3,6 +3,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* Global */
   --bg: #0b0b0c;
   --bg-2: #121214;
   --bg-3: #18181a;
@@ -13,8 +14,38 @@
   --accent-red-hover: #dc2626;
   --accent-red-dim: #7a1119;
   --accent-amber: #f59e0b;
+  --link-color: #c4222f;
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Navbar */
+  --navbar-bg: #ffffff;
+  --navbar-text: #0f172a;
+  --navbar-border: #e5e7eb;
+  /* Announcement */
+  --ann-bg: #c4222f;
+  --ann-text: #ffffff;
+  /* Hero */
+  --hero-bg: #0b0b0c;
+  --hero-text: #ffffff;
+  --hero-sub-text: #d1d5db;
+  /* Buttons */
+  --btn-primary-bg: #c4222f;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-border: #ffffff;
+  /* Sections & Cards */
+  --section-bg: #ffffff;
+  --section-alt-bg: #f9fafb;
+  --section-text: #111827;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --card-text: #111827;
+  /* Footer */
+  --footer-bg: #0b0b0c;
+  --footer-text: #9ca3af;
+  --footer-heading: #ffffff;
 }
+
 
 html { scroll-behavior: smooth; }
 

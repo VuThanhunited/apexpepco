@@ -153,14 +153,46 @@ const siteSettingsSchema = new mongoose.Schema({
 
   // ── Theme / Colors ────────────────────────────────────────
   theme: {
-    primaryBg: { type: String, default: '#0b0b0c' },
-    primaryAccent: { type: String, default: '#c4222f' },
-    secondaryAccent: { type: String, default: '#ef4444' },
-    tertiaryAccent: { type: String, default: '#7a1119' },
-    primaryText: { type: String, default: '#ededed' },
-    mutedText: { type: String, default: '#8c8c8f' },
-    fontFamily: { type: String, default: 'Inter' },
+    // Global
+    primaryBg:        { type: String, default: '#0b0b0c' },
+    primaryAccent:    { type: String, default: '#c4222f' },
+    secondaryAccent:  { type: String, default: '#ef4444' },
+    tertiaryAccent:   { type: String, default: '#7a1119' },
+    primaryText:      { type: String, default: '#ededed' },
+    mutedText:        { type: String, default: '#8c8c8f' },
+    fontFamily:       { type: String, default: 'Inter' },
+    // Navbar
+    navbarBg:         { type: String, default: '#ffffff' },
+    navbarText:       { type: String, default: '#0f172a' },
+    navbarBorder:     { type: String, default: '#e5e7eb' },
+    // Hero
+    heroBg:           { type: String, default: '#0b0b0c' },
+    heroText:         { type: String, default: '#ffffff' },
+    heroSubText:      { type: String, default: '#d1d5db' },
+    // Buttons
+    btnPrimaryBg:     { type: String, default: '#c4222f' },
+    btnPrimaryText:   { type: String, default: '#ffffff' },
+    btnSecondaryBg:   { type: String, default: 'transparent' },
+    btnSecondaryText: { type: String, default: '#ffffff' },
+    btnSecondaryBorder: { type: String, default: '#ffffff' },
+    // Sections
+    sectionBg:        { type: String, default: '#ffffff' },
+    sectionAltBg:     { type: String, default: '#f9fafb' },
+    sectionText:      { type: String, default: '#111827' },
+    cardBg:           { type: String, default: '#ffffff' },
+    cardBorder:       { type: String, default: '#e5e7eb' },
+    cardText:         { type: String, default: '#111827' },
+    // Links
+    linkColor:        { type: String, default: '#c4222f' },
+    // Footer
+    footerBg:         { type: String, default: '#0b0b0c' },
+    footerText:       { type: String, default: '#9ca3af' },
+    footerHeading:    { type: String, default: '#ffffff' },
+    // Announcement bar
+    announcementBg:   { type: String, default: '#c4222f' },
+    announcementText: { type: String, default: '#ffffff' },
   },
+
 
   // ── Shop Page ──────────────────────────────────────────────
   shopPage: {

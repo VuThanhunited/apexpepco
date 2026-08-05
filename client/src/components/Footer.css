@@ -1,8 +1,9 @@
 .footer {
-  background: #0b0b0c;
-  border-top: 1px solid #2a2a2c;
+  background: var(--footer-bg, #0b0b0c);
+  border-top: 1px solid var(--card-border, #2a2a2c);
   margin-top: auto;
 }
+
 
 .footer-container {
   max-width: 100%;

@@ -21,20 +21,60 @@ const applyFont = (fontFamily) => {
 const applyTheme = (theme) => {
   if (!theme) return;
   const root = document.documentElement;
-  if (theme.primaryBg)      root.style.setProperty('--bg', theme.primaryBg);
-  if (theme.primaryAccent)  root.style.setProperty('--accent-red', theme.primaryAccent);
-  if (theme.secondaryAccent) root.style.setProperty('--accent-red-hover', theme.secondaryAccent);
-  if (theme.tertiaryAccent) root.style.setProperty('--accent-red-dim', theme.tertiaryAccent);
-  if (theme.primaryText)    root.style.setProperty('--text', theme.primaryText);
-  if (theme.mutedText)      root.style.setProperty('--muted', theme.mutedText);
-  // Derived values
+  const set = (key, val) => { if (val) root.style.setProperty(key, val); };
+
+  // Global
+  set('--bg',              theme.primaryBg);
+  set('--accent-red',      theme.primaryAccent);
+  set('--accent-red-hover',theme.secondaryAccent);
+  set('--accent-red-dim',  theme.tertiaryAccent);
+  set('--text',            theme.primaryText);
+  set('--muted',           theme.mutedText);
+  set('--link-color',      theme.linkColor);
+  // Derived bg-2/bg-3 follow primary
   if (theme.primaryBg) {
-    // bg-2 and bg-3 are slightly lighter variants of primaryBg
-    root.style.setProperty('--bg-2', theme.primaryBg);
-    root.style.setProperty('--bg-3', theme.primaryBg);
+    set('--bg-2', theme.primaryBg);
+    set('--bg-3', theme.primaryBg);
   }
+
+  // Navbar
+  set('--navbar-bg',     theme.navbarBg);
+  set('--navbar-text',   theme.navbarText);
+  set('--navbar-border', theme.navbarBorder);
+
+  // Announcement bar
+  set('--ann-bg',   theme.announcementBg);
+  set('--ann-text', theme.announcementText);
+
+  // Hero
+  set('--hero-bg',       theme.heroBg);
+  set('--hero-text',     theme.heroText);
+  set('--hero-sub-text', theme.heroSubText);
+
+  // Buttons
+  set('--btn-primary-bg',        theme.btnPrimaryBg);
+  set('--btn-primary-text',      theme.btnPrimaryText);
+  set('--btn-secondary-bg',      theme.btnSecondaryBg);
+  set('--btn-secondary-text',    theme.btnSecondaryText);
+  set('--btn-secondary-border',  theme.btnSecondaryBorder);
+
+  // Sections & Cards
+  set('--section-bg',     theme.sectionBg);
+  set('--section-alt-bg', theme.sectionAltBg);
+  set('--section-text',   theme.sectionText);
+  set('--card-bg',        theme.cardBg);
+  set('--card-border',    theme.cardBorder);
+  set('--card-text',      theme.cardText);
+
+  // Footer
+  set('--footer-bg',      theme.footerBg);
+  set('--footer-text',    theme.footerText);
+  set('--footer-heading', theme.footerHeading);
+
+  // Font
   if (theme.fontFamily) applyFont(theme.fontFamily);
 };
+
 
 export const SiteProvider = ({ children }) => {
   const [settings, setSettings] = useState(null);

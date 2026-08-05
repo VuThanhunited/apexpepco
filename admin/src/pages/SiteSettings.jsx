@@ -366,30 +366,157 @@ const SiteSettings = () => {
           {activePage === 'theme' && (
             <>
               <Panel title="Theme & Colors" icon={icons.palette}>
-                <p className="panel-desc">Change the color scheme of your website.</p>
-                <div className="color-grid">
-                  {[
-                    { key: 'primaryBg', label: 'Background' },
-                    { key: 'primaryAccent', label: 'Primary Accent' },
-                    { key: 'secondaryAccent', label: 'Secondary Accent' },
-                    { key: 'tertiaryAccent', label: 'Tertiary Accent' },
-                    { key: 'primaryText', label: 'Primary Text' },
-                    { key: 'mutedText', label: 'Muted Text' },
-                  ].map(({ key, label }) => (
-                    <div key={key} className="color-item">
-                      <label>{label}</label>
-                      <div className="color-field">
-                        <input type="color" value={settings.theme?.[key] || '#000000'} onChange={e => update('theme', key, e.target.value)} />
-                        <input value={settings.theme?.[key] || ''} onChange={e => update('theme', key, e.target.value)} />
-                      </div>
-                    </div>
-                  ))}
+                <p className="panel-desc">Tùy chỉnh màu sắc từng khu vực của website. Nhấn <strong>Save Changes</strong> để áp dụng ngay.</p>
+
+                {/* ── Global ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">🌐 Global</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'primaryBg',     label: 'Background chính' },
+                      { key: 'primaryText',   label: 'Chữ chính' },
+                      { key: 'mutedText',     label: 'Chữ phụ / muted' },
+                      { key: 'primaryAccent', label: 'Màu nhấn chính' },
+                      { key: 'secondaryAccent', label: 'Màu nhấn phụ' },
+                      { key: 'linkColor',     label: 'Màu link' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#000000'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
                 </div>
-                <Field label="Font Family">
+
+                {/* ── Navbar ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">🧭 Navbar</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'navbarBg',     label: 'Nền Navbar' },
+                      { key: 'navbarText',   label: 'Chữ Navbar' },
+                      { key: 'navbarBorder', label: 'Đường viền Navbar' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#ffffff'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Announcement Bar ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">📢 Thanh thông báo (Announcement Bar)</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'announcementBg',   label: 'Nền' },
+                      { key: 'announcementText', label: 'Chữ' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#c4222f'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Hero ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">🦸 Hero Section</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'heroBg',      label: 'Nền Hero' },
+                      { key: 'heroText',    label: 'Tiêu đề Hero' },
+                      { key: 'heroSubText', label: 'Phụ đề Hero' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#ffffff'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Buttons ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">🔘 Nút (Buttons)</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'btnPrimaryBg',       label: 'Nút chính - Nền' },
+                      { key: 'btnPrimaryText',     label: 'Nút chính - Chữ' },
+                      { key: 'btnSecondaryBg',     label: 'Nút phụ - Nền' },
+                      { key: 'btnSecondaryText',   label: 'Nút phụ - Chữ' },
+                      { key: 'btnSecondaryBorder', label: 'Nút phụ - Viền' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#000000'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Sections & Cards ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">📄 Sections & Cards</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'sectionBg',    label: 'Nền section' },
+                      { key: 'sectionAltBg', label: 'Nền section (xen kẽ)' },
+                      { key: 'sectionText',  label: 'Chữ section' },
+                      { key: 'cardBg',       label: 'Nền card' },
+                      { key: 'cardBorder',   label: 'Viền card' },
+                      { key: 'cardText',     label: 'Chữ card' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#ffffff'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Footer ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">🦶 Footer</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'footerBg',      label: 'Nền Footer' },
+                      { key: 'footerText',    label: 'Chữ Footer' },
+                      { key: 'footerHeading', label: 'Tiêu đề Footer' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#0b0b0c'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Font ── */}
+                <Field label="Font chữ">
                   <select value={settings.theme?.fontFamily || 'Inter'} onChange={e => update('theme', 'fontFamily', e.target.value)}>
-                    <option>Inter</option><option>Roboto</option><option>Outfit</option><option>Space Grotesk</option><option>Sora</option>
+                    <option>Inter</option><option>Roboto</option><option>Outfit</option><option>Space Grotesk</option><option>Sora</option><option>Poppins</option><option>Nunito</option>
                   </select>
                 </Field>
+
+                {/* Live Preview Strip */}
+                <div className="theme-preview-strip" style={{
+                  background: settings.theme?.primaryBg || '#0b0b0c',
+                  border: `2px solid ${settings.theme?.primaryAccent || '#c4222f'}`,
+                  borderRadius: '0.75rem',
+                  padding: '1.25rem',
+                  marginTop: '1rem',
+                  display: 'flex',
+                  gap: '0.75rem',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}>
+                  <span style={{ color: settings.theme?.primaryText || '#ededed', fontWeight: 700, fontSize: '0.95rem' }}>Live Preview</span>
+                  <span style={{ color: settings.theme?.mutedText || '#8c8c8f', fontSize: '0.85rem' }}>Chữ phụ</span>
+                  <button style={{
+                    background: settings.theme?.btnPrimaryBg || '#c4222f',
+                    color: settings.theme?.btnPrimaryText || '#fff',
+                    border: 'none',
+                    padding: '0.4rem 1rem',
+                    borderRadius: '6px',
+                    fontWeight: 600,
+                    cursor: 'default',
+                    fontSize: '0.85rem',
+                  }}>Nút chính</button>
+                  <button style={{
+                    background: settings.theme?.btnSecondaryBg || 'transparent',
+                    color: settings.theme?.btnSecondaryText || '#fff',
+                    border: `1.5px solid ${settings.theme?.btnSecondaryBorder || '#fff'}`,
+                    padding: '0.4rem 1rem',
+                    borderRadius: '6px',
+                    fontWeight: 600,
+                    cursor: 'default',
+                    fontSize: '0.85rem',
+                  }}>Nút phụ</button>
+                  <a style={{ color: settings.theme?.linkColor || '#c4222f', textDecoration: 'underline', fontSize: '0.85rem', cursor: 'default' }}>Link</a>
+                </div>
+
                 <SaveBtn onClick={() => saveSection('theme', settings.theme)} saving={saving} />
               </Panel>
 
@@ -401,6 +528,8 @@ const SiteSettings = () => {
               </Panel>
             </>
           )}
+
+
 
           {/* ═══ SHIPPING ═══ */}
           {activePage === 'shipping' && (
@@ -440,6 +569,28 @@ const SaveBtn = ({ onClick, saving }) => (
   <button className="btn-save-section" onClick={onClick} disabled={saving}>
     {saving ? 'Saving...' : 'Save Changes'}
   </button>
+);
+
+const ColorSwatch = ({ label, value, onChange }) => (
+  <div className="color-swatch-item">
+    <div className="color-swatch-preview" style={{ background: value }}>
+      <input
+        type="color"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        title={label}
+      />
+    </div>
+    <div className="color-swatch-info">
+      <span className="color-swatch-label">{label}</span>
+      <input
+        className="color-swatch-hex"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder="#000000"
+      />
+    </div>
+  </div>
 );
 
 export default SiteSettings;

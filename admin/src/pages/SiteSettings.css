@@ -196,5 +196,92 @@
 @media (max-width: 900px) {
   .cms-layout { grid-template-columns: 1fr; }
   .cms-page-nav { flex-direction: row; flex-wrap: wrap; position: static; }
-  .color-grid { grid-template-columns: 1fr; }
+  .color-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Color Group ────────────────────── */
+.color-group {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-default);
+}
+.color-group:last-of-type { border-bottom: none; }
+
+.color-group-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin: 0 0 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── Color Swatch ────────────────────── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.color-swatch-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: box-shadow var(--transition-fast);
+}
+.color-swatch-item:hover { box-shadow: var(--shadow-sm); }
+
+.color-swatch-preview {
+  height: 52px;
+  position: relative;
+  cursor: pointer;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: opacity 0.15s;
+}
+.color-swatch-preview:hover { opacity: 0.9; }
+.color-swatch-preview input[type="color"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.color-swatch-info {
+  padding: 0 0.6rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.color-swatch-label {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+.color-swatch-hex {
+  font-size: 0.78rem;
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  width: 100%;
+  outline: none;
+}
+.color-swatch-hex:focus { border-color: var(--accent-primary); }
+
+/* ── Theme Preview ────────────────────── */
+.theme-preview-strip { transition: all 0.2s ease; }
+
