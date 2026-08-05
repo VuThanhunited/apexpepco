@@ -18,7 +18,7 @@
 }
 
 .age-gate-modal {
-  background: #ffffff;
+  background: var(--agegate-bg, #ffffff);
   border-radius: 1.25rem;
   padding: 2.25rem 2rem 2rem;
   max-width: 440px;
@@ -82,14 +82,14 @@
 .age-gate-title {
   font-size: 1.45rem;
   font-weight: 900;
-  color: #111827;
+  color: var(--agegate-text, #111827);
   margin: 0 0 0.5rem;
   letter-spacing: -0.01em;
 }
 
 .age-gate-desc {
   font-size: 0.88rem;
-  color: #4b5563;
+  color: var(--agegate-sub-text, #4b5563);
   line-height: 1.45;
   margin: 0 0 1.25rem;
   padding: 0 0.5rem;
@@ -143,8 +143,8 @@
 }
 
 .age-checkbox-item input[type="checkbox"]:checked + .checkbox-custom {
-  background: #c4222f;
-  border-color: #c4222f;
+  background: var(--agegate-checkbox, #c4222f);
+  border-color: var(--agegate-checkbox, #c4222f);
 }
 
 .age-checkbox-item input[type="checkbox"]:checked + .checkbox-custom svg {
@@ -168,8 +168,8 @@
 
 .btn-age-confirm {
   width: 100%;
-  background: #c4222f;
-  color: #ffffff;
+  background: var(--agegate-btn-bg, #c4222f);
+  color: var(--agegate-btn-text, #ffffff);
   border: none;
   border-radius: 8px;
   padding: 0.8rem;
@@ -177,13 +177,13 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(196, 34, 47, 0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .btn-age-confirm:hover:not(:disabled) {
-  background: #a81a27;
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(196, 34, 47, 0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .btn-age-confirm:disabled {
@@ -194,9 +194,9 @@
 
 .btn-age-leave {
   width: 100%;
-  background: #ffffff;
-  color: #1f2937;
-  border: 1px solid #d1d5db;
+  background: var(--agegate-leave-bg, #ffffff);
+  color: var(--agegate-leave-text, #1f2937);
+  border: 1px solid var(--agegate-leave-border, #d1d5db);
   border-radius: 8px;
   padding: 0.8rem;
   font-size: 0.95rem;
@@ -206,6 +206,6 @@
 }
 
 .btn-age-leave:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
+  opacity: 0.85;
+  border-color: var(--agegate-leave-border, #9ca3af);
 }

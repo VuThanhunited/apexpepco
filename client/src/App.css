@@ -44,6 +44,17 @@
   --footer-bg: #0b0b0c;
   --footer-text: #9ca3af;
   --footer-heading: #ffffff;
+  /* Age Gate */
+  --agegate-bg: #ffffff;
+  --agegate-text: #111827;
+  --agegate-sub-text: #4b5563;
+  --agegate-checkbox: #c4222f;
+  --agegate-btn-bg: #c4222f;
+  --agegate-btn-text: #ffffff;
+  --agegate-leave-bg: #ffffff;
+  --agegate-leave-text: #1f2937;
+  --agegate-leave-border: #d1d5db;
+
 }
 
 

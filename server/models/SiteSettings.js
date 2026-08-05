@@ -191,7 +191,18 @@ const siteSettingsSchema = new mongoose.Schema({
     // Announcement bar
     announcementBg:   { type: String, default: '#c4222f' },
     announcementText: { type: String, default: '#ffffff' },
+    // Age Gate modal
+    ageGateBg:           { type: String, default: '#ffffff' },
+    ageGateText:         { type: String, default: '#111827' },
+    ageGateSubText:      { type: String, default: '#4b5563' },
+    ageGateCheckbox:     { type: String, default: '#c4222f' },
+    ageGateBtnBg:        { type: String, default: '#c4222f' },
+    ageGateBtnText:      { type: String, default: '#ffffff' },
+    ageGateLeaveBg:      { type: String, default: '#ffffff' },
+    ageGateLeaveText:    { type: String, default: '#1f2937' },
+    ageGateLeaveBorder:  { type: String, default: '#d1d5db' },
   },
+
 
 
   // ── Shop Page ──────────────────────────────────────────────

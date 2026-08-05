@@ -473,12 +473,49 @@ const SiteSettings = () => {
                   </div>
                 </div>
 
+                {/* ── Age Gate ── */}
+                <div className="color-group">
+                  <h4 className="color-group-title">🔒 Age Gate (Popup xác minh tuổi)</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'ageGateBg',          label: 'Nền modal' },
+                      { key: 'ageGateText',         label: 'Chữ tiêu đề' },
+                      { key: 'ageGateSubText',      label: 'Chữ mô tả' },
+                      { key: 'ageGateCheckbox',     label: 'Màu checkbox' },
+                      { key: 'ageGateBtnBg',        label: 'Nút Enter - Nền' },
+                      { key: 'ageGateBtnText',      label: 'Nút Enter - Chữ' },
+                      { key: 'ageGateLeaveBg',      label: 'Nút Leave - Nền' },
+                      { key: 'ageGateLeaveText',    label: 'Nút Leave - Chữ' },
+                      { key: 'ageGateLeaveBorder',  label: 'Nút Leave - Viền' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#ffffff'} onChange={v => update('theme', key, v)} />
+                    ))}
+                  </div>
+                  {/* Mini Age Gate preview */}
+                  <div style={{
+                    background: settings.theme?.ageGateBg || '#ffffff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '0.75rem',
+                    padding: '1rem 1.25rem',
+                    marginTop: '0.75rem',
+                    maxWidth: 320,
+                  }}>
+                    <p style={{ color: settings.theme?.ageGateText || '#111827', fontWeight: 700, fontSize: '0.88rem', margin: '0 0 0.35rem' }}>Age Verification</p>
+                    <p style={{ color: settings.theme?.ageGateSubText || '#4b5563', fontSize: '0.77rem', margin: '0 0 0.75rem' }}>Preview mô tả modal</p>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button style={{ background: settings.theme?.ageGateBtnBg || '#c4222f', color: settings.theme?.ageGateBtnText || '#fff', border: 'none', padding: '0.35rem 0.9rem', borderRadius: '6px', fontWeight: 600, fontSize: '0.8rem', cursor: 'default' }}>Enter</button>
+                      <button style={{ background: settings.theme?.ageGateLeaveBg || '#fff', color: settings.theme?.ageGateLeaveText || '#1f2937', border: `1px solid ${settings.theme?.ageGateLeaveBorder || '#d1d5db'}`, padding: '0.35rem 0.9rem', borderRadius: '6px', fontWeight: 600, fontSize: '0.8rem', cursor: 'default' }}>Leave</button>
+                    </div>
+                  </div>
+                </div>
+
                 {/* ── Font ── */}
                 <Field label="Font chữ">
                   <select value={settings.theme?.fontFamily || 'Inter'} onChange={e => update('theme', 'fontFamily', e.target.value)}>
                     <option>Inter</option><option>Roboto</option><option>Outfit</option><option>Space Grotesk</option><option>Sora</option><option>Poppins</option><option>Nunito</option>
                   </select>
                 </Field>
+
 
                 {/* Live Preview Strip */}
                 <div className="theme-preview-strip" style={{

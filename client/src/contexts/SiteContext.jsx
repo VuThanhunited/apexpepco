@@ -71,6 +71,17 @@ const applyTheme = (theme) => {
   set('--footer-text',    theme.footerText);
   set('--footer-heading', theme.footerHeading);
 
+  // Age Gate
+  set('--agegate-bg',           theme.ageGateBg);
+  set('--agegate-text',         theme.ageGateText);
+  set('--agegate-sub-text',     theme.ageGateSubText);
+  set('--agegate-checkbox',     theme.ageGateCheckbox);
+  set('--agegate-btn-bg',       theme.ageGateBtnBg);
+  set('--agegate-btn-text',     theme.ageGateBtnText);
+  set('--agegate-leave-bg',     theme.ageGateLeaveBg);
+  set('--agegate-leave-text',   theme.ageGateLeaveText);
+  set('--agegate-leave-border', theme.ageGateLeaveBorder);
+
   // Font
   if (theme.fontFamily) applyFont(theme.fontFamily);
 };
