@@ -18,7 +18,7 @@
 }
 
 .age-gate-modal {
-  background: #FAF7F2;
+  background: #ffffff;
   border-radius: 1.25rem;
   padding: 2.25rem 2rem 2rem;
   max-width: 440px;
@@ -143,8 +143,8 @@
 }
 
 .age-checkbox-item input[type="checkbox"]:checked + .checkbox-custom {
-  background: #f25c19;
-  border-color: #f25c19;
+  background: #c4222f;
+  border-color: #c4222f;
 }
 
 .age-checkbox-item input[type="checkbox"]:checked + .checkbox-custom svg {
@@ -168,7 +168,7 @@
 
 .btn-age-confirm {
   width: 100%;
-  background: #f25c19;
+  background: #c4222f;
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -177,13 +177,13 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(242, 92, 25, 0.3);
+  box-shadow: 0 2px 8px rgba(196, 34, 47, 0.3);
 }
 
 .btn-age-confirm:hover:not(:disabled) {
-  background: #ea580c;
+  background: #a81a27;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(242, 92, 25, 0.4);
+  box-shadow: 0 4px 12px rgba(196, 34, 47, 0.4);
 }
 
 .btn-age-confirm:disabled {
