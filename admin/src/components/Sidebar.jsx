@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useAdminAuth } from '../contexts/AdminAuthContext';
 import './Sidebar.css';
 
+
 const navSections = [
   {
     title: 'Main',
@@ -54,11 +55,14 @@ const icons = {
   ),
 };
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const { user } = useAdminAuth();
 
   return (
-    <aside className="admin-sidebar">
+    <>
+      {/* Mobile overlay */}
+      {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
+      <aside className={`admin-sidebar${isOpen ? ' sidebar-open' : ''}`}>
       {/* Brand */}
       <div className="sidebar-brand">
         <div className="brand-logo">
@@ -114,7 +118,11 @@ const Sidebar = () => {
           <small>Administrator</small>
         </div>
       </div>
+      <button className="sidebar-close-btn" onClick={onClose} aria-label="Close menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </aside>
+    </>
   );
 };
 

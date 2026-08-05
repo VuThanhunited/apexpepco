@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AdminAuthProvider, useAdminAuth } from './contexts/AdminAuthContext';
 import Sidebar from './components/Sidebar';
@@ -13,12 +14,14 @@ import './App.css';
 
 const ProtectedLayout = ({ children }) => {
   const { user } = useAdminAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   if (!user) return <Navigate to="/login" replace />;
   return (
-    <div className="admin-layout">
-      <Sidebar />
+    <div className={`admin-layout${sidebarOpen ? ' sidebar-is-open' : ''}`}>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="admin-main-container">
-        <AdminHeader />
+        <AdminHeader onMenuToggle={() => setSidebarOpen(prev => !prev)} />
         <main className="admin-main">{children}</main>
       </div>
     </div>

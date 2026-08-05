@@ -12,7 +12,7 @@ const routeNames = {
   '/account-settings': 'Account',
 };
 
-const AdminHeader = () => {
+const AdminHeader = ({ onMenuToggle }) => {
   const { user, logout } = useAdminAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,8 +42,13 @@ const AdminHeader = () => {
 
   return (
     <header className="admin-header">
-      {/* Left: Breadcrumb */}
+      {/* Left: Menu toggle + Breadcrumb */}
       <div className="header-left-section">
+        <button className="header-menu-toggle" onClick={onMenuToggle} aria-label="Toggle menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
         <div className="header-breadcrumb">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>

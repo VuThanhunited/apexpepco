@@ -16,7 +16,27 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.header-left-section { display: flex; align-items: center; gap: 1.25rem; }
+.header-left-section { display: flex; align-items: center; gap: 0.75rem; }
+
+/* ── Menu Toggle Button ─────────────── */
+.header-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+.header-menu-toggle:hover {
+  background: var(--bg-primary);
+  color: var(--accent-primary);
+}
 
 .header-breadcrumb {
   display: flex; align-items: center; gap: 0.5rem;
@@ -150,3 +170,28 @@
 
 .dropdown-logout { margin: 0.35rem; color: #ef4444 !important; }
 .dropdown-logout:hover { background: rgba(239, 68, 68, 0.06) !important; }
+
+/* ── Responsive ─────────────────────── */
+@media (max-width: 1024px) {
+  .header-menu-toggle {
+    display: flex;
+  }
+  .header-user-text {
+    display: none;
+  }
+  .header-caret {
+    display: none;
+  }
+  .admin-header {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-action-btn:not(:last-of-type) {
+    display: none;
+  }
+  .header-breadcrumb {
+    font-size: 0.75rem;
+  }
+}

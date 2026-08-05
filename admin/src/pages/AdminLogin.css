@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+  background: linear-gradient(135deg, #1a0a00 0%, #5a2810 50%, #c8622a 100%);
   position: relative;
   overflow: hidden;
 }
@@ -83,7 +83,7 @@
 }
 .admin-form-group input:focus {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(200, 98, 42, 0.1);
 }
 .admin-form-group input::placeholder { color: var(--text-muted); }
 
@@ -100,7 +100,7 @@
 }
 .admin-login-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 6px 20px rgba(200, 98, 42, 0.3);
 }
 .admin-login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 

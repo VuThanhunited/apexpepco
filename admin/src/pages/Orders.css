@@ -89,3 +89,18 @@
 .items-table tbody tr:last-child td { border-bottom: none; }
 .item-prod-cell { display: flex; align-items: center; gap: 0.6rem; }
 .item-thumb { width: 32px; height: 32px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-default); }
+
+@media (max-width: 768px) {
+  .order-details-grid { grid-template-columns: 1fr; }
+  .order-summary-box { grid-template-columns: 1fr 1fr; }
+  .orders-search-form { max-width: 100%; }
+  .tracking-inputs-row { flex-direction: column; }
+  .tracking-inputs-row .form-group { width: 100%; }
+  .items-table { min-width: 480px; }
+}
+
+@media (max-width: 480px) {
+  .order-summary-box { grid-template-columns: 1fr; }
+  .status-tabs-row { gap: 0.25rem; }
+  .status-tab-btn { font-size: 0.72rem; padding: 0.3rem 0.6rem; }
+}

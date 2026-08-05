@@ -273,13 +273,13 @@
 
 .cyan-icon {
   font-size: 1.2rem;
-  color: #38bdf8;
+  color: #ffffff;
 }
 
 .marquee-text { display: flex; flex-direction: column; }
 .marquee-title-text { font-size: 0.875rem; font-weight: 700; color: #ededed; }
 .marquee-sub-text { font-size: 0.78rem; color: #94a3b8; }
-.marquee-divider { color: #38bdf8; font-size: 1.25rem; margin-left: 0.85rem; opacity: 0.5; }
+.marquee-divider { color: #ffffff; font-size: 1.25rem; margin-left: 0.85rem; opacity: 0.3; }
 
 /* ── Section Shared ───────────────────────────────────── */
 .section-container {
@@ -313,7 +313,7 @@
 }
 
 .view-all-cyan-link {
-  color: #38bdf8;
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
@@ -322,7 +322,7 @@
 }
 
 .view-all-cyan-link:hover {
-  opacity: 0.8;
+  opacity: 0.7;
   text-decoration: underline;
 }
 
@@ -336,7 +336,7 @@
 }
 
 .empty-products { text-align: center; padding: 3rem; color: #8c8c8f; }
-.empty-products a { color: #38bdf8; text-decoration: none; }
+.empty-products a { color: #ffffff; text-decoration: none; }
 
 /* ── Why Section ──────────────────────────────────────── */
 .why-grid {
@@ -365,7 +365,7 @@
 
 .why-stats { display: flex; gap: 3rem; margin-bottom: 2.25rem; flex-wrap: wrap; }
 .stat { display: flex; flex-direction: column; }
-.stat-num { font-size: 2rem; font-weight: 900; color: #38bdf8; letter-spacing: -0.03em; }
+.stat-num { font-size: 2rem; font-weight: 900; color: #ffffff; letter-spacing: -0.03em; }
 .stat-label { font-size: 0.8rem; color: #8c8c8f; margin-top: 0.25rem; }
 
 .why-visual {
@@ -381,7 +381,7 @@
   padding: 1.75rem;
   transition: transform 0.3s, border-color 0.3s;
 }
-.why-card:hover { transform: translateX(8px); border-color: #38bdf8; }
+.why-card:hover { transform: translateX(8px); border-color: #ffffff; }
 .why-card-offset { margin-left: 2.5rem; }
 
 .why-card-icon { font-size: 2rem; margin-bottom: 0.85rem; }
@@ -401,7 +401,7 @@
 .cta-glow {
   position: absolute;
   width: 600px; height: 350px;
-  background: radial-gradient(ellipse, rgba(56,189,248,0.15) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(196,34,47,0.12) 0%, transparent 70%);
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -441,11 +441,41 @@
   box-shadow: 0 10px 30px rgba(196,34,47,0.5);
 }
 
+@media (max-width: 1024px) {
+  .hero { padding: 4rem 2.5rem; }
+  .section-container { padding: 4rem 2.5rem; }
+  .why-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .why-card-offset { margin-left: 1rem; }
+}
+
 @media (max-width: 768px) {
   .hero { padding: 3rem 1.5rem; min-height: auto; }
-  .dna-bg-img { opacity: 0.4; right: -20%; }
+  .dna-bg-img { opacity: 0.25; right: -30%; }
+  .hero-content-left { max-width: 100%; }
+  .hero-polygon-decoration { display: none; }
+  .hero-container-left { flex-direction: column; align-items: flex-start; }
+  .hero-title-apex { font-size: clamp(2rem, 7vw, 2.8rem); }
+  .hero-subtitle-left { font-size: 0.95rem; }
+  .hero-buttons-row { flex-direction: column; align-items: flex-start; gap: 0.85rem; }
+  .btn-browse-catalog-red, .btn-view-coa-outline { width: 100%; justify-content: center; text-align: center; }
+  .hero-badges-boxes { flex-wrap: wrap; gap: 0.5rem; }
+  .badge-box { min-width: 80px; padding: 0.65rem 1rem; }
+  .section-container { padding: 3rem 1.5rem; }
   .why-grid { grid-template-columns: 1fr; }
   .why-card-offset { margin-left: 0; }
   .why-visual { display: none; }
   .featured-header-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .featured-main-title { font-size: 1.6rem; }
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
+  .why-stats { gap: 1.5rem; }
+  .prefooter-cta .section-container { padding: 3rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .hero { padding: 2.5rem 1rem; }
+  .section-container { padding: 2.5rem 1rem; }
+  .hero-badges-boxes { display: none; }
+  .products-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .featured-main-title { font-size: 1.4rem; }
+  .marquee-item { padding: 1rem 1.25rem; }
 }
