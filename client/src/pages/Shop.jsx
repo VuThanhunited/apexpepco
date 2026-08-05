@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useSite } from '../contexts/SiteContext';
 import ProductCard from '../components/ProductCard';
 import api from '../utils/api';
 import './Shop.css';
 
 const Shop = () => {
+  const { settings } = useSite();
+  const shopPage = settings?.shopPage || {};
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,8 +54,8 @@ const Shop = () => {
     <div className="shop-page">
       <div className="shop-header">
         <div className="shop-header-content">
-          <h1>Research Compounds</h1>
-          <p>Laboratory-grade compounds with 99%+ purity</p>
+          <h1>{shopPage.title || 'Research Compounds'}</h1>
+          <p>{shopPage.subtitle || 'Laboratory-grade compounds with 99%+ purity'}</p>
         </div>
       </div>
 
@@ -103,9 +106,9 @@ const Shop = () => {
             </div>
           ) : (
             <div className="shop-empty">
-              <div className="shop-empty-icon">🔬</div>
-              <h3>No products found</h3>
-              <p>Try adjusting your filters or search terms.</p>
+              <div className="shop-empty-icon">{shopPage.emptyIcon || '🔬'}</div>
+              <h3>{shopPage.emptyTitle || 'No products found'}</h3>
+              <p>{shopPage.emptyText || 'Try adjusting your filters or search terms.'}</p>
               <button className="btn-clear-filters" onClick={() => setSearchParams({})}>Clear Filters</button>
             </div>
           )}

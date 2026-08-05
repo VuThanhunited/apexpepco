@@ -13,12 +13,13 @@
   --accent-red-hover: #dc2626;
   --accent-red-dim: #7a1119;
   --accent-amber: #f59e0b;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-family);
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;

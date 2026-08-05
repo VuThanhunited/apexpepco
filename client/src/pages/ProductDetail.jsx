@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart, resolveImageUrl } from '../contexts/CartContext';
+import { useSite } from '../contexts/SiteContext';
 import api from '../utils/api';
 import './ProductDetail.css';
 
@@ -8,6 +9,8 @@ const ProductDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const { settings } = useSite();
+  const pdp = settings?.productDetailPage || {};
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -97,7 +100,7 @@ const ProductDetail = () => {
                 disabled={!product.inStock}
                 id="add-to-cart-btn"
               >
-                {added ? '✓ Added!' : product.inStock ? 'Add to Cart' : 'Out of Stock'}
+                {added ? '✓ Added!' : product.inStock ? (pdp.addToCartText || 'Add to Cart') : (pdp.outOfStockText || 'Out of Stock')}
               </button>
             </div>
           </div>

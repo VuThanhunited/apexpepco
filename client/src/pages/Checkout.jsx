@@ -121,12 +121,15 @@ const Checkout = () => {
       <div className="checkout-success">
         <div className="success-card">
           <div className="success-icon">✓</div>
-          <h1>Order Confirmed!</h1>
+          <h1>{settings?.checkoutPage?.successTitle || 'Order Confirmed!'}</h1>
           <p className="order-number">
             Order Reference: <strong>#{successOrder.orderNumber || successOrder._id?.slice(-8).toUpperCase()}</strong>
           </p>
           <p className="success-msg">
-            Thank you for your order, <strong>{form.firstName}</strong>. A confirmation email has been sent to <strong>{form.email}</strong>.
+            {settings?.checkoutPage?.successText
+              ? settings.checkoutPage.successText
+              : <>Thank you for your order, <strong>{form.firstName}</strong>. A confirmation email has been sent to <strong>{form.email}</strong>.</>
+            }
           </p>
           
           <div className="order-receipt-summary">

@@ -45,12 +45,12 @@ const Footer = () => {
 
         <div className="footer-disclaimer">
           <p>
-            THE PRODUCTS WE OFFER ARE NOT INTENDED FOR HUMAN USE. THEY ARE INTENDED FOR IN-VITRO AND PRE-CLINICAL RESEARCH PURPOSES ONLY. THE CUSTOMER ACKNOWLEDGES THAT THERE ARE RISKS IN THE HANDLING, USE, AND DISTRIBUTION OF THESE PRODUCTS, AND CERTIFIES THAT IT HAS THE PROPER EQUIPMENT, FACILITIES, AND PERSONNEL FOR MANAGING THOSE RISKS; AND THE CUSTOMER KNOWINGLY ACCEPTS THESE RISKS.
+            {footer?.disclaimer || 'THE PRODUCTS WE OFFER ARE NOT INTENDED FOR HUMAN USE. THEY ARE INTENDED FOR IN-VITRO AND PRE-CLINICAL RESEARCH PURPOSES ONLY.'}
           </p>
         </div>
 
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} {siteName}. All rights reserved.</p>
+          <p>{footer?.copyrightText || `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`}</p>
           <div className="footer-bottom-links">
             <Link to="/policies?tab=terms">Terms</Link>
             <Link to="/policies?tab=refund">Refund Policy</Link>

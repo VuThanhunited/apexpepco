@@ -1,9 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart, resolveImageUrl } from '../contexts/CartContext';
+import { useSite } from '../contexts/SiteContext';
 import './Cart.css';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, subtotal, clearCart, itemCount } = useCart();
+  const { settings } = useSite();
+  const cartPage = settings?.cartPage || {};
   const navigate = useNavigate();
 
   if (items.length === 0) {
@@ -11,9 +14,9 @@ const Cart = () => {
       <div className="cart-page-empty">
         <div className="cart-empty-card">
           <div className="cart-empty-icon">🛒</div>
-          <h2>Your Cart is Empty</h2>
-          <p>Explore our premium research catalog and add items to your requisition cart.</p>
-          <Link to="/shop" className="btn-browse-shop">Browse Products</Link>
+          <h2>{cartPage.emptyTitle || 'Your Cart is Empty'}</h2>
+          <p>{cartPage.emptyText || 'Explore our premium research catalog and add items to your requisition cart.'}</p>
+          <Link to="/shop" className="btn-browse-shop">{cartPage.emptyButtonText || 'Browse Products'}</Link>
         </div>
       </div>
     );
@@ -22,7 +25,7 @@ const Cart = () => {
   return (
     <div className="cart-page">
       <div className="cart-page-container">
-        <h1 className="cart-page-title">Requisition Cart</h1>
+        <h1 className="cart-page-title">{cartPage.title || 'Requisition Cart'}</h1>
 
         <div className="cart-grid">
           {/* Left Column: Cart Items List */}
@@ -141,7 +144,7 @@ const Cart = () => {
                 onClick={() => navigate('/checkout')}
                 id="cart-proceed-checkout-btn"
               >
-                PROCEED TO CHECKOUT →
+                {cartPage.checkoutButtonText || 'PROCEED TO CHECKOUT'} →
               </button>
 
               <p className="checkout-security-note">

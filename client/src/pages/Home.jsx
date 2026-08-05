@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSite } from '../contexts/SiteContext';
 import ProductCard from '../components/ProductCard';
@@ -8,7 +8,6 @@ import './Home.css';
 const Home = () => {
   const { settings, loading: siteLoading } = useSite();
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const marqueeRef = useRef(null);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -33,54 +32,38 @@ const Home = () => {
     </div>
   );
 
-  const renderMarqueeIcon = (type) => {
-    switch (type) {
-      case 'file-check':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-icon text-sky-400">
-            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-            <path d="m9 15 2 2 4-4"></path>
-          </svg>
-        );
-      case 'truck':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-icon text-sky-400">
-            <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
-            <path d="M15 18H9"></path>
-            <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
-            <circle cx="17" cy="18" r="2"></circle>
-            <circle cx="7" cy="18" r="2"></circle>
-          </svg>
-        );
-      case 'flask':
-      default:
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide-icon text-sky-400">
-            <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path>
-            <path d="M6.453 15h11.094"></path>
-            <path d="M8.5 2h7"></path>
-          </svg>
-        );
-    }
-  };
-
-  const features = [
-    { iconType: 'file-check', title: 'COA Included', description: 'With every order' },
-    { iconType: 'flask', title: 'Fast Dispatch', description: 'Ships within 24 hrs' },
-    { iconType: 'truck', title: 'Discreet Packing', description: 'Plain packaging' },
-    { iconType: 'file-check', title: 'Lab Tested', description: 'Every batch' },
-    { iconType: 'flask', title: '99%+ Purity', description: 'Third-party verified' },
-    { iconType: 'truck', title: 'Free Shipping', description: 'Orders over $250' }
+  // ── Settings shortcuts with fallbacks ───────────────────
+  const hero = settings?.hero || {};
+  const featuredSection = settings?.featuredSection || {};
+  const preFooterCta = settings?.preFooterCta || {};
+  const stats = settings?.aboutPage?.stats || [
+    { value: '99%+', label: 'Purity Guaranteed' },
+    { value: '24hr', label: 'Express Dispatch' },
+    { value: '100%', label: 'COA Included' },
   ];
+
+  // Features marquee: prefer DB settings.features, fallback to defaults
+  const marqueeFeatures = (settings?.features && settings.features.length > 0)
+    ? settings.features
+    : [
+        { icon: '📋', title: 'COA Included', description: 'With every order' },
+        { icon: '⚡', title: 'Fast Dispatch', description: 'Ships within 24 hrs' },
+        { icon: '📦', title: 'Discreet Packing', description: 'Plain packaging' },
+        { icon: '🔬', title: 'Lab Tested', description: 'Every batch' },
+        { icon: '✅', title: '99%+ Purity', description: 'Third-party verified' },
+        { icon: '🚚', title: 'Free Shipping', description: 'Orders over $250' },
+      ];
 
   return (
     <div className="home">
       {/* ── HERO ───────────────────────────────────────── */}
       <section className="hero" id="hero-section">
-        {/* Animated DNA Background Image */}
         <div className="hero-dna-bg">
-          <img src="https://astroresearch.health/bg.webp" alt="DNA Animation Background" className="dna-bg-img" />
+          {hero.backgroundImage ? (
+            <img src={hero.backgroundImage} alt="Hero Background" className="dna-bg-img" />
+          ) : (
+            <img src="https://astroresearch.health/bg.webp" alt="DNA Animation Background" className="dna-bg-img" />
+          )}
           <div className="dna-gradient-overlay"></div>
         </div>
 
@@ -89,32 +72,52 @@ const Home = () => {
             <span className="hero-eyebrow-red">RESEARCH USE ONLY</span>
 
             <h1 className="hero-title-apex">
-              Research-grade peptides, documented to the batch.
+              {hero.title || 'Research-grade peptides, documented to the batch.'}
             </h1>
 
             <p className="hero-subtitle-left">
-              High-purity compounds supplied to qualified laboratories, with independent COA verification on every lot. Built for researchers who need consistency they can cite.
+              {hero.subtitle || 'High-purity compounds supplied to qualified laboratories, with independent COA verification on every lot. Built for researchers who need consistency they can cite.'}
             </p>
 
             <div className="hero-buttons-row">
-              <Link to="/shop" className="btn-browse-catalog-red" id="hero-shop-now-btn">
-                <span>BROWSE CATALOG</span>
+              <Link
+                to={hero.primaryButtonHref || '/shop'}
+                className="btn-browse-catalog-red"
+                id="hero-shop-now-btn"
+              >
+                <span>{hero.primaryButtonText || 'BROWSE CATALOG'}</span>
               </Link>
-              <Link to="/coas" className="btn-view-coa-outline" id="hero-coa-btn">
-                VIEW COA LIBRARY
+              <Link
+                to={hero.secondaryButtonHref || '/coas'}
+                className="btn-view-coa-outline"
+                id="hero-coa-btn"
+              >
+                {hero.secondaryButtonText || 'VIEW COA LIBRARY'}
               </Link>
             </div>
+
+            {/* Badges row */}
+            {hero.badges && hero.badges.length > 0 && (
+              <div className="hero-badges-boxes">
+                {hero.badges.map((b, i) => (
+                  <div key={i} className="badge-box">
+                    <div className="badge-box-val">{b.icon}</div>
+                    <div className="badge-box-sub">{b.text}</div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {/* ── FEATURES MARQUEE ───────────────────────────── */}
       <section className="features-marquee-section" id="features">
-        <div className="marquee-track" ref={marqueeRef}>
+        <div className="marquee-track">
           <div className="marquee-inner">
-            {[...features, ...features, ...features].map((f, i) => (
+            {[...marqueeFeatures, ...marqueeFeatures, ...marqueeFeatures].map((f, i) => (
               <div key={i} className="marquee-item">
-                <span className="marquee-icon cyan-icon">{renderMarqueeIcon(f.iconType)}</span>
+                <span className="marquee-icon cyan-icon">{f.icon}</span>
                 <div className="marquee-text">
                   <strong className="marquee-title-text">{f.title}</strong>
                   {f.description && <span className="marquee-sub-text">{f.description}</span>}
@@ -127,29 +130,35 @@ const Home = () => {
       </section>
 
       {/* ── FEATURED PRODUCTS ───────────────────────────── */}
-      <section className="featured-section" id="featured-products">
-        <div className="section-container">
-          <div className="featured-header-row">
-            <div className="featured-header-left">
-              <h2 className="featured-main-title">Featured Compounds</h2>
-              <p className="featured-main-subtitle">Curated items of exceptional purity.</p>
+      {featuredSection.isVisible !== false && (
+        <section className="featured-section" id="featured-products">
+          <div className="section-container">
+            <div className="featured-header-row">
+              <div className="featured-header-left">
+                <h2 className="featured-main-title">
+                  {featuredSection.title || 'Featured Compounds'}
+                </h2>
+                <p className="featured-main-subtitle">
+                  {featuredSection.subtitle || 'Curated items of exceptional purity.'}
+                </p>
+              </div>
+              <Link to="/shop" className="view-all-cyan-link" id="view-all-products-btn">
+                View All →
+              </Link>
             </div>
-            <Link to="/shop" className="view-all-cyan-link" id="view-all-products-btn">
-              View All →
-            </Link>
-          </div>
 
-          {featuredProducts.length > 0 ? (
-            <div className="products-grid">
-              {featuredProducts.map(p => <ProductCard key={p._id} product={p} />)}
-            </div>
-          ) : (
-            <div className="empty-products">
-              <p>Products coming soon. <Link to="/shop">Browse all products →</Link></p>
-            </div>
-          )}
-        </div>
-      </section>
+            {featuredProducts.length > 0 ? (
+              <div className="products-grid">
+                {featuredProducts.map(p => <ProductCard key={p._id} product={p} />)}
+              </div>
+            ) : (
+              <div className="empty-products">
+                <p>Products coming soon. <Link to="/shop">Browse all products →</Link></p>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* ── WHY CHOOSE US ──────────────────────────────── */}
       <section className="why-section">
@@ -160,9 +169,12 @@ const Home = () => {
               <h2>PRECISION. PURITY. PERFORMANCE.</h2>
               <p>Every compound we offer undergoes rigorous third-party testing to ensure 99%+ purity. Our research-grade compounds are trusted by laboratories worldwide.</p>
               <div className="why-stats">
-                <div className="stat"><span className="stat-num">99%+</span><span className="stat-label">Purity Guaranteed</span></div>
-                <div className="stat"><span className="stat-num">24hr</span><span className="stat-label">Express Dispatch</span></div>
-                <div className="stat"><span className="stat-num">100%</span><span className="stat-label">COA Included</span></div>
+                {stats.map((s, i) => (
+                  <div key={i} className="stat">
+                    <span className="stat-num">{s.value}</span>
+                    <span className="stat-label">{s.label}</span>
+                  </div>
+                ))}
               </div>
               <Link to="/shop" className="btn-primary" id="why-shop-btn">Explore Products</Link>
             </div>
@@ -188,17 +200,23 @@ const Home = () => {
       </section>
 
       {/* ── PRE-FOOTER CTA ──────────────────────────────── */}
-      <section className="prefooter-cta">
-        <div className="cta-glow"></div>
-        <div className="section-container cta-content">
-          <h2>READY TO BEGIN YOUR RESEARCH?</h2>
-          <p>Browse our full catalog of premium research compounds, all shipped with certificates of analysis.</p>
-          <Link to="/shop" className="btn-primary" id="cta-btn">
-            EXPLORE THE COLLECTION
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </Link>
-        </div>
-      </section>
+      {preFooterCta.isVisible !== false && (
+        <section className="prefooter-cta">
+          <div className="cta-glow"></div>
+          <div className="section-container cta-content">
+            <h2>{preFooterCta.title ? preFooterCta.title.toUpperCase() : 'READY TO BEGIN YOUR RESEARCH?'}</h2>
+            <p>{preFooterCta.subtitle || 'Browse our full catalog of premium research compounds, all shipped with certificates of analysis.'}</p>
+            <Link
+              to={preFooterCta.buttonHref || '/shop'}
+              className="btn-primary"
+              id="cta-btn"
+            >
+              {preFooterCta.buttonText || 'EXPLORE THE COLLECTION'}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </Link>
+          </div>
+        </section>
+      )}
     </div>
   );
 };
