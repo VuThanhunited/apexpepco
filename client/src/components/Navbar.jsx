@@ -12,7 +12,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const [scrolled, setScrolled] = useState(false);
-  const [annVisible, setAnnVisible] = useState(true);
+  const [annVisible, setAnnVisible] = useState(() => window.scrollY < 60);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
