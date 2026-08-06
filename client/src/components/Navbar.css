@@ -8,6 +8,17 @@
   color: var(--ann-text, #ffffff);
   font-weight: 500;
   text-transform: uppercase;
+  max-height: 40px;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.announcement-substrip.ann-hidden {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
 }
 
 .announcement-substrip span {

@@ -12,11 +12,16 @@ const Navbar = () => {
   const location = useLocation();
 
   const [scrolled, setScrolled] = useState(false);
+  const [annVisible, setAnnVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      setAnnVisible(y < 60); // hide after scrolling 60px
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -143,9 +148,9 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Announcement text strip positioned BELOW navigation bar */}
+        {/* Announcement text strip - hides on scroll */}
         {annBar?.isVisible !== false && (
-          <div className="announcement-substrip">
+          <div className={`announcement-substrip${annVisible ? '' : ' ann-hidden'}`}>
             <span>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</span>
           </div>
         )}
