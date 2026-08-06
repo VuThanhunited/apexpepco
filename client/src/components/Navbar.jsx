@@ -8,7 +8,7 @@ import './Navbar.css';
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { totalItems, isCartOpen, setIsCartOpen } = useCart();
-  const { settings } = useSite();
+  const { settings, loading: siteLoading } = useSite();
   const location = useLocation();
 
   const [scrolled, setScrolled] = useState(false);
@@ -148,8 +148,8 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Announcement text strip - hides on scroll */}
-        {annBar?.isVisible !== false && (
+        {/* Announcement text strip - hides on scroll, only render after settings loaded */}
+        {!siteLoading && annBar?.isVisible !== false && (
           <div className={`announcement-substrip${annVisible ? '' : ' ann-hidden'}`}>
             <span>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</span>
           </div>
