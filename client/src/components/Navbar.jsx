@@ -33,12 +33,38 @@ const Navbar = () => {
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
-          {/* Logo - Red Triangle Symbol + APEX PEP CO */}
+          {/* Logo - SVG Triangle Icon + APEX PEP CO text */}
           <Link to="/" className="nav-logo">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#c4222f" xmlns="http://www.w3.org/2000/svg" className="apex-triangle-logo">
-              <path d="M12 3L22 20H2L12 3Z" />
+            <svg
+              className="nav-logo-svg"
+              width="50"
+              height="46"
+              viewBox="0 0 100 90"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="outerTriGrad" x1="50" y1="0" x2="10" y2="90" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#c0222e" />
+                  <stop offset="100%" stopColor="#5a0b12" />
+                </linearGradient>
+                <linearGradient id="innerTriGrad" x1="50" y1="30" x2="80" y2="85" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#8b0e19" />
+                  <stop offset="100%" stopColor="#3a0508" />
+                </linearGradient>
+              </defs>
+              {/* Outer triangle */}
+              <polygon points="50,2 98,88 2,88" fill="url(#outerTriGrad)" />
+              {/* Inner dark cutout - A shape */}
+              <polygon points="50,28 76,80 24,80" fill="#0d0305" />
+              {/* Crossbar of A */}
+              <rect x="40" y="68" width="20" height="9" rx="1" fill="url(#innerTriGrad)" />
             </svg>
-            <span className="logo-brand-text">APEX PEP CO</span>
+            {/* Brand text */}
+            <div className="nav-logo-text">
+              <span className="nav-logo-name">APEX PEP CO</span>
+              <span className="nav-logo-tagline">RESEARCH USE ONLY</span>
+            </div>
           </Link>
 
           {/* Desktop Nav Links */}

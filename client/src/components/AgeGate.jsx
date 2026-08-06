@@ -39,24 +39,11 @@ const AgeGate = () => {
       <div className="age-gate-modal">
         {/* Brand Header */}
         <div className="age-gate-brand">
-          <div className="age-gate-logo-icon">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 28C16 40 23.1634 46 32 46C40.8366 46 48 40 48 28H16Z" fill="url(#pestle-grad)" />
-              <path d="M12 26C12 24.8954 12.8954 24 14 24H50C51.1046 24 52 24.8954 52 26V28H12V26Z" fill="url(#pestle-grad)" />
-              <path d="M42 12L28 26" stroke="url(#pestle-grad)" strokeWidth="6" strokeLinecap="round" />
-              <ellipse cx="43" cy="11" rx="4" ry="4" fill="url(#pestle-grad)" />
-              <defs>
-                <linearGradient id="pestle-grad" x1="12" y1="8" x2="52" y2="46" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#e07a24" />
-                  <stop offset="1" stopColor="#ea580c" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-          <h1 className="age-gate-brand-title">
-            <span className="brand-red">Apex</span>
-            <span className="brand-gold">Pepco</span>
-          </h1>
+          <img
+            src="/logo.jpg"
+            alt="APEX PEP CO"
+            className="age-gate-logo-img"
+          />
           <p className="age-gate-tagline">
             {settings?.siteTagline || 'Free Yourself from Untested/Overpriced Peptides'}
           </p>

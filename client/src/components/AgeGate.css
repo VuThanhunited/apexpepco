@@ -42,32 +42,13 @@
   margin-bottom: 1.25rem;
 }
 
-.age-gate-logo-icon {
-  width: 52px;
-  height: 52px;
-  margin-bottom: 0.5rem;
+.age-gate-logo-img {
+  width: 260px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
 }
 
-.age-gate-logo-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.age-gate-brand-title {
-  font-family: 'Times New Roman', Georgia, serif;
-  font-size: 1.85rem;
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
-
-.brand-red {
-  color: #991b1b;
-}
-
-.brand-gold {
-  color: #d97706;
 }
 
 .age-gate-tagline {
