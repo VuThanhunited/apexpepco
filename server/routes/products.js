@@ -8,7 +8,7 @@ const admin = require('../middleware/admin');
 router.get('/', async (req, res) => {
   try {
     const { category, featured, search, limit = 20, page = 1 } = req.query;
-    const query = {};
+    const query = { isActive: { $ne: false } };
     if (category) query.category = category;
     if (featured === 'true') query.isFeatured = true;
     if (search) query.$or = [
@@ -17,10 +17,22 @@ router.get('/', async (req, res) => {
       { tags: { $in: [new RegExp(search, 'i')] } },
     ];
     const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Field projection — only return fields needed by ProductCard
+    const fields = 'name slug shortDescription imageUrl image basePrice variants isFeatured inStock category tags';
+
     const [products, total] = await Promise.all([
-      Product.find(query).populate('category', 'name slug').sort({ createdAt: -1 }).skip(skip).limit(parseInt(limit)),
+      Product.find(query, fields)
+        .populate('category', 'name slug')
+        .sort({ isFeatured: -1, createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit))
+        .lean(), // 2-3x faster: returns plain JS objects instead of Mongoose docs
       Product.countDocuments(query),
     ]);
+
+    // Cache for 5 minutes in browser, 10 minutes on CDN/proxy
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.json({ products, total, page: parseInt(page), totalPages: Math.ceil(total / parseInt(limit)) });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useSite } from '../contexts/SiteContext';
 import ProductCard from '../components/ProductCard';
 import api from '../utils/api';
+import { getCached, setCached } from '../utils/cache';
 import './Shop.css';
 
 const Shop = () => {
@@ -28,13 +29,30 @@ const Shop = () => {
         if (search) params.set('search', search);
         params.set('page', page);
         params.set('limit', LIMIT);
+
+        const cacheKey = `shop:${params.toString()}`;
+        const cached = getCached(cacheKey);
+        if (cached) {
+          setProducts(cached.products);
+          setTotal(cached.total);
+          setCategories(cached.categories);
+          setLoading(false);
+          return;
+        }
+
         const [prodRes, catRes] = await Promise.all([
           api.get(`/products?${params}`),
           api.get('/categories'),
         ]);
-        setProducts(prodRes.data.products || []);
-        setTotal(prodRes.data.total || 0);
-        setCategories(catRes.data || []);
+        const result = {
+          products: prodRes.data.products || [],
+          total: prodRes.data.total || 0,
+          categories: catRes.data || [],
+        };
+        setProducts(result.products);
+        setTotal(result.total);
+        setCategories(result.categories);
+        setCached(cacheKey, result);
       } catch (err) { console.error(err); }
       finally { setLoading(false); }
     };
