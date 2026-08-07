@@ -148,7 +148,7 @@ const Cart = () => {
               </button>
 
               <p className="checkout-security-note">
-                Secure checkout powered by Apex PepCo Processing
+                Secure checkout powered by Apex Pep Co Processing
               </p>
             </div>
           </div>

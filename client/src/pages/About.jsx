@@ -48,7 +48,7 @@ const About = () => {
                 In scientific research, consistency is paramount. Slight variations in peptide purity can alter experimental outcomes and compromise publication integrity.
               </p>
               <p>
-                At <strong>Apex PepCo</strong>, we address this challenge directly by enforcing stringent quality control protocols at every stage of synthesis, purification, and packaging.
+                At <strong>Apex Pep Co</strong>, we address this challenge directly by enforcing stringent quality control protocols at every stage of synthesis, purification, and packaging.
               </p>
 
               <ul className="standards-list">

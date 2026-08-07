@@ -28,7 +28,7 @@ const footerColumnSchema = new mongoose.Schema({
 
 const siteSettingsSchema = new mongoose.Schema({
   // ── General ──────────────────────────────────────────────
-  siteName: { type: String, default: 'Apex Pepco' },
+  siteName: { type: String, default: 'Apex Pep Co' },
   siteTagline: { type: String, default: 'Premium Research Compounds' },
   logo: { type: String },
   favicon: { type: String },
@@ -64,7 +64,7 @@ const siteSettingsSchema = new mongoose.Schema({
 
   // ── Hero Section ─────────────────────────────────────────
   hero: {
-    title: { type: String, default: 'Apex Pepco' },
+    title: { type: String, default: 'Apex Pep Co' },
     subtitle: { type: String, default: 'Where precision meets excellence. Laboratory-grade research compounds with 99%+ purity, trusted by researchers worldwide.' },
     backgroundImage: { type: String },
     primaryButtonText: { type: String, default: 'Shop Now' },
@@ -119,7 +119,7 @@ const siteSettingsSchema = new mongoose.Schema({
   // ── Footer ────────────────────────────────────────────────
   footer: {
     description: { type: String, default: 'Premium laboratory research compounds with uncompromising purity standards.' },
-    disclaimer: { type: String, default: 'All products sold by Apex Pepco are intended for laboratory research purposes only. These products are not intended for human or veterinary use. By purchasing, you confirm that you are a qualified researcher.' },
+    disclaimer: { type: String, default: 'All products sold by Apex Pep Co are intended for laboratory research purposes only. These products are not intended for human or veterinary use. By purchasing, you confirm that you are a qualified researcher.' },
     socialLinks: { type: [socialLinkSchema], default: [
       { platform: 'Instagram', url: '#', icon: 'instagram' },
     ]},
@@ -141,12 +141,12 @@ const siteSettingsSchema = new mongoose.Schema({
         ],
       },
     ]},
-    copyrightText: { type: String, default: '© 2026 Apex Pepco. All rights reserved.' },
+    copyrightText: { type: String, default: '© 2026 Apex Pep Co. All rights reserved.' },
   },
 
   // ── SEO / Meta ────────────────────────────────────────────
   seo: {
-    defaultTitle: { type: String, default: 'Apex Pepco - Premium Research Compounds' },
+    defaultTitle: { type: String, default: 'Apex Pep Co - Premium Research Compounds' },
     defaultDescription: { type: String, default: 'Laboratory-grade research compounds with 99%+ purity. Fast dispatch, discreet packaging, COA included.' },
     keywords: { type: String, default: 'research compounds, peptides, lab chemicals, high purity' },
   },
@@ -233,7 +233,7 @@ const siteSettingsSchema = new mongoose.Schema({
     standardsTag: { type: String, default: 'ANALYTICAL RIGOR' },
     standardsTitle: { type: String, default: 'Unmatched Consistency in Every Batch.' },
     standardsText1: { type: String, default: 'In scientific research, consistency is paramount. Slight variations in peptide purity can alter experimental outcomes and compromise publication integrity.' },
-    standardsText2: { type: String, default: 'At Apex PepCo, we address this challenge directly by enforcing stringent quality control protocols at every stage of synthesis, purification, and packaging.' },
+    standardsText2: { type: String, default: 'At Apex Pep Co, we address this challenge directly by enforcing stringent quality control protocols at every stage of synthesis, purification, and packaging.' },
     standardsList: { type: [String], default: [
       '✓ Full 3rd-Party HPLC & Mass Spec Testing on all batches',
       '✓ Lyophilized in sterile ISO 6 laboratory environments',

@@ -4,7 +4,7 @@ import './FloatingAssistant.css';
 const FloatingAssistant = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Hello! I am your Apex PepCo AI Assistant. Ask anything about peptides, dosing, or what is right for your research goal.' }
+    { sender: 'bot', text: 'Hello! I am your Apex Pep Co AI Assistant. Ask anything about peptides, dosing, or what is right for your research goal.' }
   ]);
   const [input, setInput] = useState('');
 
@@ -25,7 +25,7 @@ const FloatingAssistant = () => {
     setTimeout(() => {
       setMessages(prev => [...prev, {
         sender: 'bot',
-        text: 'All Apex PepCo compounds are 99%+ purity, laboratory grade, and third-party tested with Certificates of Analysis (COAs).'
+        text: 'All Apex Pep Co compounds are 99%+ purity, laboratory grade, and third-party tested with Certificates of Analysis (COAs).'
       }]);
     }, 700);
   };
@@ -35,7 +35,7 @@ const FloatingAssistant = () => {
     setTimeout(() => {
       setMessages(prev => [...prev, {
         sender: 'bot',
-        text: 'All Apex PepCo compounds undergo strict HPLC and MS testing for 99%+ purity. Always consult a licensed professional before starting research.'
+        text: 'All Apex Pep Co compounds undergo strict HPLC and MS testing for 99%+ purity. Always consult a licensed professional before starting research.'
       }]);
     }, 700);
   };
