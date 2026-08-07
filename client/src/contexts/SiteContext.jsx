@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../utils/api';
+import socket from '../utils/socket';
 
 const SiteContext = createContext(null);
 
@@ -91,6 +92,7 @@ export const SiteProvider = ({ children }) => {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ── Initial fetch ──────────────────────────────────────
   useEffect(() => {
     const fetchSettings = async () => {
       try {
@@ -106,6 +108,20 @@ export const SiteProvider = ({ children }) => {
     fetchSettings();
   }, []);
 
+  // ── WebSocket: live-reload khi admin cập nhật settings ─
+  useEffect(() => {
+    const handleSettingsUpdate = (updatedSettings) => {
+      setSettings(updatedSettings);
+      applyTheme(updatedSettings?.theme);
+    };
+
+    socket.on('settings:updated', handleSettingsUpdate);
+
+    return () => {
+      socket.off('settings:updated', handleSettingsUpdate);
+    };
+  }, []);
+
   return (
     <SiteContext.Provider value={{ settings, loading }}>
       {children}
@@ -115,3 +131,4 @@ export const SiteProvider = ({ children }) => {
 
 export const useSite = () => useContext(SiteContext);
 export default SiteContext;
+

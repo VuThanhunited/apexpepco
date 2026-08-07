@@ -28,6 +28,8 @@ router.put('/', auth, admin, async (req, res) => {
       Object.assign(settings, req.body);
       await settings.save();
     }
+    // Broadcast to all connected WS clients
+    req.app.get('io')?.emit('settings:updated', settings.toObject());
     res.json(settings);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -47,6 +49,7 @@ router.patch('/:section', auth, admin, async (req, res) => {
       'navLinks', 'siteName', 'siteTagline', 'logo',
       'freeShippingThreshold', 'shippingCost',
       'shopPage', 'aboutPage', 'productDetailPage', 'cartPage', 'checkoutPage',
+      'shippingInfo', 'termsOfService',
     ];
 
     if (!allowedSections.includes(section)) {
@@ -55,6 +58,10 @@ router.patch('/:section', auth, admin, async (req, res) => {
 
     settings[section] = req.body;
     await settings.save();
+
+    // Broadcast updated settings to all connected WS clients
+    req.app.get('io')?.emit('settings:updated', settings.toObject());
+
     res.json({ message: `Section "${section}" updated`, [section]: settings[section] });
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -62,3 +69,4 @@ router.patch('/:section', auth, admin, async (req, res) => {
 });
 
 module.exports = router;
+

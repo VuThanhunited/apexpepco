@@ -285,6 +285,20 @@ const siteSettingsSchema = new mongoose.Schema({
   // ── Free Shipping Threshold ───────────────────────────────
   freeShippingThreshold: { type: Number, default: 250 },
   shippingCost: { type: Number, default: 15 },
+
+  // ── Shipping Info Page ────────────────────────────────────
+  shippingInfo: {
+    processingTime: { type: String, default: 'Orders ship within 24 hours of payment confirmation.' },
+    freeShippingNote: { type: String, default: 'Free shipping on orders over $250.' },
+    packagingNote: { type: String, default: 'Shipped in plain, unmarked packages.' },
+    refundTitle: { type: String, default: 'Refund Policy' },
+    refundBody: { type: String, default: 'Due to the nature of research chemicals, unopened vials can be returned within 14 days of receipt for store credit or replacement.' },
+  },
+
+  // ── Terms of Service ──────────────────────────────────────
+  termsOfService: {
+    body: { type: String, default: 'All products sold are intended strictly for laboratory research use by qualified personnel. Not for human or veterinary administration.' },
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('SiteSettings', siteSettingsSchema);

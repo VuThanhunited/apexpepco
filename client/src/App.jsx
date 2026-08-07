@@ -15,6 +15,7 @@ import Checkout from './pages/Checkout';
 import Cart from './pages/Cart';
 import Account from './pages/Account';
 import About from './pages/About';
+import Policies from './pages/Policies';
 import './App.css';
 
 // Ping backend on startup to prevent Render cold starts
@@ -74,19 +75,7 @@ const App = () => {
                       </form>
                     </div>
                   } />
-                  <Route path="/policies" element={
-                    <div style={{ padding: '4rem 1.5rem', maxWidth: 900, margin: '0 auto' }}>
-                      <h1 style={{ fontSize: '2rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '1.5rem' }}>Store Policies & Information</h1>
-                      <div style={{ background: '#0b0b0c', border: '1px solid #2a2a2c', borderRadius: '0.75rem', padding: '2rem', color: '#8c8c8f', lineHeight: 1.7 }}>
-                        <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>Shipping Info</h3>
-                        <p style={{ marginBottom: '1.5rem' }}>Orders ship within 24 hours of payment confirmation. Free shipping on orders over $250. Shipped in plain, unmarked packages.</p>
-                        <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>Refund Policy</h3>
-                        <p style={{ marginBottom: '1.5rem' }}>Due to the nature of research chemicals, unopened vials can be returned within 14 days of receipt for store credit or replacement.</p>
-                        <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>Terms of Service</h3>
-                        <p>All products sold are intended strictly for laboratory research use by qualified personnel. Not for human or veterinary administration.</p>
-                      </div>
-                    </div>
-                  } />
+                  <Route path="/policies" element={<Policies />} />
                   <Route path="*" element={
                     <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
                       <h1 style={{ color: '#ededed', fontSize: '3rem', fontWeight: 800 }}>404</h1>

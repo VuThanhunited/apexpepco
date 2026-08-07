@@ -1,11 +1,29 @@
 require('dotenv').config();
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 
 const app = express();
+const httpServer = http.createServer(app);
+
+// ── Socket.io ─────────────────────────────────────────────
+const io = new Server(httpServer, {
+  cors: { origin: '*', methods: ['GET', 'POST'] },
+});
+
+io.on('connection', (socket) => {
+  console.log('🔌 WS client connected:', socket.id);
+  socket.on('disconnect', () => {
+    console.log('🔌 WS client disconnected:', socket.id);
+  });
+});
+
+// Export io để routes có thể emit
+app.set('io', io);
 
 // ── Middleware ─────────────────────────────────────────────
 app.use(cors({
@@ -99,9 +117,10 @@ mongoose.connect(MONGODB_URI, {
 })
   .then(() => {
     console.log('✅ MongoDB connected:', mongoose.connection.host);
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    httpServer.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch(err => {
     console.error('❌ MongoDB connection error:', err.message);
     process.exit(1);
   });
+

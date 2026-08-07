@@ -76,7 +76,7 @@ const SiteSettings = () => {
     { id: 'footer', icon: icons.footer, label: 'Footer', desc: 'Description, Disclaimer, Copyright' },
     { id: 'agegate', icon: icons.lock, label: 'Age Gate', desc: 'Age verification modal settings' },
     { id: 'theme', icon: icons.palette, label: 'Theme & SEO', desc: 'Colors, Font, SEO meta tags' },
-    { id: 'shipping', icon: icons.truck, label: 'Shipping', desc: 'Free threshold, Standard cost' },
+    { id: 'shipping', icon: icons.truck, label: 'Shipping & Policies', desc: 'Free threshold, Standard cost, Shipping Info, Terms of Service' },
   ];
 
   const currentPage = pages.find(p => p.id === activePage);
@@ -570,11 +570,41 @@ const SiteSettings = () => {
 
           {/* ═══ SHIPPING ═══ */}
           {activePage === 'shipping' && (
-            <Panel title="Shipping Settings" icon={icons.truck}>
-              <Field label="Free Shipping Threshold ($)"><input type="number" value={settings.freeShippingThreshold || 250} onChange={e => updateRoot('freeShippingThreshold', parseInt(e.target.value))} /></Field>
-              <Field label="Standard Shipping Cost ($)"><input type="number" value={settings.shippingCost || 15} onChange={e => updateRoot('shippingCost', parseInt(e.target.value))} /></Field>
-              <SaveBtn onClick={() => api.patch('/settings/freeShippingThreshold', settings.freeShippingThreshold).then(() => showToast('Saved!')).catch(() => showToast('Error', 'error'))} saving={saving} />
-            </Panel>
+            <>
+              <Panel title="Shipping Settings" icon={icons.truck}>
+                <Field label="Free Shipping Threshold ($)"><input type="number" value={settings.freeShippingThreshold || 250} onChange={e => updateRoot('freeShippingThreshold', parseInt(e.target.value))} /></Field>
+                <Field label="Standard Shipping Cost ($)"><input type="number" value={settings.shippingCost || 15} onChange={e => updateRoot('shippingCost', parseInt(e.target.value))} /></Field>
+                <SaveBtn onClick={() => api.patch('/settings/freeShippingThreshold', settings.freeShippingThreshold).then(() => showToast('Saved!')).catch(() => showToast('Error', 'error'))} saving={saving} />
+              </Panel>
+
+              <Panel title="Shipping Info" icon={icons.truck}>
+                <p className="panel-desc">Nội dung hiển thị ở trang Shipping Info trên website.</p>
+                <Field label="Processing Time">
+                  <textarea rows={2} value={settings.shippingInfo?.processingTime || ''} onChange={e => update('shippingInfo', 'processingTime', e.target.value)} />
+                </Field>
+                <Field label="Free Shipping Note">
+                  <textarea rows={2} value={settings.shippingInfo?.freeShippingNote || ''} onChange={e => update('shippingInfo', 'freeShippingNote', e.target.value)} />
+                </Field>
+                <Field label="Packaging Note">
+                  <textarea rows={2} value={settings.shippingInfo?.packagingNote || ''} onChange={e => update('shippingInfo', 'packagingNote', e.target.value)} />
+                </Field>
+                <Field label="Refund Policy Title">
+                  <input value={settings.shippingInfo?.refundTitle || ''} onChange={e => update('shippingInfo', 'refundTitle', e.target.value)} />
+                </Field>
+                <Field label="Refund Policy Body">
+                  <textarea rows={4} value={settings.shippingInfo?.refundBody || ''} onChange={e => update('shippingInfo', 'refundBody', e.target.value)} />
+                </Field>
+                <SaveBtn onClick={() => saveSection('shippingInfo', settings.shippingInfo)} saving={saving} />
+              </Panel>
+
+              <Panel title="Terms of Service" icon={icons.lock}>
+                <p className="panel-desc">Nội dung hiển thị ở phần Terms of Service trên website.</p>
+                <Field label="Terms of Service Content">
+                  <textarea rows={6} value={settings.termsOfService?.body || ''} onChange={e => update('termsOfService', 'body', e.target.value)} />
+                </Field>
+                <SaveBtn onClick={() => saveSection('termsOfService', settings.termsOfService)} saving={saving} />
+              </Panel>
+            </>
           )}
 
         </div>

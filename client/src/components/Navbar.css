@@ -60,7 +60,7 @@
 }
 
 .nav-logo-svg {
-  height: 52px;
+  height: 38px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
@@ -80,8 +80,17 @@
   line-height: 1;
 }
 
+.nav-logo-apex {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #c4222f;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
 .nav-logo-name {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: #f0f0f0;
   letter-spacing: 0.18em;

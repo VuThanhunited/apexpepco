@@ -1,0 +1,124 @@
+.policies-loading {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.policies-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #2a2a2c;
+  border-top-color: #c4222f;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Page layout ── */
+.policies-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+/* ── Header ── */
+.policies-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.policies-eyebrow {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #c4222f;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(196, 34, 47, 0.35);
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+}
+
+.policies-title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #ededed;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.policies-subtitle {
+  color: #8c8c8f;
+  font-size: 0.95rem;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── Grid ── */
+.policies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* ── Cards ── */
+.policies-card {
+  background: #0d0d0f;
+  border: 1px solid #2a2a2c;
+  border-radius: 0.85rem;
+  padding: 2rem 1.75rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.policies-card:hover {
+  border-color: rgba(196, 34, 47, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.policies-card--full {
+  grid-column: 1 / -1;
+}
+
+.policies-card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.policies-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ededed;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #2a2a2c;
+}
+
+.policies-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.policies-card-body p {
+  color: #8c8c8f;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .policies-grid {
+    grid-template-columns: 1fr;
+  }
+  .policies-card--full {
+    grid-column: auto;
+  }
+}
