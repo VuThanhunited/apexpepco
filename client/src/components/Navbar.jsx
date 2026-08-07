@@ -68,7 +68,10 @@ const Navbar = () => {
             {/* Brand text */}
             <div className="nav-logo-text">
               <span className="nav-logo-apex">APEX</span>
-              <span className="nav-logo-name">PEPCO</span>
+              <div className="nav-logo-pepco">
+                <span className="nav-logo-pep">PEP</span>
+                <span className="nav-logo-co">CO</span>
+              </div>
               <span className="nav-logo-tagline">RESEARCH USE ONLY</span>
             </div>
           </Link>

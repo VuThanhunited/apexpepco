@@ -89,10 +89,25 @@
   line-height: 1;
 }
 
-.nav-logo-name {
+.nav-logo-pepco {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  line-height: 1;
+}
+
+.nav-logo-pep {
   font-size: 0.85rem;
   font-weight: 800;
   color: #f0f0f0;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.nav-logo-co {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #c4222f;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
