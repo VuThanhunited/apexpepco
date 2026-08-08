@@ -5,7 +5,7 @@ import './Footer.css';
 const Footer = () => {
   const { settings } = useSite();
   const footer = settings?.footer;
-  const siteName = settings?.siteName || 'Apex Pepco';
+  const siteName = settings?.siteName || 'Apex Pep Co.';
 
   return (
     <footer className="footer">
