@@ -315,7 +315,21 @@ const SiteSettings = () => {
                 <Field label="Site Name"><input value={settings.siteName || ''} onChange={e => updateRoot('siteName', e.target.value)} /></Field>
                 <Field label="Site Tagline"><input value={settings.siteTagline || ''} onChange={e => updateRoot('siteTagline', e.target.value)} /></Field>
                 <Field label="Logo URL"><input value={settings.logo || ''} onChange={e => updateRoot('logo', e.target.value)} placeholder="https://... or /uploads/..." /></Field>
-                <SaveBtn onClick={() => api.patch('/settings/siteName', settings.siteName).then(() => showToast('General saved!')).catch(() => showToast('Error', 'error'))} saving={saving} />
+                <SaveBtn onClick={async () => {
+                  setSaving(true);
+                  try {
+                    await Promise.all([
+                      api.patch('/settings/siteName', { value: settings.siteName }),
+                      api.patch('/settings/siteTagline', { value: settings.siteTagline }),
+                      api.patch('/settings/logo', { value: settings.logo }),
+                    ]);
+                    showToast('General saved!');
+                  } catch (err) {
+                    showToast(err.response?.data?.message || 'Save failed', 'error');
+                  } finally {
+                    setSaving(false);
+                  }
+                }} saving={saving} />
               </Panel>
 
               <Panel title="Announcement Bar" icon={icons.speaker}>
@@ -572,9 +586,22 @@ const SiteSettings = () => {
           {activePage === 'shipping' && (
             <>
               <Panel title="Shipping Settings" icon={icons.truck}>
-                <Field label="Free Shipping Threshold ($)"><input type="number" value={settings.freeShippingThreshold || 250} onChange={e => updateRoot('freeShippingThreshold', parseInt(e.target.value))} /></Field>
-                <Field label="Standard Shipping Cost ($)"><input type="number" value={settings.shippingCost || 15} onChange={e => updateRoot('shippingCost', parseInt(e.target.value))} /></Field>
-                <SaveBtn onClick={() => api.patch('/settings/freeShippingThreshold', settings.freeShippingThreshold).then(() => showToast('Saved!')).catch(() => showToast('Error', 'error'))} saving={saving} />
+                <Field label="Free Shipping Threshold ($)"><input type="number" value={settings.freeShippingThreshold || 250} onChange={e => updateRoot('freeShippingThreshold', parseInt(e.target.value) || 0)} /></Field>
+                <Field label="Standard Shipping Cost ($)"><input type="number" value={settings.shippingCost || 15} onChange={e => updateRoot('shippingCost', parseInt(e.target.value) || 0)} /></Field>
+                <SaveBtn onClick={async () => {
+                  setSaving(true);
+                  try {
+                    await Promise.all([
+                      api.patch('/settings/freeShippingThreshold', { value: settings.freeShippingThreshold }),
+                      api.patch('/settings/shippingCost', { value: settings.shippingCost }),
+                    ]);
+                    showToast('Saved successfully!');
+                  } catch (err) {
+                    showToast(err.response?.data?.message || 'Save failed', 'error');
+                  } finally {
+                    setSaving(false);
+                  }
+                }} saving={saving} />
               </Panel>
 
               <Panel title="Shipping Info" icon={icons.truck}>

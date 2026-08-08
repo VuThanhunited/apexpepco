@@ -56,7 +56,19 @@ router.patch('/:section', auth, admin, async (req, res) => {
       return res.status(400).json({ message: 'Invalid section' });
     }
 
-    settings[section] = req.body;
+    // Primitive root-level fields (Number or String, not nested objects)
+    const primitiveFields = ['freeShippingThreshold', 'shippingCost', 'siteName', 'siteTagline', 'logo'];
+
+    if (primitiveFields.includes(section)) {
+      // Accept either { value: X } wrapper or raw primitive
+      const val = (req.body !== null && typeof req.body === 'object' && 'value' in req.body)
+        ? req.body.value
+        : req.body;
+      settings[section] = val;
+    } else {
+      settings[section] = req.body;
+    }
+
     await settings.save();
 
     // Broadcast updated settings to all connected WS clients
