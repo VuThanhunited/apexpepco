@@ -17,7 +17,6 @@ import Account from './pages/Account';
 import About from './pages/About';
 import Policies from './pages/Policies';
 import Contact from './pages/Contact';
-import ContactWidget from './components/ContactWidget';
 import './App.css';
 
 // Ping backend on startup to prevent Render cold starts
@@ -89,7 +88,6 @@ const App = () => {
                 </Routes>
               </main>
               <Footer />
-              <ContactWidget />
             </div>
           </CartProvider>
         </AuthProvider>
