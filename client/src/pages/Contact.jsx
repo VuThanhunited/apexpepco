@@ -1,22 +1,28 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../utils/api';
 import './Contact.css';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate form submit — replace with real API call if needed
-    setTimeout(() => {
-      setLoading(false);
+    setError('');
+    try {
+      await api.post('/contact', form);
       setSubmitted(true);
-    }, 1000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -161,6 +167,10 @@ const Contact = () => {
                 >
                   {loading ? 'Sending...' : 'Send Message →'}
                 </button>
+
+                {error && (
+                  <div className="contact-form-error">{error}</div>
+                )}
               </form>
             )}
           </div>
