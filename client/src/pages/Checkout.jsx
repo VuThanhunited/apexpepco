@@ -12,7 +12,7 @@ const Checkout = () => {
   const { user } = useAuth();
 
   const threshold = settings?.freeShippingThreshold || 250;
-  const shippingCost = subtotal >= threshold ? 0 : 12.99;
+  const shippingCost = subtotal >= threshold ? 0 : (settings?.shippingCost || 15);
   const estimatedTax = Number((subtotal * 0.06).toFixed(2));
   const total = subtotal + shippingCost + estimatedTax;
 
