@@ -26,10 +26,8 @@ const Checkout = () => {
     state: user?.state || '',
     zipCode: user?.zipCode || '',
     country: user?.country || 'US',
-    paymentMethod: 'cash_app', // Default matching sample
-    cardNumber: '',
-    cardExp: '',
-    cardCvc: '',
+    paymentMethod: 'cash_app',
+    zelleNote: '',
     couponCode: '',
   });
 
@@ -312,20 +310,22 @@ const Checkout = () => {
               )}
 
               <div className="payment-options-list">
-                {/* Option 1: Credit Card */}
-                <label className={`payment-option-row ${form.paymentMethod === 'credit_card' ? 'selected' : ''}`}>
+
+                {/* Option 1: Zelle */}
+                <label className={`payment-option-row ${form.paymentMethod === 'zelle' ? 'selected' : ''}`}>
                   <input
                     type="radio"
                     name="paymentMethod"
-                    value="credit_card"
-                    checked={form.paymentMethod === 'credit_card'}
+                    value="zelle"
+                    checked={form.paymentMethod === 'zelle'}
                     onChange={set('paymentMethod')}
                   />
                   <div className="payment-option-body">
                     <div className="option-title-line">
-                      <span className="method-name">Credit / Debit Card</span>
+                      <span className="zelle-badge">Z</span>
+                      <span className="method-name">Zelle</span>
                     </div>
-                    <span className="method-sub">Visa, Mastercard, Amex, Discover — secured by Authorize.net</span>
+                    <span className="method-sub">Pay via Zelle to our registered account</span>
                   </div>
                   <span className="radio-circle"></span>
                 </label>
@@ -400,39 +400,22 @@ const Checkout = () => {
                 </div>
               )}
 
-              {form.paymentMethod === 'credit_card' && (
-                <div className="credit-card-inputs-box">
-                  <div className="form-group">
-                    <label>Card Number *</label>
-                    <input
-                      required={form.paymentMethod === 'credit_card'}
-                      placeholder="4532 •••• •••• 8892"
-                      value={form.cardNumber}
-                      onChange={set('cardNumber')}
-                    />
+
+              {form.paymentMethod === 'zelle' && (
+                <div className="payment-instruction-box" style={{ borderColor: '#6c3fa4', background: 'rgba(108,63,164,0.08)' }}>
+                  <div className="instruction-header">
+                    <span className="icon-bolt">⚡</span>
+                    <h3>How Zelle checkout works</h3>
                   </div>
-                  <div className="form-row margin-top-sm">
-                    <div className="form-group">
-                      <label>Expires (MM/YY) *</label>
-                      <input
-                        required={form.paymentMethod === 'credit_card'}
-                        placeholder="12/28"
-                        value={form.cardExp}
-                        onChange={set('cardExp')}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>CVC *</label>
-                      <input
-                        required={form.paymentMethod === 'credit_card'}
-                        placeholder="123"
-                        value={form.cardCvc}
-                        onChange={set('cardCvc')}
-                      />
-                    </div>
-                  </div>
+                  <ol className="instruction-steps">
+                    <li>Click <strong>"Place Order — Pay with Zelle"</strong> below.</li>
+                    <li>Open your banking app and send payment via <strong>Zelle</strong> to our registered account.</li>
+                    <li>Include your Order Reference Number in the memo/note field.</li>
+                    <li>Your order is held as <strong>Pending Payment</strong> — items ship once we confirm the deposit.</li>
+                  </ol>
                 </div>
               )}
+
             </div>
 
             {/* Place Order CTA Button */}
@@ -448,6 +431,8 @@ const Checkout = () => {
                 ? `PLACE ORDER — PAY WITH CASH APP · $${total.toFixed(2)}`
                 : form.paymentMethod === 'venmo'
                 ? `PLACE ORDER — PAY WITH VENMO · $${total.toFixed(2)}`
+                : form.paymentMethod === 'zelle'
+                ? `PLACE ORDER — PAY WITH ZELLE · $${total.toFixed(2)}`
                 : `PLACE ORDER · $${total.toFixed(2)}`
               }
             </button>

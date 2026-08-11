@@ -11,11 +11,8 @@ const CartDrawer = ({ open, isOpen, onClose }) => {
   const drawerOpen = open !== undefined ? open : (isOpen !== undefined ? isOpen : isCartOpen);
   const handleClose = onClose || (() => setIsCartOpen(false));
 
-  const threshold = settings?.freeShippingThreshold || 250;
   const shippingCost = settings?.shippingCost || 15;
-  const remaining = Math.max(0, threshold - subtotal);
-  const shipping = subtotal >= threshold ? 0 : shippingCost;
-  const total = subtotal + shipping;
+  const total = subtotal + shippingCost;
 
   const handleCheckout = () => { handleClose(); navigate('/checkout'); };
 
@@ -28,19 +25,7 @@ const CartDrawer = ({ open, isOpen, onClose }) => {
           <button className="cart-close" id="cart-close-btn" onClick={handleClose}>✕</button>
         </div>
 
-        {remaining > 0 && (
-          <div className="free-ship-bar">
-            <div className="free-ship-text">
-              <span>Add <strong>${remaining.toFixed(2)}</strong> more for free shipping!</span>
-            </div>
-            <div className="free-ship-progress">
-              <div className="free-ship-fill" style={{ width: `${Math.min(100, (subtotal / threshold) * 100)}%` }} />
-            </div>
-          </div>
-        )}
-        {remaining === 0 && items.length > 0 && (
-          <div className="free-ship-earned">🚚 You've earned free shipping!</div>
-        )}
+
 
         <div className="cart-items">
           {items.length === 0 ? (
@@ -84,7 +69,7 @@ const CartDrawer = ({ open, isOpen, onClose }) => {
           <div className="cart-footer">
             <div className="cart-summary">
               <div className="summary-row"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-              <div className="summary-row"><span>Shipping</span><span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span></div>
+              <div className="summary-row"><span>Shipping</span><span>${shippingCost.toFixed(2)}</span></div>
               <div className="summary-row total-row"><span>Total</span><span>${total.toFixed(2)}</span></div>
             </div>
             <button className="btn-checkout" id="cart-checkout-btn" onClick={handleCheckout}>Proceed to Checkout</button>
