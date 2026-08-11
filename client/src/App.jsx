@@ -16,6 +16,7 @@ import Cart from './pages/Cart';
 import Account from './pages/Account';
 import About from './pages/About';
 import Policies from './pages/Policies';
+import Contact from './pages/Contact';
 import ContactWidget from './components/ContactWidget';
 import './App.css';
 
@@ -77,6 +78,7 @@ const App = () => {
                     </div>
                   } />
                   <Route path="/policies" element={<Policies />} />
+                  <Route path="/contact" element={<Contact />} />
                   <Route path="*" element={
                     <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
                       <h1 style={{ color: '#ededed', fontSize: '3rem', fontWeight: 800 }}>404</h1>

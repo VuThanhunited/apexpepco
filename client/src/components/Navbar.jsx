@@ -83,7 +83,7 @@ const Navbar = () => {
             <Link to="/coas" className={`nav-link ${location.pathname === '/coas' ? 'active' : ''}`}>COA LIBRARY</Link>
             <Link to="/policies" className={`nav-link ${location.pathname === '/policies' ? 'active' : ''}`}>SHIPPING</Link>
             <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>ABOUT</Link>
-            <Link to="/wholesale" className={`nav-link ${location.pathname === '/wholesale' ? 'active' : ''}`}>FAQ</Link>
+            <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>CONTACT</Link>
           </nav>
 
           {/* Actions */}
@@ -167,7 +167,7 @@ const Navbar = () => {
             <Link to="/coas" className={`mobile-link ${location.pathname === '/coas' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>COA LIBRARY</Link>
             <Link to="/policies" className={`mobile-link ${location.pathname === '/policies' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>SHIPPING</Link>
             <Link to="/about" className={`mobile-link ${location.pathname === '/about' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>ABOUT</Link>
-            <Link to="/wholesale" className={`mobile-link ${location.pathname === '/wholesale' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
+            <Link to="/contact" className={`mobile-link ${location.pathname === '/contact' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>CONTACT</Link>
           </div>
         )}
       </header>
