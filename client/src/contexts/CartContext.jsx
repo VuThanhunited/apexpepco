@@ -5,7 +5,7 @@ const CartContext = createContext(null);
 export const resolveImageUrl = (img) => {
   if (!img) return '';
   if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('//')) return img;
-  const baseUrl = import.meta.env.VITE_API_URL || 'https://apexpepco.onrender.com';
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://api.apexpepco.com/api';
   const cleanBase = baseUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
   if (img.startsWith('/uploads/')) return `${cleanBase}${img}`;
   if (img.startsWith('/')) return img;

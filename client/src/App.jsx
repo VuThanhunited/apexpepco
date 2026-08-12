@@ -19,8 +19,8 @@ import Policies from './pages/Policies';
 import Contact from './pages/Contact';
 import './App.css';
 
-// Ping backend on startup to prevent Render cold starts
-const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/api$/, '') || 'https://apexpepco.onrender.com';
+// Ping backend on startup
+const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/api$/, '') || 'https://api.apexpepco.com';
 fetch(`${API_BASE}/api/health`, { method: 'GET', cache: 'no-store' }).catch(() => {});
 
 const App = () => {

@@ -9,7 +9,7 @@ const getBaseUrl = () => {
     return '/api';
   }
   // Production fallback API URL
-  return 'https://apexpepco.onrender.com/api';
+  return 'https://api.apexpepco.com/api';
 };
 
 const api = axios.create({
