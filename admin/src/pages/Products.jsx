@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import api from '../utils/api';
 import './Products.css';
 
@@ -17,6 +17,8 @@ const Products = () => {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState(null);
+  const [imageUploading, setImageUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const showToast = (msg, type = 'success') => { setToast({ msg, type }); setTimeout(() => setToast(null), 3000); };
 
@@ -43,6 +45,24 @@ const Products = () => {
   };
 
   const generateSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+  const uploadImage = async (file) => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    setImageUploading(true);
+    try {
+      const res = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setForm(f => ({ ...f, image: res.data.url }));
+      showToast('Ảnh đã được tải lên!', 'success');
+    } catch (err) {
+      showToast('Upload ảnh thất bại', 'error');
+    } finally {
+      setImageUploading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); setSaving(true);
@@ -192,8 +212,48 @@ const Products = () => {
                     </select>
                   </div>
                   <div className="form-field">
-                    <label>Image URL</label>
-                    <input id="pf-image" value={form.image} onChange={e => setForm(f => ({ ...f, image: e.target.value }))} placeholder="/uploads/... or https://..." />
+                    <label>Hình ảnh sản phẩm</label>
+                    <div className="image-upload-area">
+                      {/* Preview */}
+                      {form.image ? (
+                        <div className="image-preview-wrap">
+                          <img
+                            src={form.image.startsWith('/') ? form.image : (form.image.startsWith('http') ? form.image : `/uploads/${form.image}`)}
+                            alt="Preview"
+                            className="image-preview"
+                          />
+                          <button type="button" className="btn-remove-img" onClick={() => { setForm(f => ({ ...f, image: '' })); if (fileInputRef.current) fileInputRef.current.value = ''; }} title="Xoá ảnh">✕</button>
+                        </div>
+                      ) : (
+                        <div className="image-placeholder" onClick={() => fileInputRef.current?.click()}>
+                          <span className="upload-icon">📷</span>
+                          <span>{imageUploading ? 'Đang tải lên...' : 'Nhấn để chọn ảnh'}</span>
+                        </div>
+                      )}
+                      {/* Hidden file input */}
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="pf-image-file"
+                        onChange={e => uploadImage(e.target.files[0])}
+                      />
+                      {/* Action buttons */}
+                      <div className="image-actions">
+                        <button type="button" className="btn-upload-img" onClick={() => fileInputRef.current?.click()} disabled={imageUploading}>
+                          {imageUploading ? '⏳ Đang upload...' : '📂 Chọn từ máy'}
+                        </button>
+                        <span className="or-divider">hoặc</span>
+                        <input
+                          id="pf-image"
+                          className="url-input"
+                          value={form.image}
+                          onChange={e => setForm(f => ({ ...f, image: e.target.value }))}
+                          placeholder="Nhập URL ảnh..."
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="form-row-2">
                     <div className="form-field">
