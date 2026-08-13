@@ -74,12 +74,12 @@ const Account = () => {
                         <div key={i} className="account-order-item-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                           <div style={{ width: 44, height: 44, borderRadius: '0.4rem', background: '#0b0b0c', border: '1px solid #2a2a2c', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <img
-                              src={itemImg || 'https://astroresearch.health/images/tirzepatide.png'}
+                              src={itemImg || '/logo-icon-apex.jpg'}
                               alt={item.productName}
                               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                               onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                                e.target.src = '/logo-icon-apex.jpg';
                               }}
                             />
                           </div>

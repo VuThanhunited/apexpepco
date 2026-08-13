@@ -452,11 +452,11 @@ const Checkout = () => {
                   <div key={item.key} className="summary-item-row">
                     <div className="summary-item-thumb">
                       <img
-                        src={imgUrl || 'https://astroresearch.health/images/tirzepatide.png'}
+                        src={imgUrl || '/logo-icon-apex.jpg'}
                         alt={item.productName}
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                          e.target.src = '/logo-icon-apex.jpg';
                         }}
                       />
                     </div>

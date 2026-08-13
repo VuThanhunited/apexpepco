@@ -35,13 +35,13 @@ const ProductCard = ({ product }) => {
         </div>
 
         <img
-          src={imgUrl || 'https://astroresearch.health/images/tirzepatide.png'}
+          src={imgUrl || '/logo-icon-apex.jpg'}
           alt={product.name}
           loading="lazy"
           className="product-vial-img"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+            e.target.src = '/logo-icon-apex.jpg';
           }}
         />
 

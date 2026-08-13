@@ -39,11 +39,11 @@ const CartDrawer = ({ open, isOpen, onClose }) => {
               <div key={item.key} className="cart-item">
                 <div className="cart-item-img">
                   <img
-                    src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || 'https://astroresearch.health/images/tirzepatide.png'}
+                    src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || '/logo-icon-apex.jpg'}
                     alt={item.productName}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                      e.target.src = '/logo-icon-apex.jpg';
                     }}
                   />
                 </div>

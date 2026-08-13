@@ -24,9 +24,13 @@
   color: #ededed;
   text-transform: uppercase;
 }
-.footer-logo-text::after {
-  content: '.';
-  color: #c4222f;
+
+.footer-logo img,
+.footer-logo-img {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  max-width: 220px;
 }
 
 .footer-brand .footer-logo { margin-bottom: 1rem; }

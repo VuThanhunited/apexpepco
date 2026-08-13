@@ -43,11 +43,11 @@ const Cart = () => {
                   <div className="cart-item-product">
                     <div className="cart-item-thumbnail">
                       <img
-                        src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || 'https://astroresearch.health/images/tirzepatide.png'}
+                        src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || '/logo-icon-apex.jpg'}
                         alt={item.productName}
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = 'https://astroresearch.health/images/tirzepatide.png';
+                          e.target.src = '/logo-icon-apex.jpg';
                         }}
                       />
                     </div>

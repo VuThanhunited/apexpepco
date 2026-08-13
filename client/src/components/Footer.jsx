@@ -5,7 +5,7 @@ import './Footer.css';
 const Footer = () => {
   const { settings } = useSite();
   const footer = settings?.footer;
-  const siteName = settings?.siteName || 'Apex Pep Co.';
+  const siteName = settings?.siteName || 'Apex Pep Co';
 
   return (
     <footer className="footer">
@@ -15,7 +15,7 @@ const Footer = () => {
             <div className="footer-logo">
               {settings?.logo
                 ? <img src={settings.logo} alt={siteName} />
-                : <span className="footer-logo-text">{siteName}</span>
+                : <img src="/logo.jpg" alt={siteName} className="footer-logo-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo-icon-apex.jpg'; }} />
               }
             </div>
             <p className="footer-desc">

@@ -59,17 +59,16 @@
   text-decoration: none;
 }
 
-.nav-logo-svg {
-  height: 38px;
+.nav-logo-img {
+  height: 42px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
-  mix-blend-mode: screen;
   filter: drop-shadow(0 2px 8px rgba(196, 34, 47, 0.4));
   transition: filter 0.2s ease;
 }
 
-.nav-logo:hover .nav-logo-svg {
+.nav-logo:hover .nav-logo-img {
   filter: drop-shadow(0 2px 14px rgba(196, 34, 47, 0.7));
 }
 
