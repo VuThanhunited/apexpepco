@@ -20,6 +20,13 @@ const Products = () => {
   const [imageUploading, setImageUploading] = useState(false);
   const fileInputRef = useRef(null);
 
+  // Bulk update image
+  const [showBulkImage, setShowBulkImage] = useState(false);
+  const [bulkImageUrl, setBulkImageUrl] = useState('');
+  const [bulkUpdating, setBulkUpdating] = useState(false);
+  const bulkFileRef = useRef(null);
+  const [bulkUploading, setBulkUploading] = useState(false);
+
   const showToast = (msg, type = 'success') => { setToast({ msg, type }); setTimeout(() => setToast(null), 3000); };
 
   const fetchProducts = useCallback(async () => {
@@ -90,6 +97,42 @@ const Products = () => {
   };
   const removeVariant = (i) => setForm(f => ({ ...f, variants: f.variants.filter((_, idx) => idx !== i) }));
 
+  const uploadBulkImage = async (file) => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    setBulkUploading(true);
+    try {
+      const res = await api.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setBulkImageUrl(res.data.url);
+      showToast('Ảnh đã được tải lên!', 'success');
+    } catch {
+      showToast('Upload ảnh thất bại', 'error');
+    } finally {
+      setBulkUploading(false);
+    }
+  };
+
+  const handleBulkUpdateImage = async () => {
+    if (!bulkImageUrl.trim()) { showToast('Vui lòng nhập URL ảnh hoặc upload ảnh', 'error'); return; }
+    if (!confirm(`Xác nhận cập nhật ảnh cho TẤT CẢ ${total} sản phẩm?`)) return;
+    setBulkUpdating(true);
+    try {
+      // Fetch all products (no pagination limit)
+      const { data } = await api.get('/products?limit=1000&page=1');
+      const allProducts = data.products || [];
+      await Promise.all(allProducts.map(p => api.put(`/products/${p._id}`, { ...p, image: bulkImageUrl.trim(), category: p.category?._id || p.category || '' })));
+      showToast(`✅ Đã cập nhật ảnh cho ${allProducts.length} sản phẩm!`, 'success');
+      setShowBulkImage(false);
+      setBulkImageUrl('');
+      fetchProducts();
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Bulk update thất bại', 'error');
+    } finally {
+      setBulkUpdating(false);
+    }
+  };
+
   const totalPages = Math.ceil(total / LIMIT);
 
   return (
@@ -101,7 +144,10 @@ const Products = () => {
           <h1>Products <span className="count-badge">{total}</span></h1>
           <p>Manage your research compound catalog</p>
         </div>
-        <button className="btn-admin-primary" onClick={openNew} id="add-product-btn">+ Add Product</button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button className="btn-bulk-img" onClick={() => setShowBulkImage(true)} id="bulk-image-btn" title="Cập nhật ảnh cho tất cả sản phẩm">🖼️ Bulk Image</button>
+          <button className="btn-admin-primary" onClick={openNew} id="add-product-btn">+ Add Product</button>
+        </div>
       </div>
 
       <div className="admin-toolbar">
@@ -303,6 +349,82 @@ const Products = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Image Update Modal */}
+      {showBulkImage && (
+        <div className="admin-modal-overlay" onClick={e => e.target === e.currentTarget && setShowBulkImage(false)}>
+          <div className="admin-modal" style={{ maxWidth: '520px' }}>
+            <div className="admin-modal-header">
+              <h2>🖼️ Bulk Update Product Image</h2>
+              <button className="modal-close" onClick={() => { setShowBulkImage(false); setBulkImageUrl(''); }}>✕</button>
+            </div>
+            <div className="admin-modal-body" style={{ padding: '1.5rem' }}>
+              <p style={{ color: '#8c8c8f', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+                Thao tác này sẽ thay thế ảnh của <strong style={{ color: '#ededed' }}>tất cả {total} sản phẩm</strong> bằng ảnh mới. Không thể hoàn tác.
+              </p>
+
+              {/* Upload from device */}
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 600, color: '#8c8c8f', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '0.5rem' }}>
+                  Upload ảnh từ máy
+                </label>
+                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                  <input ref={bulkFileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => uploadBulkImage(e.target.files[0])} />
+                  <button
+                    type="button"
+                    className="btn-upload-img"
+                    onClick={() => bulkFileRef.current?.click()}
+                    disabled={bulkUploading}
+                    style={{ minWidth: 140 }}
+                  >
+                    {bulkUploading ? '⏳ Đang upload...' : '📂 Chọn ảnh'}
+                  </button>
+                  {bulkImageUrl && <span style={{ fontSize: '0.75rem', color: '#4ade80' }}>✓ Đã có URL</span>}
+                </div>
+              </div>
+
+              {/* Or paste URL */}
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 600, color: '#8c8c8f', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '0.5rem' }}>
+                  Hoặc nhập URL ảnh
+                </label>
+                <input
+                  type="text"
+                  value={bulkImageUrl}
+                  onChange={e => setBulkImageUrl(e.target.value)}
+                  placeholder="https://... hoặc /uploads/..."
+                  style={{ width: '100%', background: '#1a1a1c', border: '1px solid #2a2a2c', borderRadius: '6px', padding: '0.6rem 0.85rem', color: '#ededed', fontSize: '0.85rem', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Preview */}
+              {bulkImageUrl && (
+                <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+                  <img
+                    src={bulkImageUrl}
+                    alt="Preview"
+                    style={{ maxWidth: '180px', maxHeight: '180px', objectFit: 'contain', borderRadius: '8px', background: '#111', border: '1px solid #2a2a2c', padding: '0.5rem' }}
+                    onError={e => { e.target.style.display = 'none'; }}
+                  />
+                  <p style={{ fontSize: '0.72rem', color: '#8c8c8f', marginTop: '0.4rem' }}>Preview ảnh mới</p>
+                </div>
+              )}
+
+              <div className="modal-footer" style={{ paddingTop: '1rem', borderTop: '1px solid #2a2a2c' }}>
+                <button type="button" className="btn-cancel" onClick={() => { setShowBulkImage(false); setBulkImageUrl(''); }}>Hủy</button>
+                <button
+                  type="button"
+                  className="btn-admin-danger"
+                  onClick={handleBulkUpdateImage}
+                  disabled={bulkUpdating || !bulkImageUrl.trim()}
+                >
+                  {bulkUpdating ? '⏳ Đang cập nhật...' : `🔄 Cập nhật tất cả ${total} sản phẩm`}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

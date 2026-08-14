@@ -80,3 +80,66 @@
   transition: all var(--transition-fast);
 }
 .btn-role-toggle:hover { background: rgba(37, 99, 235, 0.12); }
+
+/* Edit user button */
+.btn-edit {
+  background: rgba(37, 99, 235, 0.07); color: var(--accent-primary);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  padding: 0.35rem 0.75rem; border-radius: var(--radius-sm);
+  font-size: 0.75rem; font-weight: 600; cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-edit:hover { background: rgba(37, 99, 235, 0.14); }
+
+/* Edit User Modal */
+.modal-edit-user {
+  width: 100%;
+  max-width: 580px;
+}
+
+.edit-user-avatar-row {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.75rem 0 1.25rem;
+  border-bottom: 1px solid var(--border-default);
+  margin-bottom: 1.25rem;
+}
+
+.user-avatar-circle.large {
+  width: 52px; height: 52px;
+  font-size: 1rem;
+}
+
+.edit-user-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.edit-field {
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+
+.edit-field label {
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+
+.edit-field input,
+.edit-field select {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.85rem;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border var(--transition-fast);
+  width: 100%;
+}
+
+.edit-field input:focus,
+.edit-field select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}

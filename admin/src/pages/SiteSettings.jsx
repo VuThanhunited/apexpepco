@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from '../utils/api';
 import './SiteSettings.css';
 
@@ -8,6 +8,8 @@ const SiteSettings = () => {
   const [saving, setSaving] = useState(false);
   const [activePage, setActivePage] = useState('home');
   const [toast, setToast] = useState(null);
+  const [logoUploading, setLogoUploading] = useState(false);
+  const logoFileRef = useRef(null);
 
   useEffect(() => {
     api.get('/settings').then(({ data }) => setSettings(data)).catch(console.error).finally(() => setLoading(false));
@@ -27,6 +29,22 @@ const SiteSettings = () => {
     } catch (err) {
       showToast(err.response?.data?.message || 'Save failed', 'error');
     } finally { setSaving(false); }
+  };
+
+  const uploadLogo = async (file) => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    setLogoUploading(true);
+    try {
+      const res = await api.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      updateRoot('logo', res.data.url);
+      showToast('Logo uploaded successfully!');
+    } catch {
+      showToast('Upload logo failed', 'error');
+    } finally {
+      setLogoUploading(false);
+    }
   };
 
   const update = (section, key, value) => {
@@ -314,7 +332,21 @@ const SiteSettings = () => {
               <Panel title="Site Identity" icon={icons.settings}>
                 <Field label="Site Name"><input value={settings.siteName || ''} onChange={e => updateRoot('siteName', e.target.value)} /></Field>
                 <Field label="Site Tagline"><input value={settings.siteTagline || ''} onChange={e => updateRoot('siteTagline', e.target.value)} /></Field>
-                <Field label="Logo URL"><input value={settings.logo || ''} onChange={e => updateRoot('logo', e.target.value)} placeholder="https://... or /uploads/..." /></Field>
+                <Field label="Logo">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                    {settings.logo && (
+                      <img src={settings.logo} alt="Logo preview" style={{ maxHeight: 60, maxWidth: 200, objectFit: 'contain', background: '#0b0b0c', borderRadius: 6, padding: '4px 8px', border: '1px solid #2a2a2c' }} />
+                    )}
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                      <input ref={logoFileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => uploadLogo(e.target.files[0])} />
+                      <button type="button" className="btn-add-row" onClick={() => logoFileRef.current?.click()} disabled={logoUploading}>
+                        {logoUploading ? '⏳ Uploading...' : '📂 Upload từ máy'}
+                      </button>
+                      <span style={{ color: '#8c8c8f', fontSize: '0.75rem' }}>hoặc</span>
+                      <input value={settings.logo || ''} onChange={e => updateRoot('logo', e.target.value)} placeholder="https://... or /uploads/..." style={{ flex: 1, minWidth: 180 }} />
+                    </div>
+                  </div>
+                </Field>
                 <SaveBtn onClick={async () => {
                   setSaving(true);
                   try {

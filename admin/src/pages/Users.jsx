@@ -2,6 +2,15 @@ import { useState, useEffect } from 'react';
 import api from '../utils/api';
 import './Users.css';
 
+const emptyEditForm = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  role: 'customer',
+  password: '',
+};
+
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +22,12 @@ const Users = () => {
   const [toast, setToast] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
+
+  // Edit user state
+  const [editUser, setEditUser] = useState(null);
+  const [editForm, setEditForm] = useState(emptyEditForm);
+  const [saving, setSaving] = useState(false);
+
   const LIMIT = 15;
 
   const showToast = (msg, type = 'success') => {
@@ -51,14 +66,51 @@ const Users = () => {
     fetchUsers();
   };
 
-  const handleToggleRole = async (userId, currentRole) => {
-    const newRole = currentRole === 'admin' ? 'customer' : 'admin';
+  const openEdit = (u) => {
+    setEditUser(u);
+    setEditForm({
+      firstName: u.firstName || '',
+      lastName: u.lastName || '',
+      email: u.email || '',
+      phone: u.phone || '',
+      role: u.role || 'customer',
+      password: '',
+    });
+  };
+
+  const closeEdit = () => {
+    setEditUser(null);
+    setEditForm(emptyEditForm);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editUser) return;
+    setSaving(true);
     try {
-      await api.put(`/users/${userId}/role`, { role: newRole });
-      showToast(`User role updated to ${newRole}`);
+      const payload = {
+        firstName: editForm.firstName,
+        lastName: editForm.lastName,
+        email: editForm.email,
+        phone: editForm.phone,
+        role: editForm.role,
+      };
+      // Only include password if filled
+      if (editForm.password && editForm.password.length >= 6) {
+        payload.password = editForm.password;
+      } else if (editForm.password && editForm.password.length > 0) {
+        showToast('Password must be at least 6 characters', 'error');
+        setSaving(false);
+        return;
+      }
+      await api.put(`/users/${editUser._id}`, payload);
+      showToast('User updated successfully!');
+      closeEdit();
       fetchUsers();
     } catch (err) {
       showToast(err.response?.data?.message || 'Update failed', 'error');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -180,11 +232,11 @@ const Users = () => {
                   <td>
                     <div className="table-actions">
                       <button
-                        className="btn-role-toggle"
-                        onClick={() => handleToggleRole(u._id, u.role)}
-                        title="Toggle Admin/Customer role"
+                        className="btn-edit"
+                        onClick={() => openEdit(u)}
+                        title="Edit User"
                       >
-                        {u.role === 'admin' ? 'Demote to Customer' : 'Make Admin'}
+                        ✏️ Edit
                       </button>
 
                       <button
@@ -223,6 +275,95 @@ const Users = () => {
           </div>
         )}
       </div>
+
+      {/* Edit User Modal */}
+      {editUser && (
+        <div className="modal-overlay">
+          <div className="modal-card modal-edit-user">
+            <div className="modal-header">
+              <h2>✏️ Edit User</h2>
+              <button className="modal-close" onClick={closeEdit}>✕</button>
+            </div>
+            <form onSubmit={handleEditSubmit} className="modal-body">
+              <div className="edit-user-avatar-row">
+                <div className="user-avatar-circle large">
+                  {editForm.firstName?.[0] || 'U'}{editForm.lastName?.[0] || ''}
+                </div>
+                <div>
+                  <strong>{editForm.firstName} {editForm.lastName}</strong>
+                  <small style={{ display: 'block', color: '#8c8c8f' }}>ID: {editUser._id.slice(-6)}</small>
+                </div>
+              </div>
+
+              <div className="edit-user-grid">
+                <div className="edit-field">
+                  <label>First Name *</label>
+                  <input
+                    type="text"
+                    value={editForm.firstName}
+                    onChange={e => setEditForm(f => ({ ...f, firstName: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="edit-field">
+                  <label>Last Name *</label>
+                  <input
+                    type="text"
+                    value={editForm.lastName}
+                    onChange={e => setEditForm(f => ({ ...f, lastName: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="edit-field">
+                  <label>Email *</label>
+                  <input
+                    type="email"
+                    value={editForm.email}
+                    onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="edit-field">
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    value={editForm.phone}
+                    onChange={e => setEditForm(f => ({ ...f, phone: e.target.value }))}
+                    placeholder="Optional"
+                  />
+                </div>
+                <div className="edit-field">
+                  <label>Role</label>
+                  <select
+                    value={editForm.role}
+                    onChange={e => setEditForm(f => ({ ...f, role: e.target.value }))}
+                  >
+                    <option value="customer">👤 Customer</option>
+                    <option value="admin">🛡️ Admin</option>
+                  </select>
+                </div>
+                <div className="edit-field">
+                  <label>New Password <span style={{ color: '#8c8c8f', fontWeight: 400 }}>(leave blank to keep current)</span></label>
+                  <input
+                    type="password"
+                    value={editForm.password}
+                    onChange={e => setEditForm(f => ({ ...f, password: e.target.value }))}
+                    placeholder="Min 6 characters"
+                    autoComplete="new-password"
+                  />
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button type="button" className="btn-cancel" onClick={closeEdit}>Cancel</button>
+                <button type="submit" className="btn-admin-primary" disabled={saving}>
+                  {saving ? '⏳ Saving...' : '💾 Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Delete User Modal */}
       {userToDelete && (

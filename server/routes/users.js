@@ -33,6 +33,39 @@ router.put('/:id/role', auth, admin, async (req, res) => {
   }
 });
 
+// PUT /api/users/:id - admin: update full user info
+router.put('/:id', auth, admin, async (req, res) => {
+  try {
+    const { firstName, lastName, email, phone, role, password } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Check email uniqueness if changing
+    if (email && email !== user.email) {
+      const existing = await User.findOne({ email });
+      if (existing) return res.status(400).json({ message: 'Email already in use' });
+      user.email = email;
+    }
+
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (phone !== undefined) user.phone = phone;
+    if (role) user.role = role;
+
+    // Reset password if provided
+    if (password && password.length >= 6) {
+      user.password = password; // pre-save hook will hash it
+    }
+
+    await user.save();
+    const userObj = user.toObject();
+    delete userObj.password;
+    res.json(userObj);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 // DELETE /api/users/:id - admin
 router.delete('/:id', auth, admin, async (req, res) => {
   try {
