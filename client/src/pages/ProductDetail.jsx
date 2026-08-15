@@ -50,12 +50,12 @@ const ProductDetail = () => {
         {/* Image */}
         <div className="product-detail-image">
           <img
-            src={mainImgUrl || '/logo-icon-apex.jpg'}
+            src={mainImgUrl || '/product-default.jpg'}
             alt={product.name}
             className="product-detail-vial-img"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = '/logo-icon-apex.jpg';
+              e.target.src = '/product-default.jpg';
             }}
           />
           {product.purity && <div className="detail-purity-badge">{product.purity} Purity</div>}

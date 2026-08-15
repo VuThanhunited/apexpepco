@@ -43,11 +43,11 @@ const Cart = () => {
                   <div className="cart-item-product">
                     <div className="cart-item-thumbnail">
                       <img
-                        src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || '/logo-icon-apex.jpg'}
+                        src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || '/product-default.jpg'}
                         alt={item.productName}
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = '/logo-icon-apex.jpg';
+                          e.target.src = '/product-default.jpg';
                         }}
                       />
                     </div>

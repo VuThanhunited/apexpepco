@@ -39,11 +39,11 @@ const CartDrawer = ({ open, isOpen, onClose }) => {
               <div key={item.key} className="cart-item">
                 <div className="cart-item-img">
                   <img
-                    src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || '/logo-icon-apex.jpg'}
+                    src={resolveImageUrl(item.productImage || item.imageUrl || item.image) || '/product-default.jpg'}
                     alt={item.productName}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = '/logo-icon-apex.jpg';
+                      e.target.src = '/product-default.jpg';
                     }}
                   />
                 </div>

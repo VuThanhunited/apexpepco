@@ -35,13 +35,13 @@ const ProductCard = ({ product }) => {
         </div>
 
         <img
-          src={imgUrl || '/logo-icon-apex.jpg'}
+          src={imgUrl || '/product-default.jpg'}
           alt={product.name}
           loading="lazy"
           className="product-vial-img"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = '/logo-icon-apex.jpg';
+            e.target.src = '/product-default.jpg';
           }}
         />
 

@@ -452,11 +452,11 @@ const Checkout = () => {
                   <div key={item.key} className="summary-item-row">
                     <div className="summary-item-thumb">
                       <img
-                        src={imgUrl || '/logo-icon-apex.jpg'}
+                        src={imgUrl || '/product-default.jpg'}
                         alt={item.productName}
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = '/logo-icon-apex.jpg';
+                          e.target.src = '/product-default.jpg';
                         }}
                       />
                     </div>

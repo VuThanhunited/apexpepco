@@ -46,7 +46,7 @@ const Navbar = () => {
               className="nav-logo-img"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/logo-icon-apex.jpg';
+                e.target.src = '/logo-icon.jpg';
               }}
             />
             <div className="nav-logo-text">
