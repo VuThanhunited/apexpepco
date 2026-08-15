@@ -10,7 +10,7 @@ const getServerUrl = () => {
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     return 'http://localhost:5000';
   }
-  return 'https://apexpepco.onrender.com';
+  return 'https://api.apexpepco.com';
 };
 
 // Singleton socket instance

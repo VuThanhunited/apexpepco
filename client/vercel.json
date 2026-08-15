@@ -5,7 +5,9 @@
       "destination": "/index.html"
     }
   ],
-  "env": {
-    "VITE_API_URL": "https://api.apexpepco.com"
+  "build": {
+    "env": {
+      "VITE_API_URL": "https://api.apexpepco.com/api"
+    }
   }
 }
