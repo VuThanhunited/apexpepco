@@ -41,12 +41,12 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="nav-logo">
             <img
-              src="/logo-icon-apex.jpg"
+              src="/logo-triangle.png"
               alt="Apex Pep Co"
               className="nav-logo-img"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/logo-icon.jpg';
+                e.target.src = '/logo-icon-apex.jpg';
               }}
             />
             <div className="nav-logo-text">
