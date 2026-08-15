@@ -38,26 +38,17 @@ const Navbar = () => {
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
-          {/* Logo - Image từ file logo */}
+          {/* Logo */}
           <Link to="/" className="nav-logo">
             <img
-              src="/logo-icon-apex.jpg"
+              src="/logo-new.jpg"
               alt="Apex Pep Co"
               className="nav-logo-img"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/logo-icon.jpg';
+                e.target.src = '/logo.jpg';
               }}
             />
-            {/* Brand text */}
-            <div className="nav-logo-text">
-              <span className="nav-logo-apex">APEX</span>
-              <div className="nav-logo-pepco">
-                <span className="nav-logo-pep">PEP</span>
-                <span className="nav-logo-co">CO</span>
-              </div>
-              <span className="nav-logo-tagline">RESEARCH USE ONLY</span>
-            </div>
           </Link>
 
           {/* Desktop Nav Links */}
