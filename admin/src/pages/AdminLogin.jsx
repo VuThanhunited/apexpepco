@@ -26,12 +26,12 @@ const AdminLogin = () => {
       <div className="admin-login-card">
         <div className="admin-login-header">
           <div className="admin-login-logo">
-            {/* Triangle logo SVG - giống logo trên user site */}
-            <svg className="admin-login-logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="22,4 40,38 4,38" fill="#c4222f" opacity="0.95"/>
-              <polygon points="22,14 33,34 11,34" fill="rgba(255,255,255,0.15)"/>
-              <line x1="22" y1="4" x2="22" y2="38" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
-            </svg>
+            <img
+              src="/logo-triangle.png"
+              alt="Apex Pep Co"
+              className="admin-login-logo-icon"
+              onError={e => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }}
+            />
             <div className="admin-login-logo-text">
               <span className="admin-login-logo-apex">APEX</span>
               <div className="admin-login-logo-pepco">
