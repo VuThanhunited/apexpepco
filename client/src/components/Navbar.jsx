@@ -46,9 +46,17 @@ const Navbar = () => {
               className="nav-logo-img"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/logo.jpg';
+                e.target.src = '/logo-icon.jpg';
               }}
             />
+            <div className="nav-logo-text">
+              <span className="nav-logo-apex">APEX</span>
+              <div className="nav-logo-pepco">
+                <span className="nav-logo-pep">PEP</span>
+                <span className="nav-logo-co">CO</span>
+              </div>
+              <span className="nav-logo-tagline">RESEARCH USE ONLY</span>
+            </div>
           </Link>
 
           {/* Desktop Nav Links */}
