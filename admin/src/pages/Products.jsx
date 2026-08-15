@@ -180,7 +180,7 @@ const Products = () => {
                 <tr key={p._id}>
                   <td>
                     <div className="product-cell">
-                      <div className="product-thumb">{p.image ? <img src={p.image.startsWith('/') ? p.image : `/uploads/${p.image}`} alt="" /> : <span>🔬</span>}</div>
+                      <div className="product-thumb">{p.image ? <img src={p.image.startsWith('http') ? p.image : p.image.startsWith('/') ? p.image : `/uploads/${p.image}`} alt="" /> : <span>🔬</span>}</div>
                       <div>
                         <strong>{p.name}</strong>
                         <small>{p.slug}</small>
