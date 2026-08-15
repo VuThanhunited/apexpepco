@@ -105,7 +105,7 @@ const Navbar = () => {
                       <small>{user.email}</small>
                     </div>
                     {user.role === 'admin' && (
-                      <a href="http://localhost:5174" target="_blank" rel="noreferrer" className="user-dropdown-item admin-link">
+                      <a href="https://admin.apexpepco.com" target="_blank" rel="noreferrer" className="user-dropdown-item admin-link">
                         ⚡ Admin CMS Dashboard
                       </a>
                     )}
@@ -137,7 +137,13 @@ const Navbar = () => {
 
         {/* Announcement text strip - hides on scroll, only render after settings loaded */}
         {!siteLoading && annBar?.isVisible !== false && (
-          <div className={`announcement-substrip${annVisible ? '' : ' ann-hidden'}`}>
+          <div
+            className={`announcement-substrip${annVisible ? '' : ' ann-hidden'}`}
+            style={{
+              backgroundColor: annBar?.bgColor || undefined,
+              color: annBar?.textColor || undefined,
+            }}
+          >
             <span>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</span>
           </div>
         )}
