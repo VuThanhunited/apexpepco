@@ -25,9 +25,24 @@ const AdminLogin = () => {
       </div>
       <div className="admin-login-card">
         <div className="admin-login-header">
-          <div className="admin-login-icon">🔬</div>
-          <h1>Apex Pepco</h1>
-          <p>Admin Dashboard</p>
+          <div className="admin-login-logo">
+            {/* Triangle logo SVG - giống logo trên user site */}
+            <svg className="admin-login-logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="22,4 40,38 4,38" fill="#c4222f" opacity="0.95"/>
+              <polygon points="22,14 33,34 11,34" fill="rgba(255,255,255,0.15)"/>
+              <line x1="22" y1="4" x2="22" y2="38" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+            </svg>
+            <div className="admin-login-logo-text">
+              <span className="admin-login-logo-apex">APEX</span>
+              <div className="admin-login-logo-pepco">
+                <span className="admin-login-logo-pep">PEP</span>
+                <span className="admin-login-logo-co">CO</span>
+              </div>
+              <span className="admin-login-logo-tagline">Research Use Only</span>
+            </div>
+          </div>
+          <h1>Admin Dashboard</h1>
+          <p>Restricted to authorized personnel only</p>
         </div>
         {error && <div className="admin-login-error">{error}</div>}
         <form onSubmit={handleSubmit} id="admin-login-form">

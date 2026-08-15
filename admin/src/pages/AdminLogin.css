@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════
-   ADMIN LOGIN - Blue & White
+   ADMIN LOGIN - Dark Navy Theme
+   Đồng bộ với sidebar gradient bên trong
    ═══════════════════════════════════════════ */
 
 .admin-login-page {
@@ -7,53 +8,118 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a0a00 0%, #5a2810 50%, #c8622a 100%);
+  background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 55%, #1e40af 100%);
   position: relative;
   overflow: hidden;
 }
 
+/* Ambient glow */
 .admin-login-bg { position: absolute; inset: 0; pointer-events: none; }
 
 .admin-login-glow {
   position: absolute;
-  width: 500px; height: 500px;
+  width: 600px; height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
-  top: 50%; left: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.18), transparent 65%);
+  top: 40%; left: 55%;
   transform: translate(-50%, -50%);
-  filter: blur(40px);
+  filter: blur(60px);
 }
 
+/* Subtle dot grid */
 .admin-login-grid {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 60px 60px;
+    radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
+/* ── Card ─────────────────────────────────── */
 .admin-login-card {
   position: relative; z-index: 2;
   width: 100%; max-width: 400px; padding: 2.5rem;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.97);
   border-radius: var(--radius-xl);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
   animation: scaleIn 0.4s ease;
+  backdrop-filter: blur(12px);
 }
 
+/* ── Logo ─────────────────────────────────── */
 .admin-login-header { text-align: center; margin-bottom: 2rem; }
-.admin-login-icon {
-  width: 56px; height: 56px;
-  border-radius: var(--radius-md);
-  background: var(--gradient-primary);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;
-  margin: 0 auto 1rem;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-}
-.admin-login-header h1 { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.25rem; }
-.admin-login-header p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
 
+.admin-login-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 auto 1rem;
+  text-decoration: none;
+}
+
+.admin-login-logo-icon {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+}
+
+/* Triangle SVG logo */
+.admin-login-logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.admin-login-logo-apex {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.admin-login-logo-pepco {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.admin-login-logo-pep {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.admin-login-logo-co {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #c4222f;
+  letter-spacing: -0.01em;
+}
+
+.admin-login-logo-tagline {
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.admin-login-header h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0.5rem 0 0.2rem;
+}
+.admin-login-header p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Error ────────────────────────────────── */
 .admin-login-error {
   background: rgba(239, 68, 68, 0.06);
   border: 1px solid rgba(239, 68, 68, 0.15);
@@ -65,6 +131,7 @@
   text-align: center;
 }
 
+/* ── Form ─────────────────────────────────── */
 .admin-form-group { margin-bottom: 1.25rem; }
 .admin-form-group label {
   display: block; font-size: 0.78rem; font-weight: 600;
@@ -83,25 +150,30 @@
 }
 .admin-form-group input:focus {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(200, 98, 42, 0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 .admin-form-group input::placeholder { color: var(--text-muted); }
 
+/* ── Button ───────────────────────────────── */
 .admin-login-btn {
   width: 100%;
   background: var(--gradient-primary);
   color: #ffffff;
   border: none;
-  padding: 0.75rem;
+  padding: 0.78rem;
   border-radius: var(--radius-sm);
   font-size: 0.9rem; font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-normal);
+  display: flex; align-items: center; justify-content: center;
 }
 .admin-login-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(200, 98, 42, 0.3);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
 }
 .admin-login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-.admin-login-note { text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 1.5rem; }
+.admin-login-note {
+  text-align: center; font-size: 0.73rem;
+  color: var(--text-muted); margin-top: 1.5rem;
+}
