@@ -14,7 +14,8 @@ const productSchema = new mongoose.Schema({
   description: { type: String },
   researchInfo: { type: String },
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-  image: { type: String },
+  imageUrl: { type: String }, // primary image URL (used by seed & admin)
+  image: { type: String },   // legacy / uploaded image filename
   images: [{ type: String }],
   variants: [variantSchema],
   basePrice: { type: Number, default: 0 }, // fallback if no variants
