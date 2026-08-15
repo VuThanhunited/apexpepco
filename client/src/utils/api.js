@@ -8,7 +8,7 @@ const getBaseUrl = () => {
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     return '/api';
   }
-  return 'https://apexpepco.onrender.com/api';
+  return 'https://api.apexpepco.com/api';
 };
 
 const api = axios.create({
