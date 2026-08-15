@@ -15,7 +15,16 @@ const Footer = () => {
             <div className="footer-logo">
               {settings?.logo
                 ? <img src={settings.logo} alt={siteName} />
-                : <img src="/logo-triangle.png" alt={siteName} className="footer-logo-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }} />
+                : (
+                  <div className="footer-logo-brand">
+                    <img src="/logo-triangle.png" alt={siteName} className="footer-logo-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }} />
+                    <div className="footer-brand-name">
+                      <span className="footer-brand-apex">APEX</span>
+                      <span className="footer-brand-pepco">PEP CO</span>
+                      <span className="footer-brand-tag">RESEARCH USE ONLY</span>
+                    </div>
+                  </div>
+                )
               }
             </div>
             <p className="footer-desc">
