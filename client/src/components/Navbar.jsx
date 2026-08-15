@@ -41,7 +41,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="nav-logo">
             <img
-              src="/logo-new.jpg"
+              src="/logo-icon-apex.jpg"
               alt="Apex Pep Co"
               className="nav-logo-img"
               onError={(e) => {

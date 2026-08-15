@@ -15,7 +15,7 @@ const Footer = () => {
             <div className="footer-logo">
               {settings?.logo
                 ? <img src={settings.logo} alt={siteName} />
-                : <img src="/logo-new.jpg" alt={siteName} className="footer-logo-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo.jpg'; }} />
+                : <img src="/logo-icon-apex.jpg" alt={siteName} className="footer-logo-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }} />
               }
             </div>
             <p className="footer-desc">
