@@ -54,10 +54,52 @@
   margin-bottom: 2rem;
 }
 
-.auth-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 0 20px rgba(196, 34, 47, 0.6));
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 auto 1.25rem;
+}
+
+.auth-logo-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.auth-logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.auth-logo-apex {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #8c8c8f;
+  text-transform: uppercase;
+}
+
+.auth-logo-pepco {
+  display: flex;
+  align-items: baseline;
+}
+
+.auth-logo-pep {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #ededed;
+  letter-spacing: -0.01em;
+}
+
+.auth-logo-co {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #c4222f;
+  letter-spacing: -0.01em;
 }
 
 .auth-header h1 {

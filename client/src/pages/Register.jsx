@@ -24,7 +24,21 @@ const Register = () => {
       <div className="auth-bg"><div className="auth-glow"></div></div>
       <div className="auth-card">
         <div className="auth-header">
-          <div className="auth-icon">🧪</div>
+          <div className="auth-logo">
+            <img
+              src="/logo-triangle.png"
+              alt="Apex Pep Co"
+              className="auth-logo-img"
+              onError={e => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }}
+            />
+            <div className="auth-logo-text">
+              <span className="auth-logo-apex">APEX</span>
+              <div className="auth-logo-pepco">
+                <span className="auth-logo-pep">PEP</span>
+                <span className="auth-logo-co">CO</span>
+              </div>
+            </div>
+          </div>
           <h1>Create Account</h1>
           <p>Join our research community</p>
         </div>
