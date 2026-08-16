@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSite } from '../contexts/SiteContext';
 import ProductCard from '../components/ProductCard';
 import api from '../utils/api';
-import { getCached, setCached } from '../utils/cache';
+
 import './Home.css';
 
 const Home = () => {
@@ -14,24 +14,13 @@ const Home = () => {
   // Load products INDEPENDENTLY — does not wait for siteLoading
   useEffect(() => {
     const fetchFeatured = async () => {
-      const cacheKey = 'products:featured:8';
-
-      // 1. Show cached data immediately (instant)
-      const cached = getCached(cacheKey);
-      if (cached) {
-        setFeaturedProducts(cached);
-        setProductsLoading(false);
-        return;
-      }
-
-      // 2. Fetch from API — single call with fallback in one request
+      // Fetch fresh data — not cached, to always reflect latest admin changes
       try {
         const { data } = await api.get('/products?limit=8');
         const prods = data.products || (Array.isArray(data) ? data : []);
         // Sort: featured first, then rest
         const sorted = [...prods].sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
         setFeaturedProducts(sorted);
-        setCached(cacheKey, sorted); // cache for 5 minutes
       } catch (err) {
         console.error('Error fetching products:', err);
       } finally {

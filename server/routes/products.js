@@ -31,8 +31,8 @@ router.get('/', async (req, res) => {
       Product.countDocuments(query),
     ]);
 
-    // Cache for 5 minutes in browser, 10 minutes on CDN/proxy
-    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+    // No cache — always serve fresh product data so admin changes reflect immediately
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.json({ products, total, page: parseInt(page), totalPages: Math.ceil(total / parseInt(limit)) });
   } catch (err) {
     res.status(500).json({ message: err.message });

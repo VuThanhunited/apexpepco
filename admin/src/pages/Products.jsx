@@ -2,6 +2,16 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import api from '../utils/api';
 import './Products.css';
 
+// Resolve image URL for admin display (prepend API base for /uploads/ paths)
+const API_BASE = (import.meta.env.VITE_API_URL || 'https://api.apexpepco.com/api').replace(/\/api\/?$/, '').replace(/\/$/, '');
+const resolveAdminImageUrl = (img) => {
+  if (!img) return '';
+  if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('//')) return img;
+  if (img.startsWith('/uploads/')) return `${API_BASE}${img}`;
+  if (img.startsWith('/')) return img;
+  return `${API_BASE}/uploads/${img}`;
+};
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -13,7 +23,7 @@ const Products = () => {
   const [total, setTotal] = useState(0);
   const LIMIT = 15;
 
-  const emptyForm = { name: '', slug: '', shortDescription: '', description: '', researchInfo: '', category: '', image: '', basePrice: 0, purity: '99%+', isFeatured: false, inStock: true, variants: [], tags: '' };
+  const emptyForm = { name: '', slug: '', shortDescription: '', description: '', researchInfo: '', category: '', image: '', imageUrl: '', basePrice: 0, purity: '99%+', isFeatured: false, inStock: true, variants: [], tags: '' };
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState(null);
@@ -62,7 +72,8 @@ const Products = () => {
       const res = await api.post('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setForm(f => ({ ...f, image: res.data.url }));
+      // Lưu vào cả image và imageUrl để client hiển thị đúng
+      setForm(f => ({ ...f, image: res.data.url, imageUrl: res.data.url }));
       showToast('Ảnh đã được tải lên!', 'success');
     } catch (err) {
       showToast('Upload ảnh thất bại', 'error');
@@ -74,7 +85,9 @@ const Products = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); setSaving(true);
     try {
-      const payload = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()) : [] };
+      const imageVal = form.image || form.imageUrl || '';
+      // Luôn đồng bộ imageUrl = image để client ưu tiên đúng field
+      const payload = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()) : [], image: imageVal, imageUrl: imageVal };
       if (editing) await api.put(`/products/${editing}`, payload);
       else await api.post('/products', payload);
       showToast(editing ? 'Product updated!' : 'Product created!');
@@ -121,7 +134,13 @@ const Products = () => {
       // Fetch all products (no pagination limit)
       const { data } = await api.get('/products?limit=1000&page=1');
       const allProducts = data.products || [];
-      await Promise.all(allProducts.map(p => api.put(`/products/${p._id}`, { ...p, image: bulkImageUrl.trim(), category: p.category?._id || p.category || '' })));
+      // Update both image AND imageUrl, clear imageUrl cũ để tránh bị override
+      await Promise.all(allProducts.map(p => api.put(`/products/${p._id}`, {
+        ...p,
+        image: bulkImageUrl.trim(),
+        imageUrl: bulkImageUrl.trim(),  // cập nhật cả imageUrl để client ưu tiên field này
+        category: p.category?._id || p.category || ''
+      })));
       showToast(`✅ Đã cập nhật ảnh cho ${allProducts.length} sản phẩm!`, 'success');
       setShowBulkImage(false);
       setBulkImageUrl('');
@@ -180,7 +199,7 @@ const Products = () => {
                 <tr key={p._id}>
                   <td>
                     <div className="product-cell">
-                      <div className="product-thumb">{p.image ? <img src={p.image.startsWith('http') ? p.image : p.image.startsWith('/') ? p.image : `/uploads/${p.image}`} alt="" /> : <span>🔬</span>}</div>
+                      <div className="product-thumb">{(p.imageUrl || p.image) ? <img src={resolveAdminImageUrl(p.imageUrl || p.image)} alt="" onError={e => { e.target.onerror=null; e.target.style.display='none'; e.target.nextSibling && (e.target.nextSibling.style.display='inline'); }} /> : null}<span style={{display: (p.imageUrl || p.image) ? 'none' : 'inline'}}>🔬</span></div>
                       <div>
                         <strong>{p.name}</strong>
                         <small>{p.slug}</small>
@@ -264,11 +283,11 @@ const Products = () => {
                       {form.image ? (
                         <div className="image-preview-wrap">
                           <img
-                            src={form.image.startsWith('/') ? form.image : (form.image.startsWith('http') ? form.image : `/uploads/${form.image}`)}
+                            src={resolveAdminImageUrl(form.image)}
                             alt="Preview"
                             className="image-preview"
                           />
-                          <button type="button" className="btn-remove-img" onClick={() => { setForm(f => ({ ...f, image: '' })); if (fileInputRef.current) fileInputRef.current.value = ''; }} title="Xoá ảnh">✕</button>
+                          <button type="button" className="btn-remove-img" onClick={() => { setForm(f => ({ ...f, image: '', imageUrl: '' })); if (fileInputRef.current) fileInputRef.current.value = ''; }} title="Xoá ảnh">✕</button>
                         </div>
                       ) : (
                         <div className="image-placeholder" onClick={() => fileInputRef.current?.click()}>
@@ -294,8 +313,8 @@ const Products = () => {
                         <input
                           id="pf-image"
                           className="url-input"
-                          value={form.image}
-                          onChange={e => setForm(f => ({ ...f, image: e.target.value }))}
+                          value={form.image || form.imageUrl || ''}
+                          onChange={e => setForm(f => ({ ...f, image: e.target.value, imageUrl: e.target.value }))}
                           placeholder="Nhập URL ảnh..."
                         />
                       </div>
