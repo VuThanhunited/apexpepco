@@ -40,7 +40,7 @@ const AgeGate = () => {
       <div className="age-gate-modal">
         {/* Brand Header */}
         <div className="age-gate-brand">
-          <Logo showTagline={false} className="age-gate-logo" />
+          <Logo variant="stacked" showTagline={true} />
           <p className="age-gate-tagline">
             {settings?.siteTagline || 'Free Yourself from Untested/Overpriced Peptides'}
           </p>

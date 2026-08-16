@@ -1,43 +1,65 @@
-import './Logo.css';
+﻿import './Logo.css';
 
 /**
  * Logo component – single source of truth for the brand logo.
- * Use this everywhere a logo is needed so a single change here
- * propagates to all locations (Navbar, AgeGate, Login, Register, Footer, etc.).
  *
  * Props:
- *   className  – extra class(es) for the wrapper element
- *   imgClass   – extra class(es) for the triangle <img>
- *   textClass  – extra class(es) for the text block div
- *   showTagline – whether to show the "RESEARCH USE ONLY" tagline (default: true)
+ *   variant     – "inline" (navbar, horizontal) | "stacked" (agegate, login, centered)
+ *   className   – extra class(es) for the wrapper element
+ *   showTagline – whether to show "RESEARCH USE ONLY" (default: true)
  */
 const Logo = ({
+  variant = 'inline',
   className = '',
-  imgClass = '',
-  textClass = '',
   showTagline = true,
-}) => (
-  <div className={`logo-brand ${className}`.trim()}>
-    <img
-      src="/logo-triangle.png"
-      alt="Apex Pep Co"
-      className={`logo-brand-img ${imgClass}`.trim()}
-      onError={(e) => {
-        e.target.onerror = null;
-        e.target.src = '/logo-icon.jpg';
-      }}
-    />
-    <div className={`logo-brand-text ${textClass}`.trim()}>
-      <span className="logo-brand-apex">APEX</span>
-      <div className="logo-brand-pepco">
-        <span className="logo-brand-pep">PEP</span>
-        <span className="logo-brand-co">CO</span>
+}) => {
+  if (variant === 'stacked') {
+    return (
+      <div className={`logo-stacked ${className}`.trim()}>
+        <img
+          src="/logo-triangle.png"
+          alt="Apex Pep Co"
+          className="logo-stacked-img"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = '/logo-icon.jpg';
+          }}
+        />
+        <div className="logo-stacked-name">APEX PEP CO</div>
+        {showTagline && (
+          <>
+            <div className="logo-stacked-divider" />
+            <div className="logo-stacked-tagline">RESEARCH USE ONLY</div>
+          </>
+        )}
       </div>
-      {showTagline && (
-        <span className="logo-brand-tagline">RESEARCH USE ONLY</span>
-      )}
+    );
+  }
+
+  // Default: inline (horizontal) – used in Navbar
+  return (
+    <div className={`logo-brand ${className}`.trim()}>
+      <img
+        src="/logo-triangle.png"
+        alt="Apex Pep Co"
+        className="logo-brand-img"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = '/logo-icon.jpg';
+        }}
+      />
+      <div className="logo-brand-text">
+        <span className="logo-brand-apex">APEX</span>
+        <div className="logo-brand-pepco">
+          <span className="logo-brand-pep">PEP</span>
+          <span className="logo-brand-co">CO</span>
+        </div>
+        {showTagline && (
+          <span className="logo-brand-tagline">RESEARCH USE ONLY</span>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Logo;

@@ -69,3 +69,48 @@
   text-transform: uppercase;
   margin-top: 2px;
 }
+
+/* -------------------------------------------------
+   Stacked variant  (AgeGate, Login, Register)
+   Layout: image -> "APEX PEP CO" -> divider -> tagline
+   ------------------------------------------------- */
+
+.logo-stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.logo-stacked-img {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 0.6rem;
+  filter: drop-shadow(0 2px 8px rgba(196, 34, 47, 0.25));
+}
+
+.logo-stacked-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.logo-stacked-divider {
+  width: 100%;
+  height: 1px;
+  background: #c4222f;
+  margin: 0.45rem 0 0.4rem;
+  opacity: 0.5;
+}
+
+.logo-stacked-tagline {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: #777;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
