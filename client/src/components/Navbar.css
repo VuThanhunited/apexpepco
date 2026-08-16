@@ -59,66 +59,17 @@
   text-decoration: none;
 }
 
-.nav-logo-img {
+/* Logo image – shared styles are in Logo.css (.logo-brand-*)
+   Override size / shadow for Navbar context if needed */
+.nav-logo .logo-brand-img {
   height: 44px;
-  width: auto;
-  object-fit: contain;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px rgba(196, 34, 47, 0.35));
-  transition: filter 0.2s ease;
 }
 
-.nav-logo:hover .nav-logo-img {
-  filter: drop-shadow(0 2px 14px rgba(196, 34, 47, 0.6));
-}
-
-.nav-logo-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  line-height: 1;
-}
-
-.nav-logo-apex {
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: #c4222f;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-.nav-logo-pepco {
-  display: flex;
-  align-items: baseline;
-  gap: 0.35em;
-  line-height: 1;
-}
-
-.nav-logo-pep {
-  font-size: 0.85rem;
-  font-weight: 800;
+/* Dark background override: keep text white in navbar */
+.nav-logo .logo-brand-pep {
   color: #f0f0f0;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 
-.nav-logo-co {
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #c4222f;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.nav-logo-tagline {
-  font-size: 0.52rem;
-  font-weight: 500;
-  color: #888;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
 
 .nav-links-desktop {
   display: flex;

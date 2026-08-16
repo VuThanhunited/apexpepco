@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSite } from '../contexts/SiteContext';
+import Logo from './Logo';
 import './AgeGate.css';
 
 const AGE_GATE_KEY = 'apex_age_verified';
@@ -39,11 +40,7 @@ const AgeGate = () => {
       <div className="age-gate-modal">
         {/* Brand Header */}
         <div className="age-gate-brand">
-          <img
-            src="/logo.jpg"
-            alt="APEX PEP CO"
-            className="age-gate-logo-img"
-          />
+          <Logo showTagline={false} className="age-gate-logo" />
           <p className="age-gate-tagline">
             {settings?.siteTagline || 'Free Yourself from Untested/Overpriced Peptides'}
           </p>

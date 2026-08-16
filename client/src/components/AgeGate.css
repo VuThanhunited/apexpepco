@@ -42,11 +42,22 @@
   margin-bottom: 1.25rem;
 }
 
-.age-gate-logo-img {
-  width: 260px;
-  height: auto;
-  object-fit: contain;
-  margin-bottom: 0.75rem;
+.age-gate-logo {
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.age-gate-logo .logo-brand-img {
+  height: 56px;
+}
+
+/* AgeGate is light background - override text colors */
+.age-gate-logo .logo-brand-pep {
+  color: #1a1a1a;
+}
+
+.age-gate-logo .logo-brand-tagline {
+  color: #666;
 }
 
 

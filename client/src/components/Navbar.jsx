@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
+import Logo from './Logo';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -12,7 +13,6 @@ const Navbar = () => {
   const location = useLocation();
 
   const [scrolled, setScrolled] = useState(false);
-  const [annVisible, setAnnVisible] = useState(() => window.scrollY < 60);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
@@ -20,13 +20,12 @@ const Navbar = () => {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
-      setAnnVisible(y < 60); // hide after scrolling 60px
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const annBar = settings?.announcementBar;
+
 
   const handleCartClick = (e) => {
     e.preventDefault();
@@ -40,23 +39,7 @@ const Navbar = () => {
         <div className="nav-container">
           {/* Logo */}
           <Link to="/" className="nav-logo">
-            <img
-              src="/logo-triangle.png"
-              alt="Apex Pep Co"
-              className="nav-logo-img"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = '/logo-icon.jpg';
-              }}
-            />
-            <div className="nav-logo-text">
-              <span className="nav-logo-apex">APEX</span>
-              <div className="nav-logo-pepco">
-                <span className="nav-logo-pep">PEP</span>
-                <span className="nav-logo-co">CO</span>
-              </div>
-              <span className="nav-logo-tagline">RESEARCH USE ONLY</span>
-            </div>
+            <Logo showTagline={true} />
           </Link>
 
           {/* Desktop Nav Links */}
@@ -135,18 +118,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Announcement text strip - hides on scroll, only render after settings loaded */}
-        {!siteLoading && annBar?.isVisible !== false && (
-          <div
-            className={`announcement-substrip${annVisible ? '' : ' ann-hidden'}`}
-            style={{
-              backgroundColor: annBar?.bgColor || undefined,
-              color: annBar?.textColor || undefined,
-            }}
-          >
-            <span>{annBar?.text || 'FREE SHIPPING ON ORDERS $250+ | FOR RESEARCH USE ONLY'}</span>
-          </div>
-        )}
+
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (

@@ -1,0 +1,71 @@
+﻿/* ─────────────────────────────────────────────────
+   Logo – shared brand mark component
+   Used in: Navbar, AgeGate, Login, Register, Footer
+   ───────────────────────────────────────────────── */
+
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.logo-brand-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(196, 34, 47, 0.35));
+  transition: filter 0.2s ease;
+}
+
+.logo-brand:hover .logo-brand-img {
+  filter: drop-shadow(0 2px 14px rgba(196, 34, 47, 0.6));
+}
+
+.logo-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 1;
+}
+
+.logo-brand-apex {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #c4222f;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.logo-brand-pepco {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  line-height: 1;
+}
+
+.logo-brand-pep {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.logo-brand-co {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #c4222f;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.logo-brand-tagline {
+  font-size: 0.52rem;
+  font-weight: 500;
+  color: #888;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
