@@ -292,8 +292,10 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 2rem;
+  padding: 1.25rem;
   animation: fadeIn 0.2s ease;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .modal-card,
@@ -302,15 +304,17 @@
   border: 1px solid var(--border-default);
   border-radius: var(--radius-xl);
   width: 100%;
-  max-height: 90vh;
+  max-width: min(900px, calc(100vw - 2.5rem));
+  max-height: calc(100vh - 2.5rem);
   overflow-y: auto;
+  overflow-x: hidden;
   animation: scaleIn 0.25s ease;
   box-shadow: var(--shadow-lg);
 }
 
-.modal-sm { max-width: 450px; }
-.modal-lg { max-width: 800px; }
-.admin-modal { max-width: 900px; }
+.modal-sm { max-width: min(450px, calc(100vw - 2.5rem)); }
+.modal-lg { max-width: min(800px, calc(100vw - 2.5rem)); }
+.admin-modal { max-width: min(860px, calc(100vw - 2.5rem)); }
 
 .modal-header,
 .admin-modal-header {
@@ -350,7 +354,8 @@
 
 .modal-body,
 .admin-modal-body {
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  overflow-x: hidden;
 }
 
 .modal-footer {
@@ -366,13 +371,17 @@
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  min-width: 0;
+  width: 100%;
 }
 
 .form-col {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.85rem;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .form-field {
@@ -400,6 +409,9 @@
   font-size: 0.875rem;
   transition: all var(--transition-fast);
   outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .form-field input:focus,
