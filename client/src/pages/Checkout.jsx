@@ -506,10 +506,7 @@ const Checkout = () => {
               <span className="total-price">${total.toFixed(2)}</span>
             </div>
 
-            {/* Reward Points Pill */}
-            <div className="rewards-points-badge">
-              <span>✦ You'll earn +{Math.round(total)} points with this order</span>
-            </div>
+
           </div>
         </div>
       </div>

@@ -61,6 +61,7 @@ const SiteSettings = () => {
   // SVG icon components - clean monochrome style
   const icons = {
     home: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+    contact: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.86-.86a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 16z"/></svg>,
     shop: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
     about: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>,
     product: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
@@ -90,6 +91,7 @@ const SiteSettings = () => {
     { id: 'product', icon: icons.product, label: 'Product Detail', desc: 'Related products title, Add to Cart text' },
     { id: 'cart', icon: icons.cart, label: 'Cart Page', desc: 'Cart title, empty state, button texts' },
     { id: 'checkout', icon: icons.checkout, label: 'Checkout Page', desc: 'Checkout title, success messages' },
+    { id: 'contact', icon: icons.contact, label: 'Contact Page', desc: 'Hero, info cards, form texts, colors' },
     { id: 'header', icon: icons.header, label: 'Header & Nav', desc: 'Logo, Site Name, Announcement Bar' },
     { id: 'footer', icon: icons.footer, label: 'Footer', desc: 'Description, Disclaimer, Copyright' },
     { id: 'agegate', icon: icons.lock, label: 'Age Gate', desc: 'Age verification modal settings' },
@@ -324,6 +326,138 @@ const SiteSettings = () => {
               </div>
               <SaveBtn onClick={() => saveSection('checkoutPage', settings.checkoutPage)} saving={saving} />
             </Panel>
+          )}
+
+          {/* ═══ CONTACT PAGE ═══ */}
+          {activePage === 'contact' && (
+            <>
+              <Panel title="Hero Section" icon={icons.contact}>
+                <Field label="Eyebrow Text"><input value={settings.contactPage?.eyebrow || ''} onChange={e => update('contactPage', 'eyebrow', e.target.value)} /></Field>
+                <Field label="Page Title"><input value={settings.contactPage?.title || ''} onChange={e => update('contactPage', 'title', e.target.value)} /></Field>
+                <Field label="Subtitle"><textarea rows={3} value={settings.contactPage?.subtitle || ''} onChange={e => update('contactPage', 'subtitle', e.target.value)} /></Field>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+
+              <Panel title="Email Card" icon={icons.settings}>
+                <Field label="Title"><input value={settings.contactPage?.emailTitle || ''} onChange={e => update('contactPage', 'emailTitle', e.target.value)} /></Field>
+                <Field label="Description"><input value={settings.contactPage?.emailDesc || ''} onChange={e => update('contactPage', 'emailDesc', e.target.value)} /></Field>
+                <Field label="Email Address"><input value={settings.contactPage?.emailAddress || ''} onChange={e => update('contactPage', 'emailAddress', e.target.value)} /></Field>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+
+              <Panel title="SMS / Text Card" icon={icons.settings}>
+                <Field label="Title"><input value={settings.contactPage?.smsTitle || ''} onChange={e => update('contactPage', 'smsTitle', e.target.value)} /></Field>
+                <Field label="Description"><input value={settings.contactPage?.smsDesc || ''} onChange={e => update('contactPage', 'smsDesc', e.target.value)} /></Field>
+                <Field label="Phone Number (display)"><input value={settings.contactPage?.smsNumber || ''} onChange={e => update('contactPage', 'smsNumber', e.target.value)} /></Field>
+                <Field label="SMS Link (href)"><input value={settings.contactPage?.smsHref || ''} onChange={e => update('contactPage', 'smsHref', e.target.value)} placeholder="sms:+1234567890" /></Field>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+
+              <Panel title="Telegram Card" icon={icons.settings}>
+                <Field label="Title"><input value={settings.contactPage?.telegramTitle || ''} onChange={e => update('contactPage', 'telegramTitle', e.target.value)} /></Field>
+                <Field label="Description"><input value={settings.contactPage?.telegramDesc || ''} onChange={e => update('contactPage', 'telegramDesc', e.target.value)} /></Field>
+                <Field label="Handle (display)"><input value={settings.contactPage?.telegramHandle || ''} onChange={e => update('contactPage', 'telegramHandle', e.target.value)} placeholder="@apexpepco" /></Field>
+                <Field label="Telegram Link (href)"><input value={settings.contactPage?.telegramHref || ''} onChange={e => update('contactPage', 'telegramHref', e.target.value)} placeholder="https://t.me/..." /></Field>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+
+              <Panel title="Response Time Card" icon={icons.settings}>
+                <Field label="Title"><input value={settings.contactPage?.responseTitle || ''} onChange={e => update('contactPage', 'responseTitle', e.target.value)} /></Field>
+                <Field label="Response Text"><textarea rows={2} value={settings.contactPage?.responseText || ''} onChange={e => update('contactPage', 'responseText', e.target.value)} /></Field>
+                <Field label="Note (weekend)"><input value={settings.contactPage?.responseNote || ''} onChange={e => update('contactPage', 'responseNote', e.target.value)} /></Field>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+
+              <Panel title="Contact Form" icon={icons.settings}>
+                <Field label="Form Title"><input value={settings.contactPage?.formTitle || ''} onChange={e => update('contactPage', 'formTitle', e.target.value)} /></Field>
+                <Field label="Form Description"><input value={settings.contactPage?.formDesc || ''} onChange={e => update('contactPage', 'formDesc', e.target.value)} /></Field>
+                <Field label="Submit Button Text"><input value={settings.contactPage?.submitBtnText || ''} onChange={e => update('contactPage', 'submitBtnText', e.target.value)} /></Field>
+                <div className="field-section">
+                  <h4>Success State</h4>
+                  <Field label="Success Title"><input value={settings.contactPage?.successTitle || ''} onChange={e => update('contactPage', 'successTitle', e.target.value)} /></Field>
+                  <Field label="Success Text"><textarea rows={2} value={settings.contactPage?.successText || ''} onChange={e => update('contactPage', 'successText', e.target.value)} /></Field>
+                  <Field label="Reset Button Text"><input value={settings.contactPage?.resetBtnText || ''} onChange={e => update('contactPage', 'resetBtnText', e.target.value)} /></Field>
+                </div>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+
+              <Panel title="Bottom CTA Section" icon={icons.megaphone}>
+                <Field label="CTA Title"><input value={settings.contactPage?.ctaTitle || ''} onChange={e => update('contactPage', 'ctaTitle', e.target.value)} /></Field>
+                <Field label="CTA Text"><textarea rows={2} value={settings.contactPage?.ctaText || ''} onChange={e => update('contactPage', 'ctaText', e.target.value)} /></Field>
+                <Field label="Browse Catalog Button Text"><input value={settings.contactPage?.ctaBrowseText || ''} onChange={e => update('contactPage', 'ctaBrowseText', e.target.value)} /></Field>
+                <Field label="Shipping Info Button Text"><input value={settings.contactPage?.ctaShippingText || ''} onChange={e => update('contactPage', 'ctaShippingText', e.target.value)} /></Field>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+
+              <Panel title="Colors" icon={icons.palette}>
+                <p className="panel-desc">Tùy chỉnh màu sắc cho trang Contact Us.</p>
+                <div className="color-group">
+                  <h4 className="color-group-title">🎨 Page &amp; Hero</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'pageBg',        label: 'Nền trang' },
+                      { key: 'eyebrowColor',  label: 'Màu Eyebrow' },
+                      { key: 'titleColor',    label: 'Màu Tiêu đề' },
+                      { key: 'subtitleColor', label: 'Màu Phụ đề' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label}
+                        value={settings.contactPage?.[key] || '#000000'}
+                        onChange={v => update('contactPage', key, v)} />
+                    ))}
+                  </div>
+                </div>
+                <div className="color-group">
+                  <h4 className="color-group-title">📇 Info Cards</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'cardBg',          label: 'Nền card' },
+                      { key: 'cardBorderColor', label: 'Viền card' },
+                      { key: 'cardTitleColor',  label: 'Tiêu đề card' },
+                      { key: 'cardTextColor',   label: 'Chữ card' },
+                      { key: 'linkColor',       label: 'Màu link' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label}
+                        value={settings.contactPage?.[key] || '#000000'}
+                        onChange={v => update('contactPage', key, v)} />
+                    ))}
+                  </div>
+                </div>
+                <div className="color-group">
+                  <h4 className="color-group-title">📝 Form</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'formBg',           label: 'Nền form' },
+                      { key: 'formBorderColor',  label: 'Viền form' },
+                      { key: 'formTitleColor',   label: 'Tiêu đề form' },
+                      { key: 'inputBg',          label: 'Nền input' },
+                      { key: 'inputBorderColor', label: 'Viền input' },
+                      { key: 'inputTextColor',   label: 'Chữ input' },
+                      { key: 'submitBtnBg',      label: 'Nút submit - Nền' },
+                      { key: 'submitBtnText2',   label: 'Nút submit - Chữ' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label}
+                        value={settings.contactPage?.[key] || '#000000'}
+                        onChange={v => update('contactPage', key, v)} />
+                    ))}
+                  </div>
+                </div>
+                <div className="color-group">
+                  <h4 className="color-group-title">📢 Bottom CTA</h4>
+                  <div className="color-grid">
+                    {[
+                      { key: 'ctaBg',        label: 'Nền CTA' },
+                      { key: 'ctaTitleColor', label: 'Tiêu đề CTA' },
+                      { key: 'ctaTextColor',  label: 'Chữ CTA' },
+                    ].map(({ key, label }) => (
+                      <ColorSwatch key={key} label={label}
+                        value={settings.contactPage?.[key] || '#000000'}
+                        onChange={v => update('contactPage', key, v)} />
+                    ))}
+                  </div>
+                </div>
+                <SaveBtn onClick={() => saveSection('contactPage', settings.contactPage)} saving={saving} />
+              </Panel>
+            </>
           )}
 
           {/* ═══ HEADER & NAV ═══ */}

@@ -299,6 +299,71 @@ const siteSettingsSchema = new mongoose.Schema({
   termsOfService: {
     body: { type: String, default: 'All products sold are intended strictly for laboratory research use by qualified personnel. Not for human or veterinary administration.' },
   },
+
+  // ── Contact Page ───────────────────────────────────────────
+  contactPage: {
+    // Hero
+    eyebrow:  { type: String, default: 'GET IN TOUCH' },
+    title:    { type: String, default: 'Contact Us' },
+    subtitle: { type: String, default: "Have a question about our compounds, orders, or research needs? Our team is here to help." },
+
+    // Info Cards
+    emailTitle:       { type: String, default: 'Email Us' },
+    emailDesc:        { type: String, default: 'For general inquiries and order support' },
+    emailAddress:     { type: String, default: 'support@apexpepco.com' },
+
+    smsTitle:         { type: String, default: 'Text / SMS' },
+    smsDesc:          { type: String, default: 'Quick questions — we respond within hours' },
+    smsNumber:        { type: String, default: '+1 (234) 567-8900' },
+    smsHref:          { type: String, default: 'sms:+12345678900' },
+
+    telegramTitle:    { type: String, default: 'Telegram' },
+    telegramDesc:     { type: String, default: 'Fast support via Telegram messenger' },
+    telegramHandle:   { type: String, default: '@apexpepco' },
+    telegramHref:     { type: String, default: 'https://t.me/apexpepco' },
+
+    responseTitle:    { type: String, default: 'Response Time' },
+    responseText:     { type: String, default: 'We typically respond within 1–4 business hours Mon–Fri.' },
+    responseNote:     { type: String, default: 'Weekend responses may be delayed.' },
+
+    // Contact Form
+    formTitle:        { type: String, default: 'Send a Message' },
+    formDesc:         { type: String, default: "Fill out the form below and we'll respond as soon as possible." },
+    submitBtnText:    { type: String, default: 'Send Message →' },
+
+    // Success State
+    successTitle:     { type: String, default: 'Message Sent!' },
+    successText:      { type: String, default: "Thank you for reaching out. We'll get back to you within 1–4 business hours." },
+    resetBtnText:     { type: String, default: 'Send Another Message' },
+
+    // Bottom CTA
+    ctaTitle:         { type: String, default: 'Looking for something specific?' },
+    ctaText:          { type: String, default: 'Browse our full product catalog or check out our Shipping & Policy information.' },
+    ctaBrowseText:    { type: String, default: 'Browse Catalog' },
+    ctaShippingText:  { type: String, default: 'Shipping Info' },
+
+    // Colors
+    pageBg:           { type: String, default: '#06070a' },
+    eyebrowColor:     { type: String, default: '#c4222f' },
+    titleColor:       { type: String, default: '#ffffff' },
+    subtitleColor:    { type: String, default: '#94a3b8' },
+    cardBg:           { type: String, default: '#0d1117' },
+    cardBorderColor:  { type: String, default: '#1e2533' },
+    cardTitleColor:   { type: String, default: '#ffffff' },
+    cardTextColor:    { type: String, default: '#94a3b8' },
+    linkColor:        { type: String, default: '#c4222f' },
+    formBg:           { type: String, default: '#0d1117' },
+    formBorderColor:  { type: String, default: '#1e2533' },
+    formTitleColor:   { type: String, default: '#ffffff' },
+    inputBg:          { type: String, default: '#06070a' },
+    inputBorderColor: { type: String, default: '#2a2e3b' },
+    inputTextColor:   { type: String, default: '#ededed' },
+    submitBtnBg:      { type: String, default: '#c4222f' },
+    submitBtnText2:   { type: String, default: '#ffffff' },
+    ctaBg:            { type: String, default: '#0b0d14' },
+    ctaTitleColor:    { type: String, default: '#ffffff' },
+    ctaTextColor:     { type: String, default: '#94a3b8' },
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('SiteSettings', siteSettingsSchema);
