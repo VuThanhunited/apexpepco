@@ -87,20 +87,21 @@ const Checkout = () => {
         price: i.price,
       }));
 
+      const trimmedEmail = (form.email || '').trim().toLowerCase();
       const { data } = await api.post('/orders', {
         items: orderItems,
         shippingAddress: {
-          firstName: form.firstName,
-          lastName: form.lastName,
-          email: form.email,
-          phone: form.phone,
-          address: form.address,
-          city: form.city,
-          state: form.state,
-          zipCode: form.zipCode,
-          country: form.country,
+          firstName: (form.firstName || '').trim(),
+          lastName: (form.lastName || '').trim(),
+          email: trimmedEmail,
+          phone: (form.phone || '').trim(),
+          address: (form.address || '').trim(),
+          city: (form.city || '').trim(),
+          state: (form.state || '').trim(),
+          zipCode: (form.zipCode || '').trim(),
+          country: form.country || 'US',
         },
-        guestEmail: form.email,
+        guestEmail: trimmedEmail,
         paymentMethod: form.paymentMethod,
         totalAmount: total,
       });

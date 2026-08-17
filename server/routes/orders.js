@@ -34,8 +34,30 @@ router.post('/', async (req, res) => {
     const shippingCost = subtotal >= 250 ? 0 : 15;
     const total = subtotal + shippingCost;
 
-    const orderData = { items, subtotal, shippingCost, total, shippingAddress, paymentMethod };
-    orderData.guestEmail = guestEmail || shippingAddress?.email;
+    const cleanedEmail = (shippingAddress?.email || guestEmail || '').trim().toLowerCase();
+    const cleanedShipping = shippingAddress ? {
+      ...shippingAddress,
+      email: cleanedEmail || (shippingAddress.email ? shippingAddress.email.trim().toLowerCase() : ''),
+      firstName: shippingAddress.firstName ? shippingAddress.firstName.trim() : '',
+      lastName: shippingAddress.lastName ? shippingAddress.lastName.trim() : '',
+      phone: shippingAddress.phone ? shippingAddress.phone.trim() : '',
+      address: shippingAddress.address ? shippingAddress.address.trim() : '',
+      city: shippingAddress.city ? shippingAddress.city.trim() : '',
+      state: shippingAddress.state ? shippingAddress.state.trim() : '',
+      zipCode: shippingAddress.zipCode ? shippingAddress.zipCode.trim() : '',
+      country: shippingAddress.country ? shippingAddress.country.trim() : 'US',
+    } : {};
+
+    const orderData = {
+      items,
+      subtotal,
+      shippingCost,
+      total,
+      shippingAddress: cleanedShipping,
+      guestEmail: cleanedEmail,
+      paymentMethod
+    };
+
     if (req.headers.authorization) {
       const jwt = require('jsonwebtoken');
       try {
@@ -46,13 +68,13 @@ router.post('/', async (req, res) => {
     }
 
     const order = await Order.create(orderData);
-    console.log(`📦 Order created: ${order.orderNumber} | email: ${order.shippingAddress?.email || order.guestEmail || 'N/A'}`);
+    console.log(`📦 Order created: ${order.orderNumber} | Customer email: ${order.shippingAddress?.email || order.guestEmail || 'N/A'}`);
 
-    // Send emails asynchronously in background so HTTP response is instant (<50ms)
+    // Send emails asynchronously in background
     setImmediate(() => {
       sendOrderEmails(order)
-        .then(() => console.log(`✅ Emails sent for order ${order.orderNumber}`))
-        .catch(err => console.error(`❌ Email failed for order ${order.orderNumber}:`, err));
+        .then(() => console.log(`✅ Order email process completed for #${order.orderNumber}`))
+        .catch(err => console.error(`❌ Order email process failed for #${order.orderNumber}:`, err));
     });
 
     res.status(201).json(order);
