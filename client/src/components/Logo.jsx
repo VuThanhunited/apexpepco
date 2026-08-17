@@ -1,4 +1,4 @@
-﻿import './Logo.css';
+import './Logo.css';
 
 /**
  * Logo component – single source of truth for the brand logo.
@@ -17,7 +17,7 @@ const Logo = ({
     return (
       <div className={`logo-stacked ${className}`.trim()}>
         <img
-          src="/logo-triangle.png"
+          src="/logo-new.jpg"
           alt="Apex Pep Co"
           className="logo-stacked-img"
           onError={(e) => {
@@ -40,7 +40,7 @@ const Logo = ({
   return (
     <div className={`logo-brand ${className}`.trim()}>
       <img
-        src="/logo-triangle.png"
+        src="/logo-new.jpg"
         alt="Apex Pep Co"
         className="logo-brand-img"
         onError={(e) => {
