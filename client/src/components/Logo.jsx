@@ -17,7 +17,7 @@ const Logo = ({
     return (
       <div className={`logo-stacked ${className}`.trim()}>
         <img
-          src="/logo-new.png"
+          src="/logo-new.jpg"
           alt="Apex Pep Co"
           className="logo-stacked-img"
           onError={(e) => {
@@ -40,7 +40,7 @@ const Logo = ({
   return (
     <div className={`logo-brand ${className}`.trim()}>
       <img
-        src="/logo-new.png"
+        src="/logo-new.jpg"
         alt="Apex Pep Co"
         className="logo-brand-img"
         onError={(e) => {

@@ -1,4 +1,4 @@
-﻿/* ─────────────────────────────────────────────────
+/* ─────────────────────────────────────────────────
    Logo – shared brand mark component
    Used in: Navbar, AgeGate, Login, Register, Footer
    ───────────────────────────────────────────────── */
@@ -14,6 +14,7 @@
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
+  mix-blend-mode: screen;
   filter: drop-shadow(0 2px 8px rgba(196, 34, 47, 0.35));
   transition: filter 0.2s ease;
 }
@@ -87,6 +88,7 @@
   width: auto;
   object-fit: contain;
   margin-bottom: 0.6rem;
+  mix-blend-mode: screen;
   filter: drop-shadow(0 2px 8px rgba(196, 34, 47, 0.25));
 }
 
