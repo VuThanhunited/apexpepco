@@ -1,37 +1,154 @@
 .account-page { min-height: 100vh; }
-.account-container { max-width: 100%; margin: 0 auto; padding: 3rem; display: grid; grid-template-columns: 280px 1fr; gap: 2.5rem; align-items: start; }
+.account-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 3rem;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
 
-.account-sidebar { background: #0b0b0c; border: 1px solid #2a2a2c; border-radius: 0.75rem; padding: 1.5rem; position: sticky; top: 88px; }
-.account-avatar { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #2a2a2c; }
-.avatar-circle { width: 48px; height: 48px; background: linear-gradient(135deg, #c4222f, #7a1119); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.account-sidebar {
+  background: #0b0b0c;
+  border: 1px solid #2a2a2c;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  position: sticky;
+  top: 88px;
+}
+.account-avatar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #2a2a2c;
+}
+.avatar-circle {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #c4222f, #7a1119);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
 .account-avatar h3 { font-size: 0.95rem; font-weight: 700; color: #ededed; margin: 0 0 0.2rem; }
 .account-avatar p { font-size: 0.75rem; color: #8c8c8f; margin: 0; }
 
 .account-nav { display: flex; flex-direction: column; gap: 0.25rem; }
-.account-nav-item { text-align: left; background: transparent; border: none; color: #8c8c8f; font-size: 0.875rem; padding: 0.6rem 0.75rem; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s; }
+.account-nav-item {
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: #8c8c8f;
+  font-size: 0.875rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
 .account-nav-item:hover { background: rgba(255,255,255,0.04); color: #ededed; }
 .account-nav-item.active { background: rgba(196,34,47,0.15); color: #c4222f; font-weight: 700; }
 
-.account-main h1 { font-size: 1.5rem; font-weight: 800; color: #ededed; margin: 0 0 1.5rem; letter-spacing: -0.02em; text-transform: uppercase; }
+.account-main h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ededed;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
 .account-loading { display: flex; justify-content: center; padding: 3rem; }
-.loader-ring { width: 40px; height: 40px; border: 3px solid rgba(196,34,47,0.15); border-top-color: #c4222f; border-radius: 50%; animation: spin 0.8s linear infinite; }
+.loader-ring {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(196,34,47,0.15);
+  border-top-color: #c4222f;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.account-empty { text-align: center; padding: 3rem; color: #8c8c8f; }
-.account-empty p { margin-bottom: 1rem; }
-.btn-shop { background: #c4222f; color: #ffffff; text-decoration: none; padding: 0.75rem 1.75rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.9rem; }
+.account-empty { text-align: center; padding: 3rem 1.5rem; color: #8c8c8f; }
+.account-empty p { margin-bottom: 1.25rem; }
+.btn-shop {
+  background: #c4222f;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.75rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-block;
+}
 
 .orders-list { display: flex; flex-direction: column; gap: 1rem; }
-.order-card { background: #0b0b0c; border: 1px solid #2a2a2c; border-radius: 0.75rem; padding: 1.25rem; transition: border-color 0.2s; }
+.order-card {
+  background: #0b0b0c;
+  border: 1px solid #2a2a2c;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  transition: border-color 0.2s;
+}
 .order-card:hover { border-color: #c4222f; }
-.order-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-.order-number { font-size: 0.9rem; font-weight: 700; color: #ededed; margin-right: 0.75rem; }
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.order-number { font-size: 0.9rem; font-weight: 700; color: #ededed; }
 .order-date { font-size: 0.75rem; color: #8c8c8f; }
 .order-status { font-size: 0.8rem; font-weight: 700; text-transform: capitalize; }
 .order-items-preview { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
-.order-item-tag { font-size: 0.75rem; background: #121214; border: 1px solid #2a2a2c; color: #8c8c8f; padding: 0.2rem 0.6rem; border-radius: 0.35rem; }
-.order-card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #2a2a2c; padding-top: 0.75rem; }
-.order-total { font-size: 0.9rem; font-weight: 800; color: #c4222f; }
+.order-item-tag {
+  font-size: 0.75rem;
+  background: #121214;
+  border: 1px solid #2a2a2c;
+  color: #8c8c8f;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.35rem;
+}
+.order-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #2a2a2c;
+  padding-top: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.order-total { font-size: 0.95rem; font-weight: 800; color: #c4222f; }
 .order-tracking { font-size: 0.75rem; color: #8c8c8f; }
 
-@media (max-width: 768px) { .account-container { grid-template-columns: 1fr; } .account-sidebar { position: static; } }
+@media (max-width: 768px) {
+  .account-container {
+    grid-template-columns: 1fr;
+    padding: 1.5rem 1.25rem 4rem;
+    gap: 1.5rem;
+  }
+  .account-sidebar {
+    position: static;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-container {
+    padding: 1.25rem 0.85rem 3rem;
+  }
+  .order-card {
+    padding: 1rem 0.85rem;
+  }
+}

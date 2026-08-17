@@ -381,6 +381,7 @@
 @media (max-width: 900px) {
   .contact-main-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
   .contact-info-col {
     order: 2;
@@ -394,10 +395,38 @@
   .contact-page {
     padding: 2rem 1rem 4rem;
   }
+  .contact-hero {
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
   .contact-form-col {
     padding: 1.5rem 1.25rem;
   }
   .contact-form-row {
     grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+  .contact-cta-banner {
+    padding: 2.5rem 1.25rem;
+  }
+  .contact-cta-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .btn-contact-primary, .btn-contact-outline {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-page {
+    padding: 1.5rem 0.85rem 3rem;
+  }
+  .contact-form-col {
+    padding: 1.25rem 1rem;
+  }
+  .contact-info-card {
+    padding: 1rem 1.15rem;
   }
 }

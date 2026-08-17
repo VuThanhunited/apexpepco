@@ -1,12 +1,12 @@
 .announcement-substrip {
   width: 100%;
   text-align: center;
-  padding: 0.15rem 1rem 0.45rem;
+  padding: 0.25rem 1rem;
   font-size: 0.68rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   background: var(--ann-bg, #c4222f);
   color: var(--ann-text, #ffffff);
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   max-height: 40px;
   overflow: hidden;
@@ -30,26 +30,27 @@
   position: sticky;
   top: 0;
   z-index: 999;
-  background: var(--navbar-bg, rgba(11, 11, 12, 0.92));
+  background: var(--navbar-bg, rgba(11, 11, 12, 0.94));
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--navbar-border, #2a2a2c);
   transition: background 0.3s, box-shadow 0.3s;
 }
 
 .navbar.scrolled {
   background: var(--navbar-bg, rgba(11, 11, 12, 0.98));
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .nav-container {
   max-width: 100%;
   margin: 0 auto;
   padding: 0 3rem;
-  height: 62px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .nav-logo {
@@ -57,19 +58,18 @@
   align-items: center;
   gap: 0.65rem;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
-/* Logo image – shared styles are in Logo.css (.logo-brand-*)
-   Override size / shadow for Navbar context if needed */
 .nav-logo .logo-brand-img {
-  height: 44px;
+  height: 42px;
+  width: auto;
+  object-fit: contain;
 }
 
-/* Dark background override: keep text white in navbar */
 .nav-logo .logo-brand-pep {
   color: #f0f0f0;
 }
-
 
 .nav-links-desktop {
   display: flex;
@@ -91,13 +91,27 @@
   border-radius: 0;
   background: transparent;
   transition: color 0.2s;
+  white-space: nowrap;
 }
 
-.nav-link:hover, .nav-link.active { color: #c4222f !important; background: transparent; }
-.nav-link.highlight-red { color: #c4222f; font-weight: 700; }
-.nav-link.highlight-red:hover { color: #dc2626; }
+.nav-link:hover, .nav-link.active {
+  color: #c4222f !important;
+  background: transparent;
+}
+.nav-link.highlight-red {
+  color: #c4222f;
+  font-weight: 700;
+}
+.nav-link.highlight-red:hover {
+  color: #dc2626;
+}
 
-.nav-actions { display: flex; align-items: center; gap: 1.25rem; }
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
 
 .cart-btn {
   position: relative;
@@ -114,20 +128,26 @@
   transition: color 0.2s, background 0.2s;
   z-index: 10;
   pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
 }
 .cart-btn svg, .cart-btn span { pointer-events: none; }
 .cart-btn:hover { color: #ffffff; background: rgba(255,255,255,0.06); }
+.cart-btn:active { transform: scale(0.95); }
 
 .cart-badge {
   position: absolute;
-  top: 4px; right: 4px;
+  top: 4px;
+  right: 4px;
   background: #c4222f;
   color: #ffffff;
   font-size: 0.65rem;
   font-weight: 800;
-  width: 18px; height: 18px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-signin-nav {
@@ -141,34 +161,50 @@
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 .btn-signin-nav:hover { border-color: #ffffff; background: rgba(255,255,255,0.1); }
 
-.user-btn { background: transparent; border: none; cursor: pointer; }
+.user-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
 
 .user-avatar {
-  width: 38px; height: 38px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(135deg, #c4222f, #7a1119);
   border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.8rem; font-weight: 700; color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
 }
 
 .user-menu-wrapper { position: relative; }
 
 .user-dropdown {
   position: absolute;
-  right: 0; top: calc(100% + 8px);
+  right: 0;
+  top: calc(100% + 8px);
   background: #121214;
   border: 1px solid #2a2a2c;
   border-radius: 0.75rem;
   min-width: 220px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.85);
   animation: dropDown 0.2s ease;
+  z-index: 1000;
 }
 
-@keyframes dropDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes dropDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .user-dropdown-header {
   padding: 0.85rem 1.15rem;
@@ -178,10 +214,16 @@
 .user-dropdown-header small { color: #8c8c8f; font-size: 0.75rem; }
 
 .user-dropdown-item {
-  display: block; width: 100%; text-align: left;
+  display: block;
+  width: 100%;
+  text-align: left;
   padding: 0.75rem 1.15rem;
-  color: #8c8c8f; font-size: 0.9rem;
-  text-decoration: none; background: transparent; border: none; cursor: pointer;
+  color: #8c8c8f;
+  font-size: 0.9rem;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
 .user-dropdown-item:hover { background: rgba(255,255,255,0.04); color: #ededed; }
@@ -190,35 +232,104 @@
 
 .hamburger {
   display: none;
-  flex-direction: column; gap: 4px;
-  background: none; border: none; cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
   padding: 4px;
+  border-radius: 0.4rem;
+  -webkit-tap-highlight-color: transparent;
+}
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 .hamburger span {
-  display: block; width: 24px; height: 2px;
-  background: #8c8c8f; border-radius: 2px;
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #ededed;
+  border-radius: 2px;
   transition: all 0.3s;
 }
 
 .nav-mobile-menu {
   display: none;
   flex-direction: column;
-  padding: 0.5rem 1.5rem 1rem;
+  padding: 0.75rem 1.25rem 1.5rem;
+  background: #0e0e10;
   border-top: 1px solid #2a2a2c;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  animation: slideDownMobile 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+@keyframes slideDownMobile {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .mobile-link {
-  color: #8c8c8f; text-decoration: none;
-  padding: 0.75rem 0; font-size: 1rem; font-weight: 500;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: #a1a1aa;
+  text-decoration: none;
+  padding: 0.85rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   transition: color 0.2s;
+  display: flex;
+  align-items: center;
 }
 .mobile-link:hover, .mobile-link.active { color: #c4222f !important; }
 .mobile-link-cta { color: #c4222f !important; font-weight: 700; }
+
+@media (max-width: 1024px) {
+  .nav-container { padding: 0 1.75rem; }
+}
 
 @media (max-width: 768px) {
   .nav-links-desktop { display: none; }
   .hamburger { display: flex; }
   .nav-mobile-menu { display: flex; }
-  .nav-container { padding: 0 1.5rem; }
-  .announcement-substrip { padding: 0.25rem 1.5rem 0.4rem; text-align: center; }
+  .nav-container {
+    padding: 0 1rem;
+    height: 58px;
+  }
+  .nav-logo .logo-brand-img {
+    height: 36px;
+  }
+  .nav-actions {
+    gap: 0.5rem;
+  }
+  .btn-signin-nav {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  .announcement-substrip {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0 0.85rem;
+    height: 54px;
+  }
+  .nav-logo .logo-brand-img {
+    height: 32px;
+  }
+  .cart-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
 }

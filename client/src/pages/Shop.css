@@ -6,11 +6,23 @@
   padding: 3rem 1.5rem;
   text-align: center;
 }
-.shop-header h1 { font-size: 2rem; font-weight: 800; color: #ededed; margin: 0 0 0.5rem; letter-spacing: -0.02em; text-transform: uppercase; }
-.shop-header p { color: #8c8c8f; margin: 0; }
+.shop-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ededed;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.shop-header p {
+  color: #8c8c8f;
+  margin: 0;
+  font-size: 0.95rem;
+}
 
 .shop-container {
-  max-width: 100%; margin: 0 auto;
+  max-width: 100%;
+  margin: 0 auto;
   padding: 2rem 3rem;
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -21,114 +33,213 @@
 .shop-filter-toggle {
   display: none;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  background: #0b0b0c;
+  background: #121214;
   border: 1px solid #2a2a2c;
   color: #ededed;
-  padding: 0.55rem 1rem;
+  padding: 0.65rem 1.25rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
 }
 .shop-filter-toggle:hover { border-color: #c4222f; color: #c4222f; }
 
 .shop-sidebar {
-  position: sticky; top: 88px;
+  position: sticky;
+  top: 88px;
   background: #0b0b0c;
   border: 1px solid #2a2a2c;
   border-radius: 0.75rem;
   padding: 1.5rem;
 }
 
-.filter-group h3 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #8c8c8f; margin: 0 0 0.75rem; }
+.filter-group h3 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8c8c8f;
+  margin: 0 0 0.75rem;
+}
 
 .filter-btn {
-  display: flex; align-items: center; justify-content: space-between;
-  width: 100%; text-align: left;
-  background: transparent; border: none; cursor: pointer;
-  color: #8c8c8f; font-size: 0.875rem; padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem; transition: all 0.15s; margin-bottom: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #8c8c8f;
+  font-size: 0.875rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s;
+  margin-bottom: 0.15rem;
+  min-height: 40px;
 }
 .filter-btn:hover { background: rgba(255,255,255,0.04); color: #ededed; }
 .filter-btn.active { background: rgba(196,34,47,0.12); color: #c4222f; font-weight: 700; }
-.filter-count { font-size: 0.7rem; background: #121214; border: 1px solid #2a2a2c; padding: 0.1rem 0.4rem; border-radius: 0.3rem; }
+.filter-count { font-size: 0.7rem; background: #121214; border: 1px solid #2a2a2c; padding: 0.15rem 0.45rem; border-radius: 0.3rem; }
 
 .shop-toolbar {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .shop-search {
-  display: flex; align-items: center; gap: 0.5rem;
-  background: #0b0b0c; border: 1px solid #2a2a2c;
-  border-radius: 0.5rem; padding: 0.5rem 0.75rem;
-  flex: 1; max-width: 360px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #0b0b0c;
+  border: 1px solid #2a2a2c;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  flex: 1;
+  max-width: 360px;
   transition: border-color 0.2s;
 }
 .shop-search:focus-within { border-color: #c4222f; }
 .shop-search svg { color: #8c8c8f; flex-shrink: 0; }
 .shop-search input {
-  background: transparent; border: none; outline: none;
-  color: #ededed; font-size: 0.875rem; flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ededed;
+  font-size: 0.875rem;
+  flex: 1;
 }
 .shop-search input::placeholder { color: #8c8c8f; }
 
-.shop-results-count { font-size: 0.8rem; color: #8c8c8f; }
+.shop-results-count { font-size: 0.82rem; color: #8c8c8f; }
 
-.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
 
-.shop-loading { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+.shop-loading {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
 .product-skeleton {
-  aspect-ratio: 0.85; border-radius: 0.75rem;
+  aspect-ratio: 0.85;
+  border-radius: 0.75rem;
   background: linear-gradient(90deg, #0b0b0c 25%, #18181a 50%, #0b0b0c 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
-.shop-empty { text-align: center; padding: 5rem 2rem; }
+.shop-empty { text-align: center; padding: 4rem 1.5rem; }
 .shop-empty-icon { font-size: 3.5rem; margin-bottom: 1rem; }
 .shop-empty h3 { font-size: 1.25rem; font-weight: 700; color: #ededed; margin: 0 0 0.5rem; }
-.shop-empty p { color: #8c8c8f; margin: 0 0 1.5rem; }
+.shop-empty p { color: #8c8c8f; margin: 0 0 1.5rem; font-size: 0.9rem; }
 .btn-clear-filters {
-  background: transparent; border: 1px solid #c4222f;
-  color: #c4222f; padding: 0.6rem 1.5rem; border-radius: 0.5rem;
-  font-weight: 600; cursor: pointer; transition: all 0.2s;
+  background: transparent;
+  border: 1px solid #c4222f;
+  color: #c4222f;
+  padding: 0.65rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 .btn-clear-filters:hover { background: #c4222f; color: #fff; }
 
-.shop-pagination { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 3rem; flex-wrap: wrap; }
+.shop-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
 .page-btn {
-  background: #0b0b0c; border: 1px solid #2a2a2c;
-  color: #8c8c8f; padding: 0.5rem 0.875rem; border-radius: 0.5rem;
-  font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
+  background: #0b0b0c;
+  border: 1px solid #2a2a2c;
+  color: #8c8c8f;
+  padding: 0.5rem 0.85rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
   min-width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .page-btn:hover:not(:disabled) { border-color: #c4222f; color: #c4222f; }
 .page-btn.active { background: #c4222f; border-color: #c4222f; color: #ffffff; font-weight: 700; }
 .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 @media (max-width: 1024px) {
-  .shop-container { padding: 2rem 1.5rem; }
-  .shop-container { grid-template-columns: 220px 1fr; }
+  .shop-container {
+    padding: 2rem 1.5rem;
+    grid-template-columns: 220px 1fr;
+    gap: 1.75rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .shop-header { padding: 2rem 1.5rem; }
-  .shop-header h1 { font-size: 1.5rem; }
-  .shop-container { grid-template-columns: 1fr; padding: 1.5rem 1rem; }
-  .shop-sidebar { position: static; display: none; }
+  .shop-header { padding: 2rem 1.25rem; }
+  .shop-header h1 { font-size: 1.6rem; }
+  .shop-container {
+    grid-template-columns: 1fr;
+    padding: 1.25rem 1rem 3rem;
+    gap: 1.25rem;
+  }
+  .shop-sidebar {
+    position: static;
+    display: none;
+    margin-bottom: 1rem;
+  }
   .shop-sidebar.sidebar-visible { display: block; }
   .shop-filter-toggle { display: flex; }
-  .shop-toolbar { flex-direction: column; align-items: stretch; }
-  .shop-search { max-width: 100%; }
-  .shop-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+  .shop-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .shop-search {
+    max-width: 100%;
+    width: 100%;
+  }
+  .shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+  .shop-loading {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
 }
 
 @media (max-width: 480px) {
   .shop-header { padding: 1.5rem 1rem; }
-  .shop-container { padding: 1rem; }
-  .shop-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .shop-header h1 { font-size: 1.4rem; }
+  .shop-container { padding: 1rem 0.75rem 2.5rem; }
+  .shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+  .shop-loading {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
 }
