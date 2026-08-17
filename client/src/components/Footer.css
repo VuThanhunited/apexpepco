@@ -32,7 +32,6 @@
   object-fit: contain;
   max-width: 80px;
   flex-shrink: 0;
-  mix-blend-mode: screen;
 }
 
 /* Logo + brand text cạnh nhau */
