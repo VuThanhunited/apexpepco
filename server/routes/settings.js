@@ -49,8 +49,9 @@ router.patch('/:section', auth, admin, async (req, res) => {
       'navLinks', 'siteName', 'siteTagline', 'logo',
       'freeShippingThreshold', 'shippingCost',
       'shopPage', 'aboutPage', 'productDetailPage', 'cartPage', 'checkoutPage',
-      'shippingInfo', 'termsOfService',
+      'shippingInfo', 'termsOfService', 'contactPage',
     ];
+
 
     if (!allowedSections.includes(section)) {
       return res.status(400).json({ message: 'Invalid section' });
