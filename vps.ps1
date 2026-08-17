@@ -19,39 +19,29 @@ function Run-VPS {
 $action = $args[0]
 
 switch ($action) {
-    "deploy" {
-        Write-Host "🚀 Deploying full stack to VPS..." -ForegroundColor Cyan
-        Run-VPS @"
-cd /root/apexpepco && git pull origin main && echo '✅ Git pulled' &&
-cd client && npm install --silent && npm run build && echo '✅ Client built' &&
-cd ../admin && npm install --silent && npm run build && echo '✅ Admin built' &&
-cd .. && pm2 restart apexpepco 2>/dev/null || pm2 start server/index.js --name apexpepco && echo '✅ Server restarted' &&
-echo '🎉 Deploy complete!'
-"@
+    'deploy' {
+        Write-Host "Deploying full stack to VPS..." -ForegroundColor Cyan
+        Run-VPS 'cd /root/apexpepco && git pull origin main && echo "Git pulled" && cd client && npm install --silent && npm run build && echo "Client built" && cd ../admin && npm install --silent && npm run build && echo "Admin built" && cd .. && pm2 restart apexpepco && echo "Server restarted" && echo "Deploy complete!"'
     }
-    "deploy-admin" {
-        Write-Host "🔨 Rebuilding admin panel..." -ForegroundColor Cyan
-        Run-VPS @"
-cd /root/apexpepco && git pull origin main && cd admin && npm install --silent && npm run build && echo '✅ Admin deployed!'
-"@
+    'deploy-admin' {
+        Write-Host "Rebuilding admin panel..." -ForegroundColor Cyan
+        Run-VPS 'cd /root/apexpepco && git pull origin main && cd admin && npm install --silent && npm run build && echo "Admin deployed!"'
     }
-    "deploy-client" {
-        Write-Host "🔨 Rebuilding client site..." -ForegroundColor Cyan
-        Run-VPS @"
-cd /root/apexpepco && git pull origin main && cd client && npm install --silent && npm run build && echo '✅ Client deployed!'
-"@
+    'deploy-client' {
+        Write-Host "Rebuilding client site..." -ForegroundColor Cyan
+        Run-VPS 'cd /root/apexpepco && git pull origin main && cd client && npm install --silent && npm run build && echo "Client deployed!"'
     }
-    "status" {
-        Write-Host "📊 VPS Status..." -ForegroundColor Cyan
-        Run-VPS "pm2 status && echo '---' && nginx -t && echo '---' && df -h /"
+    'status' {
+        Write-Host "VPS Status..." -ForegroundColor Cyan
+        Run-VPS 'pm2 status && echo "---" && nginx -t && echo "---" && df -h /'
     }
-    "logs" {
-        Write-Host "📋 Server logs..." -ForegroundColor Cyan
-        Run-VPS "pm2 logs apexpepco --lines 50 --nostream"
+    'logs' {
+        Write-Host "Server logs..." -ForegroundColor Cyan
+        Run-VPS 'pm2 logs apexpepco --lines 50 --nostream'
     }
     default {
         if ($action) {
-            Write-Host "▶ Running: $action" -ForegroundColor Yellow
+            Write-Host "Running: $action" -ForegroundColor Yellow
             Run-VPS $action
         } else {
             Write-Host "Usage:" -ForegroundColor White
