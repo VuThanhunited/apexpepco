@@ -17,7 +17,7 @@ const Footer = () => {
                 ? <img src={settings.logo} alt={siteName} />
                 : (
                   <div className="footer-logo-brand">
-                    <img src="/logo-triangle.png" alt={siteName} className="footer-logo-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }} />
+                    <img src="/logo-new.jpg" alt={siteName} className="footer-logo-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }} />
                     <div className="footer-brand-name">
                       <span className="footer-brand-apex">APEX</span>
                       <span className="footer-brand-pepco">PEP CO</span>
