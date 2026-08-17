@@ -27,10 +27,13 @@ router.post('/', async (req, res) => {
     }
 
     const order = await Order.create(orderData);
+    console.log(`📦 Order created: ${order.orderNumber} | email: ${order.shippingAddress?.email || order.guestEmail || 'N/A'}`);
 
     // Send emails asynchronously in background so HTTP response is instant (<50ms)
     setImmediate(() => {
-      sendOrderEmails(order).catch(err => console.error('Background order email error:', err.message));
+      sendOrderEmails(order)
+        .then(() => console.log(`✅ Emails sent for order ${order.orderNumber}`))
+        .catch(err => console.error(`❌ Email failed for order ${order.orderNumber}:`, err));
     });
 
     res.status(201).json(order);
