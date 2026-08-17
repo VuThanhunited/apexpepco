@@ -5,6 +5,25 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const { sendOrderEmails } = require('../utils/email');
 
+// GET /api/orders/test-email - debug endpoint to test email sending
+router.get('/test-email', async (req, res) => {
+  try {
+    const fakeOrder = {
+      orderNumber: 'TEST-' + Date.now().toString().slice(-6),
+      _id: '000000000000000000000001',
+      shippingAddress: { firstName: 'Test', lastName: 'User', email: 'vtu21102000@gmail.com', address: '123 St', city: 'Houston', state: 'TX', zipCode: '77001', country: 'US', phone: '555-0000' },
+      guestEmail: 'vtu21102000@gmail.com',
+      items: [{ productName: 'Test Product', quantity: 1, price: 49.99 }],
+      subtotal: 49.99, shippingCost: 0, total: 49.99,
+      paymentMethod: 'Test'
+    };
+    await sendOrderEmails(fakeOrder);
+    res.json({ success: true, message: 'Test email sent successfully', server: process.env.NODE_ENV, dbHost: require('mongoose').connection.host });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message, server: process.env.NODE_ENV });
+  }
+});
+
 // POST /api/orders - create order (user or guest)
 router.post('/', async (req, res) => {
   try {

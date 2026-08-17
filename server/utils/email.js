@@ -4,7 +4,7 @@ const ADMIN_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'vtu21102000@gmail.com';
 const EMAIL_USER = process.env.EMAIL_USER || 'vtu21102000@gmail.com';
 const EMAIL_PASS = (process.env.EMAIL_PASS || 'yfqwyyctowncryac').replace(/\s+/g, '');
 
-// Create Nodemailer Transporter for Gmail SMTP
+// Create Nodemailer Transporter - try multiple ports for Render.com compatibility
 const getTransporter = async () => {
   // 1. Custom SMTP if specified
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
@@ -19,21 +19,32 @@ const getTransporter = async () => {
     });
   }
 
-  // 2. Direct Gmail Transporter using port 465 SSL with App Password
-  const gmailTransporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: EMAIL_USER,
-      pass: EMAIL_PASS,
-    },
-    tls: {
-      rejectUnauthorized: false
-    }
-  });
+  // 2. Try Gmail port 465 first, fallback to 587
+  const configs = [
+    { port: 465, secure: true },
+    { port: 587, secure: false },
+  ];
 
-  return gmailTransporter;
+  for (const cfg of configs) {
+    try {
+      const t = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: cfg.port,
+        secure: cfg.secure,
+        auth: { user: EMAIL_USER, pass: EMAIL_PASS },
+        tls: { rejectUnauthorized: false },
+        connectionTimeout: 8000,
+        greetingTimeout: 8000,
+      });
+      await t.verify();
+      console.log(`✅ Gmail SMTP verified on port ${cfg.port}`);
+      return t;
+    } catch (e) {
+      console.warn(`⚠️ Gmail SMTP port ${cfg.port} failed: ${e.message}`);
+    }
+  }
+
+  throw new Error('All SMTP transports failed');
 };
 
 /**
