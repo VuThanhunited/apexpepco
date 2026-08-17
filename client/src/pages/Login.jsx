@@ -28,7 +28,7 @@ const Login = () => {
         <div className="auth-header">
           <div className="auth-logo">
             <img
-              src="/logo-triangle.png"
+              src="/logo-light.png"
               alt="Apex Pep Co"
               className="auth-logo-img"
               onError={e => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }}
