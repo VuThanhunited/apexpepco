@@ -80,7 +80,6 @@ const SiteSettings = () => {
     target: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
     columns: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"/></svg>,
     search: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-    speaker: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>,
     chart: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
   };
 
@@ -92,7 +91,7 @@ const SiteSettings = () => {
     { id: 'cart', icon: icons.cart, label: 'Cart Page', desc: 'Cart title, empty state, button texts' },
     { id: 'checkout', icon: icons.checkout, label: 'Checkout Page', desc: 'Checkout title, success messages' },
     { id: 'contact', icon: icons.contact, label: 'Contact Page', desc: 'Hero, info cards, form texts, colors' },
-    { id: 'header', icon: icons.header, label: 'Header & Nav', desc: 'Logo, Site Name, Announcement Bar' },
+    { id: 'header', icon: icons.header, label: 'Header & Nav', desc: 'Logo, Site Name' },
     { id: 'footer', icon: icons.footer, label: 'Footer', desc: 'Description, Disclaimer, Copyright' },
     { id: 'agegate', icon: icons.lock, label: 'Age Gate', desc: 'Age verification modal settings' },
     { id: 'theme', icon: icons.palette, label: 'Theme & SEO', desc: 'Colors, Font, SEO meta tags' },
@@ -497,24 +496,6 @@ const SiteSettings = () => {
                   }
                 }} saving={saving} />
               </Panel>
-
-              <Panel title="Announcement Bar" icon={icons.speaker}>
-                <Field label="Visible"><Toggle id="ann-visible" checked={settings.announcementBar?.isVisible} onChange={v => update('announcementBar', 'isVisible', v)} /></Field>
-                <Field label="Text"><input value={settings.announcementBar?.text || ''} onChange={e => update('announcementBar', 'text', e.target.value)} /></Field>
-                <Field label="Background Color">
-                  <div className="color-field">
-                    <input type="color" value={settings.announcementBar?.bgColor || '#0f172a'} onChange={e => update('announcementBar', 'bgColor', e.target.value)} />
-                    <input value={settings.announcementBar?.bgColor || ''} onChange={e => update('announcementBar', 'bgColor', e.target.value)} />
-                  </div>
-                </Field>
-                <Field label="Text Color">
-                  <div className="color-field">
-                    <input type="color" value={settings.announcementBar?.textColor || '#94a3b8'} onChange={e => update('announcementBar', 'textColor', e.target.value)} />
-                    <input value={settings.announcementBar?.textColor || ''} onChange={e => update('announcementBar', 'textColor', e.target.value)} />
-                  </div>
-                </Field>
-                <SaveBtn onClick={() => saveSection('announcementBar', settings.announcementBar)} saving={saving} />
-              </Panel>
             </>
           )}
 
@@ -579,18 +560,7 @@ const SiteSettings = () => {
                   </div>
                 </div>
 
-                {/* ── Announcement Bar ── */}
-                <div className="color-group">
-                  <h4 className="color-group-title">📢 Thanh thông báo (Announcement Bar)</h4>
-                  <div className="color-grid">
-                    {[
-                      { key: 'announcementBg',   label: 'Nền' },
-                      { key: 'announcementText', label: 'Chữ' },
-                    ].map(({ key, label }) => (
-                      <ColorSwatch key={key} label={label} value={settings.theme?.[key] || '#c4222f'} onChange={v => update('theme', key, v)} />
-                    ))}
-                  </div>
-                </div>
+
 
                 {/* ── Hero ── */}
                 <div className="color-group">
