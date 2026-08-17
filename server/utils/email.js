@@ -178,18 +178,31 @@ const sendOrderEmails = async (order) => {
       const res1 = await transporter.sendMail({
         from: fromHeader,
         to: customerEmail,
+        replyTo: fromHeader,
         subject: `[Apex PepCo] Order Confirmation - #${orderIdShort}`,
         html: customerHtml,
+        headers: {
+          'X-Priority': '1',
+          'X-Mailer': 'ApexPepCo-Mailer',
+          'List-Unsubscribe': `<mailto:${EMAIL_USER}?subject=unsubscribe>`,
+        }
       });
       console.log(`✉️ Customer email delivered to ${customerEmail}:`, res1.messageId);
+    } else {
+      console.warn('⚠️ No customer email found in order:', order.orderNumber);
     }
 
     // Send Admin Email
     const res2 = await transporter.sendMail({
       from: fromHeader,
       to: ADMIN_EMAIL,
+      replyTo: customerEmail || fromHeader,
       subject: `🚨 [NEW ORDER ALERT] #${orderIdShort} - $${(order.total || order.totalAmount || 0).toFixed(2)} (${customerName})`,
       html: adminHtml,
+      headers: {
+        'X-Priority': '1',
+        'X-Mailer': 'ApexPepCo-Mailer',
+      }
     });
     console.log(`🔔 Admin notification email delivered to ${ADMIN_EMAIL}:`, res2.messageId);
 
