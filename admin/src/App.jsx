@@ -10,6 +10,7 @@ import Products from './pages/Products';
 import Orders from './pages/Orders';
 import Users from './pages/Users';
 import AccountSettings from './pages/AccountSettings';
+import Categories from './pages/Categories';
 import './App.css';
 
 const ProtectedLayout = ({ children }) => {
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/products" element={<ProtectedLayout><Products /></ProtectedLayout>} />
           <Route path="/orders" element={<ProtectedLayout><Orders /></ProtectedLayout>} />
           <Route path="/users" element={<ProtectedLayout><Users /></ProtectedLayout>} />
+          <Route path="/categories" element={<ProtectedLayout><Categories /></ProtectedLayout>} />
           <Route path="/account-settings" element={<ProtectedLayout><AccountSettings /></ProtectedLayout>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
