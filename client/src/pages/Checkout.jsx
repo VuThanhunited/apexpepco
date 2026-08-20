@@ -13,8 +13,7 @@ const Checkout = () => {
 
   const threshold = settings?.freeShippingThreshold || 250;
   const shippingCost = subtotal >= threshold ? 0 : (settings?.shippingCost || 15);
-  const estimatedTax = Number((subtotal * 0.06).toFixed(2));
-  const total = subtotal + shippingCost + estimatedTax;
+  const total = subtotal + shippingCost;
 
   const [form, setForm] = useState({
     firstName: user?.firstName || '',
@@ -138,12 +137,8 @@ const Checkout = () => {
               <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="receipt-row">
-              <span>Shipping (2-day):</span>
+              <span>Shipping:</span>
               <span>{shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}</span>
-            </div>
-            <div className="receipt-row">
-              <span>Estimated Tax:</span>
-              <span>${estimatedTax.toFixed(2)}</span>
             </div>
             <div className="receipt-row total">
               <span>Total Paid:</span>
@@ -493,12 +488,8 @@ const Checkout = () => {
                 <span>${subtotal.toFixed(2)}</span>
               </div>
               <div className="breakdown-row">
-                <span>Shipping (2-day shipping)</span>
+                <span>Shipping</span>
                 <span>{shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}</span>
-              </div>
-              <div className="breakdown-row">
-                <span>Estimated Tax</span>
-                <span>${estimatedTax.toFixed(2)}</span>
               </div>
             </div>
 

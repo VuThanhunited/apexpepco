@@ -40,7 +40,7 @@ const Logo = ({
   return (
     <div className={`logo-brand ${className}`.trim()}>
       <img
-        src="/logo-dark.png"
+        src="/logo-light.png"
         alt="Apex Pep Co"
         className="logo-brand-img"
         onError={(e) => {

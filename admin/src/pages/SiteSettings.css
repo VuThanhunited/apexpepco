@@ -195,8 +195,36 @@
 
 @media (max-width: 900px) {
   .cms-layout { grid-template-columns: 1fr; }
-  .cms-page-nav { flex-direction: row; flex-wrap: wrap; position: static; }
+  .cms-page-nav {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.5rem;
+    padding: 0.6rem;
+    position: static;
+    scrollbar-width: thin;
+  }
+  .cms-page-btn {
+    white-space: nowrap;
+    padding: 0.5rem 0.85rem;
+    flex-shrink: 0;
+  }
   .color-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .cms-header h1 { font-size: 1.15rem; }
+  .cms-section-header { padding: 0.85rem 1rem; }
+  .cms-section-body { padding: 1rem; }
+  .color-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem; }
+  .feature-row-fields { flex-direction: column; align-items: stretch; gap: 0.4rem; }
+  .feature-row-fields input { width: 100%; }
+  .icon-input { max-width: 100% !important; text-align: left; }
+  .array-row { flex-wrap: wrap; gap: 0.4rem; }
+  .btn-save-section { width: 100%; justify-content: center; }
+  .theme-preview-strip { flex-direction: column; align-items: stretch; text-align: center; }
+  .theme-preview-strip button { width: 100%; }
 }
 
 /* ── Color Group ────────────────────── */
