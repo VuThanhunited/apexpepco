@@ -13,7 +13,7 @@ const Register = () => {
     e.preventDefault();
     setError('');
     const result = await register(form.firstName, form.lastName, form.email, form.password, form.phone);
-    if (result.success) navigate('/');
+    if (result.success) navigate('/login', { state: { registered: true } });
     else setError(result.message);
   };
 

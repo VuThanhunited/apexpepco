@@ -8,6 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || '/';
+  const justRegistered = location.state?.registered || false;
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -44,6 +45,11 @@ const Login = () => {
           <h1>Welcome Back</h1>
           <p>Sign in to your research account</p>
         </div>
+        {justRegistered && (
+          <div className="auth-success">
+            ✓ Account created successfully! Please sign in.
+          </div>
+        )}
         {error && <div className="auth-error">{error}</div>}
         <form onSubmit={handleSubmit} className="auth-form" id="login-form">
           <div className="form-group">

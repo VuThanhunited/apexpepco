@@ -29,11 +29,8 @@ export const AuthProvider = ({ children }) => {
   const register = async (firstName, lastName, email, password, phone) => {
     setLoading(true);
     try {
-      const { data } = await api.post('/auth/register', { firstName, lastName, email, password, phone });
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      setToken(data.token);
-      setUser(data.user);
+      await api.post('/auth/register', { firstName, lastName, email, password, phone });
+      // Không auto-login — khách tự đăng nhập sau khi tạo tài khoản
       return { success: true };
     } catch (err) {
       return { success: false, message: err.response?.data?.message || 'Registration failed' };
