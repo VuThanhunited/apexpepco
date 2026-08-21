@@ -83,6 +83,13 @@ app.use((req, res, next) => {
     return res.status(404).json({ message: 'API route not found' });
   }
 
+  // Static file requests (with extension) that weren't found → 404, NOT index.html
+  // This prevents "Failed to load resource: status 200" errors in the browser console
+  const hasFileExtension = /\.\w{2,5}(\?.*)?$/.test(req.path);
+  if (hasFileExtension) {
+    return res.status(404).send('Not found');
+  }
+
   const isAdminPath = req.path.startsWith('/admin') || adminRoutes.some(r => req.path === r || req.path.startsWith(r + '/'));
 
   // Fallback for admin routes
