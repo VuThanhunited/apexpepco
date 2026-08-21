@@ -31,6 +31,13 @@ const Checkout = () => {
     couponCode: '',
   });
 
+  // Redirect về login nếu chưa đăng nhập
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/login?redirect=/checkout', { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
   useEffect(() => {
     if (user) {
       setForm(prev => ({

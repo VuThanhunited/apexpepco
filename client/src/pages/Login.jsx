@@ -7,7 +7,8 @@ const Login = () => {
   const { login, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || '/';
+  // Ưu tiên: ?redirect= query param → location.state.from → '/'
+  const redirectTo = new URLSearchParams(location.search).get('redirect') || location.state?.from || '/';
   const justRegistered = location.state?.registered || false;
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -16,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     const result = await login(form.email, form.password);
-    if (result.success) navigate(from, { replace: true });
+    if (result.success) navigate(redirectTo, { replace: true });
     else setError(result.message);
   };
 

@@ -1,11 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
+import { useAuth } from '../contexts/AuthContext';
 import './CartDrawer.css';
 
 const CartDrawer = ({ open, isOpen, onClose }) => {
   const { items, removeItem, updateQuantity, subtotal, clearCart, isCartOpen, setIsCartOpen } = useCart();
   const { settings } = useSite();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const drawerOpen = open !== undefined ? open : (isOpen !== undefined ? isOpen : isCartOpen);
@@ -14,7 +16,15 @@ const CartDrawer = ({ open, isOpen, onClose }) => {
   const shippingCost = settings?.shippingCost || 15;
   const total = subtotal + shippingCost;
 
-  const handleCheckout = () => { handleClose(); navigate('/checkout'); };
+  const handleCheckout = () => {
+    handleClose();
+    if (!user) {
+      // Chưa đăng nhập → redirect đến login, sau khi login quay lại checkout
+      navigate('/login?redirect=/checkout');
+    } else {
+      navigate('/checkout');
+    }
+  };
 
   return (
     <>
