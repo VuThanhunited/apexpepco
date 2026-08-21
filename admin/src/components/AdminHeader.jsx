@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAdminAuth } from '../contexts/AdminAuthContext';
+import api from '../utils/api';
 import './AdminHeader.css';
 
 const routeNames = {
@@ -12,21 +13,81 @@ const routeNames = {
   '/account-settings': 'Account',
 };
 
+const timeAgo = (dateStr) => {
+  const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)}d ago`;
+};
+
 const AdminHeader = ({ onMenuToggle }) => {
   const { user, logout } = useAdminAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifLoading, setNotifLoading] = useState(false);
+
   const dropdownRef = useRef(null);
+  const notifRef = useRef(null);
+
+  // Đọc danh sách notif đã đọc từ localStorage
+  const getReadIds = () => {
+    try { return new Set(JSON.parse(localStorage.getItem('admin_read_notifs') || '[]')); }
+    catch { return new Set(); }
+  };
+  const markRead = (ids) => {
+    const existing = getReadIds();
+    ids.forEach(id => existing.add(id));
+    localStorage.setItem('admin_read_notifs', JSON.stringify([...existing]));
+  };
 
   const currentPage = routeNames[location.pathname] || 'Dashboard';
 
-  // Close dropdown on click outside
+  const fetchNotifications = useCallback(async () => {
+    setNotifLoading(true);
+    try {
+      // Lấy 10 đơn hàng mới nhất
+      const { data } = await api.get('/orders?limit=10&page=1');
+      const orders = data.orders || [];
+      const readIds = getReadIds();
+
+      const notifs = orders.map(o => ({
+        id: o._id,
+        type: 'order',
+        status: o.status,
+        title: `New Order #${o.orderNumber || o._id.slice(-6).toUpperCase()}`,
+        subtitle: `${o.shippingAddress?.firstName || ''} ${o.shippingAddress?.lastName || ''} · $${o.total?.toFixed(2) || '0.00'}`,
+        time: o.createdAt,
+        isNew: o.status === 'pending' && !readIds.has(o._id),
+        orderId: o._id,
+      }));
+
+      setNotifications(notifs);
+      setUnreadCount(notifs.filter(n => n.isNew).length);
+    } catch (err) {
+      console.error('Failed to fetch notifications', err);
+    } finally {
+      setNotifLoading(false);
+    }
+  }, []);
+
+  // Fetch on mount và mỗi 60 giây
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 60000);
+    return () => clearInterval(interval);
+  }, [fetchNotifications]);
+
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setDropdownOpen(false);
+      if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -38,6 +99,31 @@ const AdminHeader = ({ onMenuToggle }) => {
     } else {
       if (document.exitFullscreen) document.exitFullscreen();
     }
+  };
+
+  const handleOpenNotif = () => {
+    setNotifOpen(v => !v);
+    setDropdownOpen(false);
+    if (!notifOpen) fetchNotifications();
+  };
+
+  const handleMarkAllRead = () => {
+    markRead(notifications.map(n => n.id));
+    setNotifications(prev => prev.map(n => ({ ...n, isNew: false })));
+    setUnreadCount(0);
+  };
+
+  const handleNotifClick = (notif) => {
+    markRead([notif.id]);
+    setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, isNew: false } : n));
+    setUnreadCount(prev => Math.max(0, prev - (notif.isNew ? 1 : 0)));
+    setNotifOpen(false);
+    navigate('/orders');
+  };
+
+  const statusColor = (status) => {
+    const map = { pending: '#f59e0b', processing: '#3b82f6', shipped: '#8b5cf6', delivered: '#10b981', cancelled: '#ef4444' };
+    return map[status] || '#8c8c8f';
   };
 
   return (
@@ -68,16 +154,86 @@ const AdminHeader = ({ onMenuToggle }) => {
         </button>
 
         {/* Notifications */}
-        <button className="header-action-btn" title="Notifications">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-          </svg>
-          <span className="notification-dot"></span>
-        </button>
+        <div className="notif-wrap" ref={notifRef}>
+          <button
+            className={`header-action-btn ${notifOpen ? 'active' : ''}`}
+            title="Notifications"
+            onClick={handleOpenNotif}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            {unreadCount > 0 && (
+              <span className="notif-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
+            )}
+          </button>
+
+          {notifOpen && (
+            <div className="notif-dropdown">
+              {/* Header */}
+              <div className="notif-header">
+                <span className="notif-title">Notifications</span>
+                {unreadCount > 0 && (
+                  <button className="notif-mark-all" onClick={handleMarkAllRead}>
+                    Mark all read
+                  </button>
+                )}
+              </div>
+
+              {/* List */}
+              <div className="notif-list">
+                {notifLoading ? (
+                  <div className="notif-empty">
+                    <div className="notif-spinner" />
+                  </div>
+                ) : notifications.length === 0 ? (
+                  <div className="notif-empty">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.3 }}>
+                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <p>No notifications</p>
+                  </div>
+                ) : (
+                  notifications.map(notif => (
+                    <button
+                      key={notif.id}
+                      className={`notif-item ${notif.isNew ? 'unread' : ''}`}
+                      onClick={() => handleNotifClick(notif)}
+                    >
+                      <div className="notif-icon-wrap" style={{ background: statusColor(notif.status) + '18', color: statusColor(notif.status) }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+                        </svg>
+                      </div>
+                      <div className="notif-content">
+                        <div className="notif-item-title">{notif.title}</div>
+                        <div className="notif-item-sub">{notif.subtitle}</div>
+                        <div className="notif-meta">
+                          <span className="notif-status-tag" style={{ color: statusColor(notif.status), background: statusColor(notif.status) + '15' }}>
+                            {notif.status}
+                          </span>
+                          <span className="notif-time">{timeAgo(notif.time)}</span>
+                        </div>
+                      </div>
+                      {notif.isNew && <span className="notif-unread-dot" />}
+                    </button>
+                  ))
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="notif-footer">
+                <button className="notif-view-all" onClick={() => { setNotifOpen(false); navigate('/orders'); }}>
+                  View all orders →
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* User Profile Dropdown */}
         <div className="header-user-wrap" ref={dropdownRef}>
-          <button className="header-user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
+          <button className="header-user-btn" onClick={() => { setDropdownOpen(!dropdownOpen); setNotifOpen(false); }}>
             <div className="header-avatar">
               {user?.firstName?.[0] || 'A'}{user?.lastName?.[0] || 'D'}
             </div>
@@ -111,7 +267,7 @@ const AdminHeader = ({ onMenuToggle }) => {
                   </svg>
                   Account Settings
                 </button>
-                <a href="http://localhost:5173" target="_blank" rel="noreferrer" className="dropdown-menu-item">
+                <a href="https://apexpepco.com" target="_blank" rel="noreferrer" className="dropdown-menu-item">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                   </svg>
