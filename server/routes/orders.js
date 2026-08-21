@@ -112,7 +112,7 @@ router.get('/', auth, admin, async (req, res) => {
 // PUT /api/orders/:id - admin update status
 router.put('/:id', auth, admin, async (req, res) => {
   try {
-    const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const order = await Order.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     if (!order) return res.status(404).json({ message: 'Order not found' });
     res.json(order);
   } catch (err) {

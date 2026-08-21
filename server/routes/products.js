@@ -63,7 +63,7 @@ router.post('/', auth, admin, async (req, res) => {
 // PUT /api/products/:id - admin
 router.put('/:id', auth, admin, async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after', runValidators: true });
     if (!product) return res.status(404).json({ message: 'Product not found' });
     res.json(product);
   } catch (err) {
