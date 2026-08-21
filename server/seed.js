@@ -40,8 +40,9 @@ const seed = async () => {
       console.log(`✅ Category: ${cat.name}`);
     }
 
-    // ── Products ──────────────────────────────
-    await Product.deleteMany({});
+    // ── Products ──────────────────────────────────────────────────────
+    // NOTE: We use upsert so existing products with uploaded images are preserved.
+    // imageUrl in seed is only used as fallback if product doesn't already have one.
     const productData = [
       {
         name: 'Tirzepatide',
@@ -177,30 +178,46 @@ const seed = async () => {
     ];
 
     for (const prod of productData) {
-      await Product.findOneAndUpdate({ slug: prod.slug }, prod, { upsert: true, new: true });
-      console.log(`✅ Product updated: ${prod.name}`);
+      const existing = await Product.findOne({ slug: prod.slug });
+      if (existing) {
+        // Preserve existing imageUrl/image if already set (from admin uploads)
+        const updateData = { ...prod };
+        if (existing.imageUrl && !existing.imageUrl.includes('astroresearch.health')) {
+          updateData.imageUrl = existing.imageUrl;
+        }
+        if (existing.image) updateData.image = existing.image;
+        await Product.findOneAndUpdate({ slug: prod.slug }, updateData, { returnDocument: 'after' });
+        console.log(`✅ Product updated: ${prod.name}`);
+      } else {
+        await Product.create(prod);
+        console.log(`✅ Product created: ${prod.name}`);
+      }
     }
 
-    // ── Site Settings (force update to Red/Black theme) ──
-    await SiteSettings.deleteMany({});
-    await SiteSettings.create({
-      announcementBar: {
-        isVisible: true,
-        text: 'Free Shipping On Orders $250+ | For Research Use Only',
-        bgColor: '#c4222f',
-        textColor: '#ffffff',
-      },
-      theme: {
-        primaryBg: '#0b0b0c',
-        primaryAccent: '#c4222f',
-        secondaryAccent: '#ef4444',
-        tertiaryAccent: '#7a1119',
-        primaryText: '#ededed',
-        mutedText: '#8c8c8f',
-        fontFamily: 'Inter',
-      }
-    });
-    console.log('✅ Site settings updated with Red & Black theme (#c4222f / #0b0b0c)');
+    // ── Site Settings — only create if none exist, never overwrite ──
+    const existingSettings = await SiteSettings.findOne();
+    if (!existingSettings) {
+      await SiteSettings.create({
+        announcementBar: {
+          isVisible: true,
+          text: 'Free Shipping On Orders $250+ | For Research Use Only',
+          bgColor: '#c4222f',
+          textColor: '#ffffff',
+        },
+        theme: {
+          primaryBg: '#0b0b0c',
+          primaryAccent: '#c4222f',
+          secondaryAccent: '#ef4444',
+          tertiaryAccent: '#7a1119',
+          primaryText: '#ededed',
+          mutedText: '#8c8c8f',
+          fontFamily: 'Inter',
+        }
+      });
+      console.log('✅ Site settings created with Red & Black theme');
+    } else {
+      console.log('ℹ️  Site settings already exist — skipping (preserving admin customizations)');
+    }
 
     console.log('\n🎉 Seed complete!');
     console.log('─────────────────────────────────');
