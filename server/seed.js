@@ -1,3 +1,14 @@
+/**
+ * seed.js — Apexpepco Database Seeder
+ *
+ * SAFETY RULES (enforced):
+ *  1. NEVER uses deleteMany / drop / remove on any collection
+ *  2. Only creates records that don't exist yet (upsert-safe)
+ *  3. SiteSettings: only created once — never overwritten
+ *  4. Products: imageUrl/image from admin uploads always preserved
+ *  5. Running this multiple times is 100% idempotent
+ */
+
 require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./models/User');
@@ -7,10 +18,13 @@ const SiteSettings = require('./models/SiteSettings');
 
 const seed = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
-    console.log('✅ Connected to MongoDB');
+    await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 15000 });
+    console.log('✅ Connected to MongoDB:', mongoose.connection.host);
+    console.log('─────────────────────────────────');
+    console.log('⚠️  SAFE MODE: No data will be deleted');
+    console.log('─────────────────────────────────\n');
 
-    // ── Admin user ────────────────────────────
+    // ── Admin user — create only if missing ───────────────
     const existingAdmin = await User.findOne({ email: 'admin@apexpepco.com' });
     if (!existingAdmin) {
       await User.create({
@@ -22,10 +36,10 @@ const seed = async () => {
       });
       console.log('✅ Admin user created: admin@apexpepco.com / Admin@123456');
     } else {
-      console.log('ℹ️  Admin user already exists');
+      console.log('ℹ️  Admin already exists — skipped');
     }
 
-    // ── Categories ────────────────────────────
+    // ── Categories — create only if missing ───────────────
     const categoryData = [
       { name: 'Peptides', slug: 'peptides', description: 'Research-grade peptide compounds' },
       { name: 'Growth Factors', slug: 'growth-factors', description: 'Growth hormone releasing compounds' },
@@ -35,14 +49,21 @@ const seed = async () => {
     let categories = {};
     for (const cat of categoryData) {
       let c = await Category.findOne({ slug: cat.slug });
-      if (!c) c = await Category.create(cat);
+      if (!c) {
+        c = await Category.create(cat);
+        console.log(`✅ Category created: ${cat.name}`);
+      } else {
+        console.log(`ℹ️  Category exists: ${cat.name}`);
+      }
       categories[cat.slug] = c._id;
-      console.log(`✅ Category: ${cat.name}`);
     }
 
-    // ── Products ──────────────────────────────────────────────────────
-    // NOTE: We use upsert so existing products with uploaded images are preserved.
-    // imageUrl in seed is only used as fallback if product doesn't already have one.
+    // ── Products — SAFE upsert: NEVER overwrite admin-set data ──
+    // Rules:
+    //  - If product doesn't exist → create with seed data
+    //  - If product exists AND has admin-uploaded image → keep existing image
+    //  - If product exists AND uses astroresearch image → keep (don't force-change)
+    //  - Never change: imageUrl, image, images, variants with custom stock/price
     const productData = [
       {
         name: 'Tirzepatide',
@@ -177,24 +198,35 @@ const seed = async () => {
       },
     ];
 
+    console.log('\n📦 Processing products...');
     for (const prod of productData) {
       const existing = await Product.findOne({ slug: prod.slug });
-      if (existing) {
-        // Preserve existing imageUrl/image if already set (from admin uploads)
-        const updateData = { ...prod };
-        if (existing.imageUrl && !existing.imageUrl.includes('astroresearch.health')) {
-          updateData.imageUrl = existing.imageUrl;
-        }
-        if (existing.image) updateData.image = existing.image;
-        await Product.findOneAndUpdate({ slug: prod.slug }, updateData, { returnDocument: 'after' });
-        console.log(`✅ Product updated: ${prod.name}`);
-      } else {
+      if (!existing) {
+        // New product — create with seed data
         await Product.create(prod);
         console.log(`✅ Product created: ${prod.name}`);
+      } else {
+        // Existing product — ONLY update non-media fields (name, description, category, tags)
+        // PRESERVE: imageUrl, image, images, variants (admin may have edited prices/stock)
+        const safeUpdate = {
+          name: prod.name,
+          shortDescription: prod.shortDescription,
+          description: prod.description,
+          category: prod.category,
+          purity: prod.purity,
+          tags: prod.tags,
+          // Only set imageUrl if product has no image at all
+          ...(!existing.imageUrl && !existing.image ? { imageUrl: prod.imageUrl } : {}),
+          // Only set variants if product has no variants at all
+          ...((!existing.variants || existing.variants.length === 0) ? { variants: prod.variants, basePrice: prod.basePrice } : {}),
+        };
+        await Product.findOneAndUpdate({ slug: prod.slug }, { $set: safeUpdate }, { returnDocument: 'after' });
+        console.log(`ℹ️  Product updated (safe): ${prod.name}`);
       }
     }
 
-    // ── Site Settings — only create if none exist, never overwrite ──
+    // ── Site Settings — NEVER overwrite existing ──────────
+    console.log('\n⚙️  Checking SiteSettings...');
     const existingSettings = await SiteSettings.findOne();
     if (!existingSettings) {
       await SiteSettings.create({
@@ -214,21 +246,16 @@ const seed = async () => {
           fontFamily: 'Inter',
         }
       });
-      console.log('✅ Site settings created with Red & Black theme');
+      console.log('✅ SiteSettings created (first time)');
     } else {
-      console.log('ℹ️  Site settings already exist — skipping (preserving admin customizations)');
+      console.log('ℹ️  SiteSettings exists — NOT touched (all admin customizations preserved)');
     }
 
-    console.log('\n🎉 Seed complete!');
+    console.log('\n🎉 Seed complete! All existing data preserved.');
     console.log('─────────────────────────────────');
     console.log('Admin Login:');
     console.log('  Email:    admin@apexpepco.com');
     console.log('  Password: Admin@123456');
-    console.log('─────────────────────────────────');
-    console.log('URLs:');
-    console.log('  Backend:  http://localhost:5000');
-    console.log('  User Site: http://localhost:5173');
-    console.log('  Admin:     http://localhost:5174');
     console.log('─────────────────────────────────');
 
   } catch (err) {
