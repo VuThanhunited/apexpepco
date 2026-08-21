@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Simple in-memory + localStorage cache for API responses
  * TTL: 5 minutes by default
  */

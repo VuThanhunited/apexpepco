@@ -30,7 +30,7 @@ const AdminLogin = () => {
               src="/logo-triangle.png"
               alt="Apex Pep Co"
               className="admin-login-logo-icon"
-              onError={e => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }}
+              onError={e => { e.target.onerror = null; e.target.src = '/logo-light.png'; }}
             />
             <div className="admin-login-logo-text">
               <span className="admin-login-logo-apex">APEX</span>

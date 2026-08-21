@@ -22,7 +22,7 @@ const Logo = ({
           className="logo-stacked-img"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = '/logo-icon.jpg';
+            e.target.src = '/logo-light.png';
           }}
         />
         <div className="logo-stacked-name">APEX PEP CO</div>
@@ -45,7 +45,7 @@ const Logo = ({
         className="logo-brand-img"
         onError={(e) => {
           e.target.onerror = null;
-          e.target.src = '/logo-icon.jpg';
+          e.target.src = '/logo-light.png';
         }}
       />
       <div className="logo-brand-text">

@@ -32,7 +32,7 @@ const Login = () => {
               src="/logo-light.png"
               alt="Apex Pep Co"
               className="auth-logo-img"
-              onError={e => { e.target.onerror = null; e.target.src = '/logo-icon.jpg'; }}
+              onError={e => { e.target.onerror = null; e.target.src = '/logo-light.png'; }}
             />
             <div className="auth-logo-text">
               <span className="auth-logo-apex">APEX</span>
