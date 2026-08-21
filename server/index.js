@@ -118,17 +118,34 @@ app.use((err, req, res, next) => {
 
 // ── MongoDB + Start ───────────────────────────────────────
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://vtu21102000:Vuthanh1810%40@ac-hjrte0y-shard-00-01.7t35nab.mongodb.net:27017/apexpepco_db?ssl=true&authSource=admin';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI is not defined in environment variables!');
+  process.exit(1);
+}
 
 mongoose.connect(MONGODB_URI, {
-  serverSelectionTimeoutMS: 10000,
+  serverSelectionTimeoutMS: 15000,
+  socketTimeoutMS: 45000,
+  maxPoolSize: 10,
+  retryWrites: true,
 })
   .then(() => {
     console.log('✅ MongoDB connected:', mongoose.connection.host);
-    httpServer.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    httpServer.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch(err => {
     console.error('❌ MongoDB connection error:', err.message);
+    console.error('❌ Full error:', err);
     process.exit(1);
   });
+
+// Handle connection events
+mongoose.connection.on('disconnected', () => {
+  console.warn('⚠️  MongoDB disconnected');
+});
+mongoose.connection.on('reconnected', () => {
+  console.log('🔄 MongoDB reconnected');
+});
 

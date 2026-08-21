@@ -26,6 +26,7 @@ const productSchema = new mongoose.Schema({
   tags: [{ type: String }],
   metaTitle: { type: String },
   metaDescription: { type: String },
+  isActive: { type: Boolean, default: true }, // used to soft-delete products
 }, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

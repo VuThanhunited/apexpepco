@@ -42,7 +42,7 @@ if [ ! -f "$APP_DIR/server/.env" ]; then
   echo "⚠️  No .env found. Creating from template..."
   cat > $APP_DIR/server/.env << 'EOF'
 PORT=5000
-MONGODB_URI=mongodb://vtu21102000:Vuthanh1810%40@ac-hjrte0y-shard-00-01.7t35nab.mongodb.net:27017/apexpepco_db?ssl=true&authSource=admin
+MONGODB_URI=mongodb://vtu21102000:Vuthanh1810%40@ac-hjrte0y-shard-00-00.7t35nab.mongodb.net:27017,ac-hjrte0y-shard-00-01.7t35nab.mongodb.net:27017,ac-hjrte0y-shard-00-02.7t35nab.mongodb.net:27017/apexpepco_db?ssl=true&authSource=admin&replicaSet=atlas-pewl5j-shard-0&retryWrites=true&w=majority
 JWT_SECRET=apexpepco_jwt_secret_key_2026_very_long_and_secure
 NODE_ENV=production
 CLIENT_URL=https://apexpepco.com
