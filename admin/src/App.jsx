@@ -14,8 +14,18 @@ import Categories from './pages/Categories';
 import './App.css';
 
 const ProtectedLayout = ({ children }) => {
-  const { user } = useAdminAuth();
+  const { user, loading } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Đang verify token → hiện spinner, không redirect sớm
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#f5f5f7' }}>
+        <div style={{ width: 32, height: 32, border: '3px solid #e5e7eb', borderTopColor: '#2563eb', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
   if (!user) return <Navigate to="/login" replace />;
   return (
