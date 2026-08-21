@@ -134,12 +134,11 @@ const Products = () => {
       // Fetch all products (no pagination limit)
       const { data } = await api.get('/products?limit=1000&page=1');
       const allProducts = data.products || [];
-      // Update both image AND imageUrl, clear imageUrl cũ để tránh bị override
+      // Chỉ gửi 2 fields cần update — tránh lỗi validation khi spread toàn bộ product
+      // (category là populated object, variants có subdoc _id, v.v.)
       await Promise.all(allProducts.map(p => api.put(`/products/${p._id}`, {
-        ...p,
         image: bulkImageUrl.trim(),
-        imageUrl: bulkImageUrl.trim(),  // cập nhật cả imageUrl để client ưu tiên field này
-        category: p.category?._id || p.category || ''
+        imageUrl: bulkImageUrl.trim(),
       })));
       showToast(`✅ Đã cập nhật ảnh cho ${allProducts.length} sản phẩm!`, 'success');
       setShowBulkImage(false);
