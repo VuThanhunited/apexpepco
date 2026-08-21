@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart, resolveImageUrl } from '../contexts/CartContext';
 import { useSite } from '../contexts/SiteContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,7 +9,8 @@ import './Checkout.css';
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
   const { settings } = useSite();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
 
   const threshold = settings?.freeShippingThreshold || 250;
   const shippingCost = subtotal >= threshold ? 0 : (settings?.shippingCost || 15);
@@ -152,6 +153,31 @@ const Checkout = () => {
             </Link>
             <Link to="/account" className="btn-success-account">
               View Order Details
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Guard: must be logged in to checkout
+  if (!authLoading && !user) {
+    return (
+      <div className="checkout-empty">
+        <div className="empty-cart-card">
+          <div className="empty-cart-icon">🔐</div>
+          <h2>Sign In Required</h2>
+          <p>You need to be logged in to place an order. Please sign in or create an account to continue.</p>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '8px' }}>
+            <Link
+              to="/login"
+              state={{ from: '/checkout' }}
+              className="btn-browse-catalog"
+            >
+              Sign In
+            </Link>
+            <Link to="/register" className="btn-browse-catalog" style={{ background: 'transparent', border: '1px solid #c4222f', color: '#c4222f' }}>
+              Create Account
             </Link>
           </div>
         </div>
