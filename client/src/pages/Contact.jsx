@@ -70,11 +70,11 @@ const Contact = () => {
                   {cp.emailDesc || 'For general inquiries and order support'}
                 </p>
                 <a
-                  href={`mailto:${cp.emailAddress || 'support@apexpepco.com'}`}
+                  href={`mailto:${cp.emailAddress || 'apexpepco@gmail.com'}`}
                   className="contact-info-link"
                   style={{ color: cp.linkColor || '#c4222f' }}
                 >
-                  {cp.emailAddress || 'support@apexpepco.com'}
+                  {cp.emailAddress || 'apexpepco@gmail.com'}
                 </a>
               </div>
             </div>

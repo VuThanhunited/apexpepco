@@ -11,8 +11,8 @@ router.get('/test-email', async (req, res) => {
     const fakeOrder = {
       orderNumber: 'TEST-' + Date.now().toString().slice(-6),
       _id: '000000000000000000000001',
-      shippingAddress: { firstName: 'Test', lastName: 'User', email: 'vtu21102000@gmail.com', address: '123 St', city: 'Houston', state: 'TX', zipCode: '77001', country: 'US', phone: '555-0000' },
-      guestEmail: 'vtu21102000@gmail.com',
+      shippingAddress: { firstName: 'Test', lastName: 'User', email: 'apexpepco@gmail.com', address: '123 St', city: 'Houston', state: 'TX', zipCode: '77001', country: 'US', phone: '555-0000' },
+      guestEmail: 'apexpepco@gmail.com',
       items: [{ productName: 'Test Product', quantity: 1, price: 49.99 }],
       subtotal: 49.99, shippingCost: 0, total: 49.99,
       paymentMethod: 'Test'

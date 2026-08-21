@@ -2,14 +2,36 @@ const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 
-// Nodemailer transporter — Gmail App Password
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const CONTACT_EMAIL_USER = process.env.EMAIL_USER || 'apexpepco@gmail.com';
+const CONTACT_EMAIL_PASS = (process.env.EMAIL_PASS || '').replace(/\s+/g, '');
+const CONTACT_ADMIN_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'apexpepco@gmail.com';
+
+// Tạo transporter Gmail với fallback port 465 → 587 (tương thích Render.com)
+const getContactTransporter = async () => {
+  const configs = [
+    { port: 465, secure: true },
+    { port: 587, secure: false },
+  ];
+  for (const cfg of configs) {
+    try {
+      const t = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: cfg.port,
+        secure: cfg.secure,
+        auth: { user: CONTACT_EMAIL_USER, pass: CONTACT_EMAIL_PASS },
+        tls: { rejectUnauthorized: false },
+        connectionTimeout: 8000,
+        greetingTimeout: 8000,
+      });
+      await t.verify();
+      console.log(`✅ Contact SMTP verified on port ${cfg.port}`);
+      return t;
+    } catch (e) {
+      console.warn(`⚠️ Contact SMTP port ${cfg.port} failed: ${e.message}`);
+    }
+  }
+  throw new Error('All contact SMTP transports failed');
+};
 
 // POST /api/contact
 router.post('/', async (req, res) => {
@@ -26,10 +48,13 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    const transporter = await getContactTransporter();
+    const fromHeader = process.env.EMAIL_FROM || `"Apex Pep Co Contact" <${CONTACT_EMAIL_USER}>`;
+
     // Email sent TO admin
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM || `"Apex Pep Co Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.ADMIN_NOTIFY_EMAIL || process.env.EMAIL_USER,
+      from: fromHeader,
+      to: CONTACT_ADMIN_EMAIL,
       replyTo: email,
       subject: `[Contact Form] ${subject} — from ${name}`,
       html: `
@@ -66,7 +91,7 @@ router.post('/', async (req, res) => {
 
     // Auto-reply TO customer
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM || `"Apex Pep Co" <${process.env.EMAIL_USER}>`,
+      from: fromHeader,
       to: email,
       subject: `We received your message — Apex Pep Co`,
       html: `

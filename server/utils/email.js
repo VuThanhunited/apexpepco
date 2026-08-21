@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
-const ADMIN_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'vtu21102000@gmail.com';
-const EMAIL_USER = process.env.EMAIL_USER || 'vtu21102000@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'apexpepco@gmail.com';
+const EMAIL_USER = process.env.EMAIL_USER || 'apexpepco@gmail.com';
 const EMAIL_PASS = (process.env.EMAIL_PASS || 'yfqwyyctowncryac').replace(/\s+/g, '');
 
 // Create Nodemailer Transporter - try multiple ports for Render.com compatibility
